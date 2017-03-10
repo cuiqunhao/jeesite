@@ -1,0 +1,63 @@
+package com.thinkgem.jeesite.modules.purifier.web;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.purifier.entity.GoodsApp;
+import com.thinkgem.jeesite.modules.purifier.service.GoodsAppService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * 货物申请controller
+ *
+ * @author addison
+ * @since 2017年03月08日
+ */
+@Controller
+@RequestMapping(value = "/goodsApp")
+public class GoodsAppServiceController extends BaseController {
+
+    @Autowired
+    private GoodsAppService goodsAppService;
+
+
+    @RequestMapping(value = "list")
+    public String list(GoodsApp goodsApp, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Page<GoodsApp> page = goodsAppService.findPage(new Page<GoodsApp>(request, response), goodsApp);
+        model.addAttribute("page", page);
+        return "modules/goodsApp/goodsAppList";
+    }
+
+    @RequestMapping(value = "form")
+    public String form(GoodsApp goodsApp, Model model) {
+        model.addAttribute("goodsApp", goodsApp);
+        return "modules/goodsApp/goodsAppForm";
+    }
+
+    @RequestMapping(value = "save")
+    public String save(GoodsApp goodsApp, Model model, RedirectAttributes redirectAttributes) {
+        if (!beanValidator(model, goodsApp)){
+            return form(goodsApp, model);
+        }
+        goodsAppService.save(goodsApp);
+        addMessage(redirectAttributes, "保存成功");
+        return "redirect:" + adminPath + "/goodsApp/goodsAppList";
+    }
+
+
+
+    @RequestMapping(value = "delete")
+    public String delete(GoodsApp goodsApp, RedirectAttributes redirectAttributes) {
+        goodsAppService.delete(goodsApp);
+        addMessage(redirectAttributes, "删除成功");
+        return "redirect:" + adminPath + "/sys/user/list?repage";
+    }
+
+}

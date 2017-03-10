@@ -1,7 +1,153 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.GoodsAppDao">
-    
+    <sql id="goodsAppCols">
+        a.id as id,
+        a.app_time as appTime,
+--         a.applicantId as applicantId,
+        a.consignee_phone as consigneePhone,
+        a.consignee as consignee,
+        a.consignee_address as consigneeAddress,
+        a.consignee_time as consigneeTime,
+        a.first_exa_status as firstExaStatus,
+        a.first_exa_content as firstExaContent,
+        a.sec_exa_status as secExaStatus,
+        a.sec_exa_content as secExaContent,
+        a.ship_address as shipAddress,
+        a.logistics as logistics,
+        a.appNo as appNo,
+        a.create_by as createBy,
+        a.create_date as createDate,
+        a.update_by as updateBy,
+        a.update_date as updateDate,
+        a.remarks as remarks,
+        a.del_flag as delFlag,
+        b.name as "applicantUser.name",
+        b.mobile as "applicantUser.mobile"
+    </sql>
+
+    <sql id="goodsAppJoin">
+         left join sys_user b on a.applicantId=b.id
+    </sql>
+
+    <sql id="whereCon">
+        <where>
+            1=1
+            <if test="id != null">and a.id=#{id}</if>
+            <if test="appTimeStart != null">and a.app_time>=#{appTimeStart}</if>
+            <if test="appTimeEnd != null">and #{appTimeEnd}>=a.app_time</if>
+            <if test="consignee != null">and a.consignee=#{consignee}</if>
+            <if test="consigneePhone != null">and a.consignee_phone=#{consigneePhone}</if>
+            <if test="applicantUser != null and applicantUser.id != null">and a.applicantId=#{applicantUser.id}</if>
+            <if test="firstExaStatus != null">and a.first_exa_status=#{firstExaStatus}</if>
+            <if test="secExaStatus != null">and a.sec_exa_status=#{secExaStatus}</if>
+        </where>
+    </sql>
+
+    <select id="findList" resultType="GoodsApp">
+        SELECT
+        <include refid="goodsAppCols"/>
+        from purifier_goods_app a
+        <include refid="goodsAppJoin"/>
+        <include refid="whereCon"/>
+    </select>
+
+    <select id="findAllCount" resultType="GoodsApp">
+        SELECT
+        count(1)
+        from purifier_goods_app a
+        <include refid="goodsAppJoin"/>
+        <include refid="whereCon"/>
+    </select>
+
+    <insert id="insterGoodsApp">
+      INSERT INTO purifier_goods_app(
+        app_time,
+        applicantId,
+        consignee_phone,
+        consignee,
+        consignee_address,
+        consignee_time,
+        first_exa_status,
+        first_exa_content,
+        sec_exa_status,
+        sec_exa_content,
+        ship_address,
+        logistics,
+        appNo,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        remarks,
+        del_flag
+        )VALUES (
+        #{appTime},
+        #{applicantUser.id},
+        #{consigneePhone},
+        #{consignee},
+        #{consigneeAddress},
+        #{consigneeTime},
+        #{firstExaStatus},
+        #{firstExaContent},
+        #{secExaStatus},
+        #{secExaContent},
+        #{shipAddress},
+        #{logistics},
+        #{appNo},
+        #{createBy},
+        #{createDate},
+        #{updateBy},
+        #{updateDate},
+        #{remarks},
+        #{delFlag}
+        )
+    </insert>
+
+    <insert id="insterGoodsAppRel">
+        INSERT INTO purifier_goods_app_rel(goodsAppId,goodId,appNum,usefor,remark)
+        <foreach collection="goodList" item="good" separator=" union all ">
+            SELECT #{id}, #{good.id},#{good.appNum},#{good.usefor},#{good.remark}
+            <if test="dbName != 'mssql'">
+                FROM dual
+            </if>
+        </foreach>
+    </insert>
+
+    <update id="updateGoodsApp">
+        UPDATE purifier_goods_app SET
+        updateBy = #{updateBy},
+        <if test="firstExaStatus != null">
+            firstExaStatus = #{firstExaStatus},
+        </if>
+        <if test="firstExaContent != null">
+            firstExaContent = #{firstExaContent},
+        </if>
+        <if test="secExaStatus != null">
+            secExaStatus = #{secExaStatus},
+        </if>
+        <if test="secExaContent != null">
+            secExaContent = #{secExaContent},
+        </if>
+        <if test="shipAddress != null">
+            shipAddress = #{shipAddress},
+        </if>
+        <if test="logistics != null">
+            logistics = #{logistics},
+        </if>
+        updateDate = #{updateDate}
+
+    </update>
+
+    <update id="deleteGoodsApp">
+        UPDATE purifier_goods_app SET
+        updateBy = #{updateBy},
+        <if test="delFlag != null">
+            delFlag = #{delFlag},
+        </if>
+        updateDate = #{updateDate}
+
+    </update>
 
 	
 </mapper>
