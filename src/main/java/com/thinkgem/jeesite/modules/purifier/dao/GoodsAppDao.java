@@ -16,14 +16,13 @@ import java.util.List;
 public interface GoodsAppDao extends CrudDao<GoodsApp> {
 
 //    List<GoodsAppDao> findGoodsApp(GoodsAppDao app);
+    int insterGoodsApp(GoodsApp app);
 
-    Long findAllCount(GoodsApp app);
+    int insterGoodsAppRel(GoodsApp app);
 
-    int insterGoodsApp(GoodsAppDao app);
+    int updateGoodsApp(GoodsApp app);
 
-    int insterGoodsAppRel(GoodsAppDao app);
+    int deleteGoodsApp(GoodsApp app);
 
-    int updateGoodsApp(GoodsAppDao app);
-
-    int deleteGoodsApp(GoodsAppDao app);
+    int deleteGoodsAppRel(GoodsApp app);
 }

@@ -1,12 +1,14 @@
 package com.thinkgem.jeesite.modules.purifier.entity;
 
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+
 /**
- * 请填写类注释
+ * 货物申请单与商品关系
  *
  * @author addison
  * @since 2017年03月10日
  */
-public class GoodsAppRel {
+public class GoodsAppRel extends DataEntity<GoodsAppRel>{
     /**
      * 申请单ID
      */
@@ -36,12 +38,12 @@ public class GoodsAppRel {
         this.goodsAppId = goodsAppId;
     }
 
-    public Goods getGoodId() {
+    public Goods getGood() {
         return good;
     }
 
-    public void setGoodId(Goods goodId) {
-        this.good = goodId;
+    public void setGood(Goods good) {
+        this.good = good;
     }
 
     public Long getAppNum() {

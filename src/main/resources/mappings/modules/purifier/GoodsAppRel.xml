@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.GoodsAppRelDao">
+    <sql id="goodsAppRelCols">
+        a.goodsAppId,
+        a.appNum,
+        a.usefor,
+        a.remark,
+        a.create_by as createBy,
+        a.create_date as createDate,
+        a.update_by as updateBy,
+        a.update_date as updateDate,
+        a.remarks as remarks,
+        a.del_flag as delFlag,
+        b.id as "good.id",
+        b.good_name as "good.goodName",
+        b.type as "good.type"
+    </sql>
+
+    <sql id="goodsAppRelJoin">
+         left join purifier_goods b on a.goodId = b.id
+    </sql>
+
+    <sql id="whereCon">
+        <where>
+            1=1
+            <if test="goodsAppId != null">and a.goodsAppId=#{goodsAppId}</if>
+        </where>
+    </sql>
+
+    <select id="findAllList" resultType="GoodsAppRel">
+        SELECT
+        <include refid="goodsAppRelCols"/>
+        from purifier_goods_app_rel a
+        <include refid="goodsAppRelJoin"/>
+        <include refid="whereCon"/>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM  purifier_goods_app_rel where goodsAppId=#{goodsAppId}
+    </delete>
+
+
+</mapper>
