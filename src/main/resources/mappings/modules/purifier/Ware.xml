@@ -1,5 +1,78 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.WareDao">
+    <sql id="wareCols">
+        a.id as id,
+        a.ware_name as wareName,
+        a.ware_address as wareAddress,
+        a.create_by as createBy,
+        a.create_date as createDate,
+        a.update_by as updateBy,
+        a.update_date as updateDate,
+        a.remarks as remarks,
+        a.del_flag as delFlag
+    </sql>
+
+    <sql id="whereCon">
+        <where>
+            1=1
+            <if test="wareName != null">and a.ware_name=#{wareName}</if>
+        </where>
+    </sql>
+
+    <select id="findList" resultType="Ware">
+        SELECT
+        <include refid="wareCols"/>
+        from purifier_ware a
+        <include refid="whereCon"/>
+    </select>
+
+    <select id="get" resultType="Ware">
+        SELECT
+        <include refid="wareCols"/>
+        from purifier_ware a
+        where a.id = #{id}
+    </select>
+
+    <select id="findAllCount" resultType="long">
+        SELECT
+        count(1)
+        from purifier_ware a
+        <include refid="whereCon"/>
+    </select>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="com.thinkgem.jeesite.modules.purifier.entity.Ware">
+        INSERT INTO purifier_ware(
+        ware_name,
+        ware_address,
+        create_by,
+        create_date,
+        remarks,
+        del_flag
+        )VALUES (
+        #{wareName},
+        #{wareAddress},
+        #{createBy.id},
+        #{createDate},
+        #{remarks},
+        #{delFlag}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE purifier_ware a SET
+        a.update_by = #{updateBy.id}
+        <if test="wareName != null">a.ware_name=#{wareName},</if>
+        <if test="wareAddress != null">a.ware_address=#{wareAddress}</if>
+        a.update_date = #{updateDate}
+        where id=#{id}
+    </update>
+
+
+    <update id="delete">
+        UPDATE purifier_ware SET
+        del_flag = '1'
+        where id=#{id}
+    </update>
 
 </mapper>

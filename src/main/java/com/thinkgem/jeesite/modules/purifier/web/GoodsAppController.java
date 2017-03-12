@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping(value = "/goodsApp")
-public class GoodsAppServiceController extends BaseController {
+public class GoodsAppController extends BaseController {
 
     @Autowired
     private GoodsAppService goodsAppService;

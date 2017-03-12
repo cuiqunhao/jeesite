@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.WareDao">
+    <sql id="wareGoodsRelCols">
+      a.id as "ware.id",
+      a.ware_name as "ware.wareName",
+      a.ware_address as "ware.wareAddress",
+      c.id as "good.id",
+      c.good_name as "good.goodName",
+      c.type as "good.type",
+      b.num as num
+    </sql>
+
+    <sql id="wareGoodsRelJoin">
+        left join purifier_ware_goods_rel b on a.id=b.wareId
+        left join purifier_goods c on c.id=b.goodId
+    </sql>
+
+    <sql id="whereCon">
+        1=1
+        <if test="good.goodName != null">AND c.good_name=#{good.goodName}</if>
+        <if test="ware.wareName != null">AND a.ware_name=#{ware.wareName}</if>
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO purifier_ware_goods_rel(goodId,wareId,num)
+        VALUES (#{good.id},#{ware.id},#{num})
+    </insert>
+
+    <select id="findList">
+        SELECT
+        <include refid="wareGoodsRelCols"></include>
+        FROM purifier_ware a
+        <include refid="wareGoodsRelJoin"/>
+        <include refid="whereCon"/>
+    </select>
+
+    <select id="findAllCount">
+        SELECT count(1)
+        FROM purifier_ware a
+        <include refid="wareGoodsRelJoin"/>
+        <include refid="whereCon"/>
+    </select>
+    
+    <select id="get">
+        SELECT
+        <include refid="wareGoodsRelCols"></include>
+        FROM purifier_ware a
+        <include refid="wareGoodsRelJoin"/>
+        WHERE
+        b.goodId = #{good.id}
+        and b.wareId = #{ware.id}
+    </select>
+
+
+    <update id="update">
+        UPDATE purifier_ware_goods_rel b SET
+        b.num = #{num}
+        WHERE
+        b.goodId = #{good.id}
+        and b.wareId = #{ware.id}
+    </update>
+
+   <delete id="delete">
+       DELETE FROM purifier_ware_goods_rel b
+        WHERE
+        b.goodId = #{good.id}
+        and b.wareId = #{ware.id}
+   </delete>
+
+    <delete id="deleteByWare">
+        DELETE FROM purifier_ware_goods_rel b
+        WHERE
+        b.wareId = #{ware.id}
+    </delete>
+
+
+</mapper>

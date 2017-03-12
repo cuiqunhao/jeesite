@@ -1,7 +1,7 @@
 package com.thinkgem.jeesite.test.modules;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
-import com.thinkgem.jeesite.modules.purifier.web.GoodsAppServiceController;
+import com.thinkgem.jeesite.modules.purifier.web.GoodsAppController;
 import com.thinkgem.jeesite.test.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class GoodsAppTest extends TestConfig{
     private MockMvc mockMvc;
     @Autowired
-    private GoodsAppServiceController goodsAppServiceController;
+    private GoodsAppController goodsAppServiceController;
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(goodsAppServiceController).build();
