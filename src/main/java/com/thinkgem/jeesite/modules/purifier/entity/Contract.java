@@ -1,10 +1,208 @@
 package com.thinkgem.jeesite.modules.purifier.entity;
 
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+
+import java.util.Date;
+
 /**
- * 请填写类注释
+ * 合同单
  *
  * @author addison
  * @since 2017年03月02日
  */
-public class Contract {
+public class Contract extends DataEntity<Contract>{
+    /**
+     * 合同编号
+     */
+    private String contractNo;
+    /**
+     * 合同名称
+     */
+    private String contractName;
+    /**
+     * 合同金额
+     */
+    private Double contractAmount;
+    /**
+     * 合同期限开始
+     */
+    private Date contractBenginTime;
+    /**
+     * 合同期限结束
+     */
+    private Date contractEndTime;
+    /**
+     * 联系人
+     */
+    private String contacts;
+    /**
+     * 联系电话
+     */
+    private String contactsPhone;
+    /**
+     * 业务员
+     */
+    private User salesman;
+    /**
+     * 所属项目
+     */
+    private String item;
+    /**
+     * 联系地址
+     */
+    private String contactsAddress;
+    /**
+     * 签订合同时间
+     */
+    private Date contractTime;
+    /**
+     * 项目施工完成时间
+     */
+    private Date completeTime;
+    /**
+     * 安装人员
+     */
+    private User installer;
+    /**
+     * 维护周期
+     */
+    private Integer mianCycle;
+    /**
+     * 合同收款周期
+     */
+    private Integer collCycle;
+    /**
+     * 备注
+     */
+    private String remark;
+
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
+    }
+
+    public String getContractName() {
+        return contractName;
+    }
+
+    public void setContractName(String contractName) {
+        this.contractName = contractName;
+    }
+
+    public Double getContractAmount() {
+        return contractAmount;
+    }
+
+    public void setContractAmount(Double contractAmount) {
+        this.contractAmount = contractAmount;
+    }
+
+    public Date getContractBenginTime() {
+        return contractBenginTime;
+    }
+
+    public void setContractBenginTime(Date contractBenginTime) {
+        this.contractBenginTime = contractBenginTime;
+    }
+
+    public Date getContractEndTime() {
+        return contractEndTime;
+    }
+
+    public void setContractEndTime(Date contractEndTime) {
+        this.contractEndTime = contractEndTime;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
+    }
+
+    public String getContactsPhone() {
+        return contactsPhone;
+    }
+
+    public void setContactsPhone(String contactsPhone) {
+        this.contactsPhone = contactsPhone;
+    }
+
+    public User getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(User salesman) {
+        this.salesman = salesman;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
+    }
+
+    public String getContactsAddress() {
+        return contactsAddress;
+    }
+
+    public void setContactsAddress(String contactsAddress) {
+        this.contactsAddress = contactsAddress;
+    }
+
+    public Date getContractTime() {
+        return contractTime;
+    }
+
+    public void setContractTime(Date contractTime) {
+        this.contractTime = contractTime;
+    }
+
+    public Date getCompleteTime() {
+        return completeTime;
+    }
+
+    public void setCompleteTime(Date completeTime) {
+        this.completeTime = completeTime;
+    }
+
+    public User getInstaller() {
+        return installer;
+    }
+
+    public void setInstaller(User installer) {
+        this.installer = installer;
+    }
+
+    public Integer getMianCycle() {
+        return mianCycle;
+    }
+
+    public void setMianCycle(Integer mianCycle) {
+        this.mianCycle = mianCycle;
+    }
+
+    public Integer getCollCycle() {
+        return collCycle;
+    }
+
+    public void setCollCycle(Integer collCycle) {
+        this.collCycle = collCycle;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 }

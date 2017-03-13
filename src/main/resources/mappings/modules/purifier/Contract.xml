@@ -1,7 +1,114 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.ContractDao">
-    
 
-	
+    <sql id="contractCol">
+        a.id as id,
+        a.contractNo as contractNo,
+        a.contract_name as contractName,
+        a.contract_amount as contractAmount,
+        a.contract_bengin_time as contractBenginTime,
+        a.contract_end_time as contractEndTime,
+        a.contacts as contacts,
+        a.contacts_phone as contactsPhone,
+        b.id as "salesman.id",
+        b.name as "salesman.name",
+        a.item as item,
+        a.contacts_address as contactsAddress,
+        a.contract_time as contractTime,
+        a.complete_time as completeTime,
+        c.id as "installer.id",
+        c.name as "installer.name",
+        a.mian_cycle as mianCycle,
+        a.coll_cycle as collCycle,
+        a.remarks as remarks,
+         a.create_by as createBy,
+        a.create_date as createDate,
+        a.update_by as updateBy,
+        a.update_date as updateDate,
+        a.remarks as remarks,
+        a.del_flag as delFlag
+    </sql>
+
+    <sql id="contractJoin">
+        left join sys_user b on a.salesman = b.id
+        left join sys_user c on a.installer = c.id
+    </sql>
+
+    <sql id="whereCon">
+        <where>
+            1=1
+            <if test="contractTime != null">and a.contract_time = #{contractTime}</if>
+            <if test="contractNo != null">and a.contractNo = #{contractNo}</if>
+            <if test="salesman != null and salesman.id != null">and b.id = #{salesman.id}</if>
+            <if test="contractName != null">and a.contract_name = #{contractName}</if>
+            <if test="contacts != null">and a.contacts = #{contacts}</if>
+        </where>
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO purifier_contract(
+        contractNo,
+        contract_name,
+        contract_amount,
+        contract_bengin_time,
+        contract_end_time,
+        contacts,
+        contacts_phone,
+        salesman,
+        item,
+        contacts_address,
+        contract_time,
+        installer,
+        coll_cycle,
+        create_by,
+        create_date,
+        remarks,
+        del_flag
+        )VALUES (
+        #{contractNo},
+        #{contractName},
+        #{contractAmount},
+        #{contractBenginTime},
+        #{contractEndTime},
+        #{contacts},
+        #{contactsPhone},
+        #{salesman.id},
+        #{item},
+        #{contactsAddress},
+        #{contractTime},
+        #{installer.id},
+        #{collCycle},
+        #{createBy.id},
+        #{createDate},
+        #{remarks},
+        '0'
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE purifier_contract SET
+        update_by=#{updateBy.id},
+        <if test="installer != null and installer.id != null">installer = #{installer.id}</if>
+        <if test="mianCycle != null">mian_cycle = #{mianCycle}</if>
+
+
+        <if test="contractNo != null">contractNo = #{contractNo}</if>
+        <if test="contractName != null">contract_name = #{contractName}</if>
+        <if test="contractAmount != null">contract_amount = #{contractAmount}</if>
+        <if test="contractBenginTime != null">contract_bengin_time = #{contractBenginTime}</if>
+        <if test="contractEndTime != null">contract_end_time = #{contractEndTime}</if>
+        <if test="contacts != null">contacts = #{contacts}</if>
+        <if test="contactsPhone != null">contacts_phone = #{contactsPhone}</if>
+        <if test="item != null">item = #{item}</if>
+        <if test="contactsAddress != null">contacts_address = #{contactsAddress}</if>
+        <if test="contractTime != null">contract_time = #{contractTime}</if>
+        <if test="collCycle != null">coll_cycle = #{collCycle}</if>
+        update_date=#{updateDate}
+    </update>
+
+
+
+
+
 </mapper>
