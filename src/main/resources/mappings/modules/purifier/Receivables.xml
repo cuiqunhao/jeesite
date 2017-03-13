@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.ReceivablesDao">
+
+    <sql id="receivablesCol">
+        a.id as id,
+        a.contractId as contractId,
+        b.name as "userId.name",
+        b.id as "userId.id",
+        a.invoice as invoice,
+        a.amount as amount,
+        a.next_rec_time as nextRecTime,
+        a.rec_time as recTime
+    </sql>
+
+    <sql id="receivablesJoin">
+        left join sys_user b on b.id = a.user_id
+    </sql>
+
+    <sql id="whereCon">
+        <where>
+            1=1
+            <if test="contractId != null">a.contractId =  #{contractId}</if>
+        </where>
+    </sql>
+
+
+
+    <select id="get" resultType="Receivables">
+        SELECT
+        <include refid="maintainCol"/>
+        FROM purifier_maintain
+        <include refid="whereCon"/>
+    </select>
+
+    <select id="findList" resultType="Receivables">
+        SELECT
+        <include refid="maintainCol"/>
+        FROM purifier_receivables
+        <include refid="whereCon"/>
+    </select>
+
+
+    <insert id="insert">
+        Insert INTO purifier_receivables(contractId,rec_time,next_rec_time,user_id)
+        VALUES (#{contractId},#{recTime},#{nextRecTime},#{userId.id})
+    </insert>
+
+    <update id="update">
+        UPDATE purifier_receivables SET
+        update_by = #{updateBy.id},
+        <if test="recTime != null">a.rec_time=#{recTime},</if>
+        <if test="nextRecTime != null">a.next_rec_time=#{nextRecTime},</if>
+        <if test="userId != null and userId.id != null">a.user_id=#{userId.id},</if>
+        update_date = #{updateDate}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM purifier_receivables where id = #{id}
+    </delete>
     
 
 </mapper>

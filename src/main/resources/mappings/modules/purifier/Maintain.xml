@@ -2,4 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.MaintainDao">
 
+    <sql id="maintainCol">
+        a.id as id,
+        a.contractId as contractId,
+        b.name as "userId.name",
+        b.id as "userId.id",
+        a.main_time as mainTime,
+        a.next_main_time as nextMainTime,
+         a.create_by as createBy,
+        a.create_date as createDate,
+        a.update_by as updateBy,
+        a.update_date as updateDate,
+        a.remarks as remarks,
+        a.del_flag as delFlag
+    </sql>
+
+    <sql id="maintainJoin">
+        left join sys_user b on b.id = a.mainId
+    </sql>
+
+    <sql id="whereCon">
+        <where>
+            1=1
+            <if test="contractId != null">contractId = #{contractId}</if>
+        </where>
+    </sql>
+
+
+    <select id="get" resultType="Maintain">
+        SELECT
+        <include refid="maintainCol"/>
+        FROM purifier_maintain
+        <include refid="whereCon"/>
+    </select>
+
+    <select id="findList" resultType="Maintain">
+        SELECT
+        <include refid="maintainCol"/>
+        FROM purifier_maintain
+        <include refid="whereCon"/>
+    </select>
+
+
+    <insert id="insert">
+        Insert INTO purifier_maintain(contractId,main_time,next_main_time,mainId)
+        VALUES (#{contractId},#{mainTime},#{nextMainTime},#{mainId})
+    </insert>
+
+    <update id="update">
+        UPDATE purifier_maintain SET
+        update_by = #{updateBy.id},
+        <if test="mainTime != null">a.main_time=#{mainTime},</if>
+        <if test="nextMainTime != null">a.next_main_time=#{nextMainTime},</if>
+        <if test="userId != null and userId.id != null">a.mainId=#{userId.id},</if>
+        update_date = #{updateDate}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM purifier_maintain where id = #{id}
+    </delete>
+
 </mapper>

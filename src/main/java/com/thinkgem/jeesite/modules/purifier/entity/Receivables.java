@@ -29,10 +29,21 @@ public class Receivables extends DataEntity<Receivables>{
      */
     private Date next_rec_time;
     /**
+     * 下次收款时间
+     */
+    private Date recTime;
+    /**
      * 收款人ID
      */
     private User userId;
 
+    public Date getRecTime() {
+        return recTime;
+    }
+
+    public void setRecTime(Date recTime) {
+        this.recTime = recTime;
+    }
 
     public Long getContractId() {
         return contractId;

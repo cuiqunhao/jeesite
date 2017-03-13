@@ -21,7 +21,6 @@
         c.name as "installer.name",
         a.mian_cycle as mianCycle,
         a.coll_cycle as collCycle,
-        a.remarks as remarks,
          a.create_by as createBy,
         a.create_date as createDate,
         a.update_by as updateBy,
@@ -91,8 +90,6 @@
         update_by=#{updateBy.id},
         <if test="installer != null and installer.id != null">installer = #{installer.id}</if>
         <if test="mianCycle != null">mian_cycle = #{mianCycle}</if>
-
-
         <if test="contractNo != null">contractNo = #{contractNo}</if>
         <if test="contractName != null">contract_name = #{contractName}</if>
         <if test="contractAmount != null">contract_amount = #{contractAmount}</if>
@@ -107,8 +104,27 @@
         update_date=#{updateDate}
     </update>
 
+    <select id="get" resultType="Contract">
+        SELECT
+        <include refid="contractCol"/>
+        FROM purifier_contract a
+        <include refid="contractJoin"/>
+        WHERE
+        a.id = #{id}
+    </select>
 
+    <select id="findList" resultType="Contract">
+        SELECT
+        <include refid="contractCol"/>
+        FROM purifier_contract a
+        <include refid="contractJoin"/>
+        <include refid="whereCon"/>
+    </select>
 
-
-
+    <update id="delete">
+       UPDATE purifier_contract SET
+       update_by = #{updateBy.id}
+       del_flag = '1'
+       update_date = #{updateDate}
+    </update>
 </mapper>
