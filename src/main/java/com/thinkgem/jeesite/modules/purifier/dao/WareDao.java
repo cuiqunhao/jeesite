@@ -12,4 +12,6 @@ import com.thinkgem.jeesite.modules.purifier.entity.Ware;
  */
 @MyBatisDao
 public interface WareDao extends CrudDao<Ware> {
+
+    int deleteByWare(Ware ware);
 }

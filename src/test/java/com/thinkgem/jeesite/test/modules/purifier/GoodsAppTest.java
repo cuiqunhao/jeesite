@@ -1,4 +1,4 @@
-package com.thinkgem.jeesite.test.modules;
+package com.thinkgem.jeesite.test.modules.purifier;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.purifier.web.GoodsAppController;

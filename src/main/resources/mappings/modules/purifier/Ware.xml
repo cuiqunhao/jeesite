@@ -61,9 +61,9 @@
 
     <update id="update">
         UPDATE purifier_ware a SET
-        a.update_by = #{updateBy.id}
+        a.update_by = #{updateBy.id},
         <if test="wareName != null">a.ware_name=#{wareName},</if>
-        <if test="wareAddress != null">a.ware_address=#{wareAddress}</if>
+        <if test="wareAddress != null">a.ware_address=#{wareAddress},</if>
         a.update_date = #{updateDate}
         where id=#{id}
     </update>
@@ -74,5 +74,11 @@
         del_flag = '1'
         where id=#{id}
     </update>
+
+    <delete id="deleteByWare">
+        DELETE FROM purifier_ware_goods_rel b
+        WHERE
+        b.wareId = #{ware.id}
+    </delete>
 
 </mapper>

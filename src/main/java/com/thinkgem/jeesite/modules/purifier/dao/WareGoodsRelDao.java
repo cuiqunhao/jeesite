@@ -12,5 +12,6 @@ import com.thinkgem.jeesite.modules.purifier.entity.WareGoodsRel;
  * @since 2017年03月02日
  */
 @MyBatisDao
-public interface WareRelDao extends CrudDao<WareGoodsRel> {
+public interface WareGoodsRelDao extends CrudDao<WareGoodsRel> {
+
 }
