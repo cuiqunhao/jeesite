@@ -34,12 +34,12 @@
         where a.id = #{id}
     </select>
 
-    <select id="findAllCount" resultType="long">
-        SELECT
-        count(1)
-        from purifier_ware a
-        <include refid="whereCon"/>
-    </select>
+    <!--<select id="findAllCount" resultType="long">-->
+        <!--SELECT-->
+        <!--count(1)-->
+        <!--from purifier_ware a-->
+        <!--<include refid="whereCon"/>-->
+    <!--</select>-->
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="com.thinkgem.jeesite.modules.purifier.entity.Ware">
         INSERT INTO purifier_ware(

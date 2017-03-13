@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.GoodsDao">
+    <sql id="goodsCol">
+        a.id as id,
+        a.good_name as goodName,
+        a.type as type
+    </sql>
 
-	
+    <sql id="whereCon">
+        <where>
+            1=1
+            <if test="goodName != null">and a.good_name = #{goodName}</if>
+        </where>
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO purifier_goods(good_name,type,create_by,create_date)
+        VALUES (#{goodName},#{type},#{createBy.id},#{createDate})
+    </insert>
+
+    <update id="update">
+        UPDATE purifier_goods SET
+        update_by = #{updateBy.id},
+        <if test="goodName != null">good_name=#{goodName},</if>
+        <if test="type != null">type=#{type},</if>
+        update_date = #{updateDate}
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE purifier_goods SET
+        del_flag = '1'
+        WHERE
+        id = #{id}
+    </delete>
+
+    <select id="get" resultType="Goods">
+        SELECT
+        <include refid="goodsCol"/>
+        FROM purifier_goods a
+        WHERE
+        id = #{id}
+    </select>
+
+    <select id="findList" resultType="Goods">
+        SELECT
+        <include refid="goodsCol"/>
+        FROM purifier_goods a
+        <include refid="whereCon"/>
+    </select>
+
+
 </mapper>

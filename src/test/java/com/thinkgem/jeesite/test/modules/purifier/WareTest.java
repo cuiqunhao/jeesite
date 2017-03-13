@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 /**
@@ -40,6 +41,7 @@ public class WareTest extends TestConfig{
         mockMvc.perform(MockMvcRequestBuilders.get("/ware/list")
         .param("wareName","北京仓库")
         )
+        .andDo(MockMvcResultHandlers.print())
         .andReturn();
     }
 
