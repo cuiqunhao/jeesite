@@ -46,7 +46,7 @@
 
     <insert id="insert">
         Insert INTO purifier_maintain(contractId,main_time,next_main_time,mainId)
-        VALUES (#{contractId},#{mainTime},#{nextMainTime},#{mainId})
+        VALUES (#{contractId},#{mainTime},#{nextMainTime},#{userId.id})
     </insert>
 
     <update id="update">
