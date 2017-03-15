@@ -27,7 +27,7 @@ public class Receivables extends DataEntity<Receivables>{
     /**
      * 下次收款时间
      */
-    private Date next_rec_time;
+    private Date nextRecTime;
     /**
      * 下次收款时间
      */
@@ -69,12 +69,12 @@ public class Receivables extends DataEntity<Receivables>{
         this.amount = amount;
     }
 
-    public Date getNext_rec_time() {
-        return next_rec_time;
+    public Date getNextRecTime() {
+        return nextRecTime;
     }
 
-    public void setNext_rec_time(Date next_rec_time) {
-        this.next_rec_time = next_rec_time;
+    public void setNextRecTime(Date nextRecTime) {
+        this.nextRecTime = nextRecTime;
     }
 
     public User getUserId() {

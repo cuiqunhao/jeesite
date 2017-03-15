@@ -3,7 +3,11 @@ package com.thinkgem.jeesite.modules.purifier.web;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.purifier.entity.Contract;
+import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
+import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
 import com.thinkgem.jeesite.modules.purifier.service.ContractService;
+import com.thinkgem.jeesite.modules.purifier.service.MaintainService;
+import com.thinkgem.jeesite.modules.purifier.service.ReceivablesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 合同单controller
@@ -26,6 +31,10 @@ public class ContractController extends BaseController{
 
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private MaintainService maintainService;
+    @Autowired
+    private ReceivablesService receivablesService;
 
     @ModelAttribute
     public Contract get(Long id){
@@ -46,6 +55,18 @@ public class ContractController extends BaseController{
     @RequestMapping(value = "form")
     public String form(Contract contract, Model model) {
         model.addAttribute("contract", contract);
+        if(contract.getId() != null){
+            //合同收款信息
+            Receivables receivables = new Receivables();
+            receivables.setContractId(Long.valueOf(contract.getId()));
+            List<Receivables> receivablesList= receivablesService.findList(receivables);
+            model.addAttribute("receivablesList", receivablesList);
+            //合同维护信息
+            Maintain maintain = new Maintain();
+            maintain.setContractId(Long.valueOf(contract.getId()));
+            List<Maintain> maintainList = maintainService.findList(maintain);
+            model.addAttribute("maintainList", maintainList);
+        }
         return "modules/contract/contractForm";
     }
 

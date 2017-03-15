@@ -88,20 +88,21 @@
     <update id="update">
         UPDATE purifier_contract SET
         update_by=#{updateBy.id},
-        <if test="installer != null and installer.id != null">installer = #{installer.id}</if>
-        <if test="mianCycle != null">mian_cycle = #{mianCycle}</if>
-        <if test="contractNo != null">contractNo = #{contractNo}</if>
-        <if test="contractName != null">contract_name = #{contractName}</if>
-        <if test="contractAmount != null">contract_amount = #{contractAmount}</if>
-        <if test="contractBenginTime != null">contract_bengin_time = #{contractBenginTime}</if>
-        <if test="contractEndTime != null">contract_end_time = #{contractEndTime}</if>
-        <if test="contacts != null">contacts = #{contacts}</if>
-        <if test="contactsPhone != null">contacts_phone = #{contactsPhone}</if>
-        <if test="item != null">item = #{item}</if>
-        <if test="contactsAddress != null">contacts_address = #{contactsAddress}</if>
-        <if test="contractTime != null">contract_time = #{contractTime}</if>
-        <if test="collCycle != null">coll_cycle = #{collCycle}</if>
+        <if test="installer != null and installer.id != null">installer = #{installer.id},</if>
+        <if test="mianCycle != null">mian_cycle = #{mianCycle},</if>
+        <if test="contractNo != null">contractNo = #{contractNo},</if>
+        <if test="contractName != null">contract_name = #{contractName},</if>
+        <if test="contractAmount != null">contract_amount = #{contractAmount},</if>
+        <if test="contractBenginTime != null">contract_bengin_time = #{contractBenginTime},</if>
+        <if test="contractEndTime != null">contract_end_time = #{contractEndTime},</if>
+        <if test="contacts != null">contacts = #{contacts},</if>
+        <if test="contactsPhone != null">contacts_phone = #{contactsPhone},</if>
+        <if test="item != null">item = #{item},</if>
+        <if test="contactsAddress != null">contacts_address = #{contactsAddress},</if>
+        <if test="contractTime != null">contract_time = #{contractTime},</if>
+        <if test="collCycle != null">coll_cycle = #{collCycle},</if>
         update_date=#{updateDate}
+        where id = #{id}
     </update>
 
     <select id="get" resultType="Contract">
@@ -123,8 +124,9 @@
 
     <update id="delete">
        UPDATE purifier_contract SET
-       update_by = #{updateBy.id}
-       del_flag = '1'
+       update_by = #{updateBy.id},
+       del_flag = '1',
        update_date = #{updateDate}
+       where id=#{id}
     </update>
 </mapper>

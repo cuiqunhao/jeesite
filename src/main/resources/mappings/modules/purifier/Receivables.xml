@@ -28,35 +28,60 @@
 
     <select id="get" resultType="Receivables">
         SELECT
-        <include refid="maintainCol"/>
-        FROM purifier_maintain
-        <include refid="whereCon"/>
+        <include refid="receivablesCol"/>
+        FROM purifier_receivables a
+        <include refid="receivablesJoin"/>
+        where a.id = #{id}
     </select>
 
     <select id="findList" resultType="Receivables">
         SELECT
-        <include refid="maintainCol"/>
-        FROM purifier_receivables
+        <include refid="receivablesCol"/>
+        FROM purifier_receivables a
+        <include refid="receivablesJoin"/>
         <include refid="whereCon"/>
     </select>
 
 
     <insert id="insert">
-        Insert INTO purifier_receivables(contractId,rec_time,next_rec_time,user_id)
-        VALUES (#{contractId},#{recTime},#{nextRecTime},#{userId.id})
+        Insert INTO purifier_receivables(
+        contractId,
+        rec_time,
+        next_rec_time,
+        user_id,
+        create_by,
+        create_date,
+        del_flag
+        )
+        VALUES (
+        #{contractId},
+        #{recTime},
+        #{nextRecTime},
+        #{userId.id},
+        #{createBy.id},
+        #{createDate},
+        '0'
+        )
     </insert>
 
     <update id="update">
-        UPDATE purifier_receivables SET
-        update_by = #{updateBy.id},
+        UPDATE purifier_receivables a SET
+        a.update_by = #{updateBy.id},
         <if test="recTime != null">a.rec_time=#{recTime},</if>
         <if test="nextRecTime != null">a.next_rec_time=#{nextRecTime},</if>
         <if test="userId != null and userId.id != null">a.user_id=#{userId.id},</if>
-        update_date = #{updateDate}
+        <if test="invoice != null">a.invoice=#{invoice},</if>
+        <if test="amount != null">a.amount=#{amount},</if>
+        a.update_date = #{updateDate}
+        where a.id=#{id}
     </update>
 
     <delete id="delete">
-        DELETE FROM purifier_receivables where id = #{id}
+        UPDATE purifier_receivables SET
+        update_by = #{updateBy.id},
+        del_flag = '1',
+        update_date = #{updateDate}
+        where id=#{id}
     </delete>
     
 

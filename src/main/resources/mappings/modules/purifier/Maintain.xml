@@ -14,7 +14,8 @@
         a.update_by as updateBy,
         a.update_date as updateDate,
         a.remarks as remarks,
-        a.del_flag as delFlag
+        a.del_flag as delFlag,
+        a.main_content as mainContent
     </sql>
 
     <sql id="maintainJoin">
@@ -24,7 +25,7 @@
     <sql id="whereCon">
         <where>
             1=1
-            <if test="contractId != null">contractId = #{contractId}</if>
+            <if test="contractId != null">and a.contractId = #{contractId}</if>
         </where>
     </sql>
 
@@ -32,34 +33,60 @@
     <select id="get" resultType="Maintain">
         SELECT
         <include refid="maintainCol"/>
-        FROM purifier_maintain
-        <include refid="whereCon"/>
+        FROM purifier_maintain a
+        <include refid="maintainJoin"/>
+        where a.id = #{id}
     </select>
 
     <select id="findList" resultType="Maintain">
         SELECT
         <include refid="maintainCol"/>
-        FROM purifier_maintain
+        FROM purifier_maintain a
+        <include refid="maintainJoin"/>
         <include refid="whereCon"/>
     </select>
 
 
     <insert id="insert">
-        Insert INTO purifier_maintain(contractId,main_time,next_main_time,mainId)
-        VALUES (#{contractId},#{mainTime},#{nextMainTime},#{userId.id})
+        Insert INTO purifier_maintain(
+        contractId,
+        main_time,
+        next_main_time,
+        mainId,
+        create_by,
+        create_date,
+        del_flag,
+        main_content
+        )
+        VALUES (
+        #{contractId},
+        #{mainTime},
+        #{nextMainTime},
+        #{userId.id},
+        #{createBy.id},
+        #{createDate},
+        '0',
+        #{mainContent}
+        )
     </insert>
 
     <update id="update">
-        UPDATE purifier_maintain SET
-        update_by = #{updateBy.id},
+        UPDATE purifier_maintain a SET
+        a.update_by = #{updateBy.id},
         <if test="mainTime != null">a.main_time=#{mainTime},</if>
         <if test="nextMainTime != null">a.next_main_time=#{nextMainTime},</if>
+        <if test="mainContent != null">a.main_content=#{mainContent},</if>
         <if test="userId != null and userId.id != null">a.mainId=#{userId.id},</if>
-        update_date = #{updateDate}
+        a.update_date = #{updateDate}
+        where a.id= #{id}
     </update>
 
     <delete id="delete">
-        DELETE FROM purifier_maintain where id = #{id}
+       UPDATE purifier_maintain SET
+       update_by = #{updateBy.id},
+       del_flag = '1',
+       update_date = #{updateDate}
+       where id=#{id}
     </delete>
 
 </mapper>

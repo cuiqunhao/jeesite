@@ -29,6 +29,9 @@ public class Maintain extends DataEntity<Maintain>{
      */
     private Date nextMainTime;
 
+    private String mainContent;
+
+
     public Long getContractId() {
         return contractId;
     }
@@ -37,6 +40,13 @@ public class Maintain extends DataEntity<Maintain>{
         this.contractId = contractId;
     }
 
+    public String getMainContent() {
+        return mainContent;
+    }
+
+    public void setMainContent(String mainContent) {
+        this.mainContent = mainContent;
+    }
     public User getUserId() {
         return userId;
     }
