@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
 import com.thinkgem.jeesite.modules.purifier.service.ContractService;
 import com.thinkgem.jeesite.modules.purifier.service.MaintainService;
 import com.thinkgem.jeesite.modules.purifier.service.ReceivablesService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ import java.util.List;
  * @since 2017年03月14日
  */
 @Controller
-@RequestMapping(value = "/contract")
+@RequestMapping(value = "${adminPath}/contract")
 public class ContractController extends BaseController{
 
     @Autowired
@@ -35,6 +36,8 @@ public class ContractController extends BaseController{
     private MaintainService maintainService;
     @Autowired
     private ReceivablesService receivablesService;
+    @Autowired
+    private SystemService systemService;
 
     @ModelAttribute
     public Contract get(Long id){
@@ -49,7 +52,7 @@ public class ContractController extends BaseController{
     public String findPage(Contract contract, HttpServletRequest request, HttpServletResponse response,Model model){
         Page<Contract> page = contractService.findPage(new Page<Contract>(request, response), contract);
         model.addAttribute("page", page);
-        return "modules/contract/contractList";
+        return "modules/purifier/contractList";
     }
 
     @RequestMapping(value = "form")
@@ -67,7 +70,7 @@ public class ContractController extends BaseController{
             List<Maintain> maintainList = maintainService.findList(maintain);
             model.addAttribute("maintainList", maintainList);
         }
-        return "modules/contract/contractForm";
+        return "modules/purifier/contractForm";
     }
 
     @RequestMapping(value = "save")
@@ -75,27 +78,26 @@ public class ContractController extends BaseController{
         if (!beanValidator(model, contract)){
             return form(contract, model);
         }
-        contract.setIsNewRecord(true);
         contractService.save(contract);
         addMessage(redirectAttributes, "保存成功");
-        return "redirect:" + adminPath + "/goodsApp/goodsAppList";
+        return "redirect:" + adminPath + "/purifier/contractList";
     }
-    @RequestMapping(value = "update")
-    public String update(Contract contract, Model model, RedirectAttributes redirectAttributes) {
-        if (!beanValidator(model, contract)){
-            return form(contract, model);
-        }
-        contract.setIsNewRecord(false);
-        contractService.save(contract);
-        addMessage(redirectAttributes, "修改成功");
-        return "redirect:" + adminPath + "/goodsApp/goodsAppList";
-    }
+//    @RequestMapping(value = "update")
+//    public String update(Contract contract, Model model, RedirectAttributes redirectAttributes) {
+//        if (!beanValidator(model, contract)){
+//            return form(contract, model);
+//        }
+//        contract.setIsNewRecord(false);
+//        contractService.save(contract);
+//        addMessage(redirectAttributes, "修改成功");
+//        return "redirect:" + adminPath + "/purifier/contractList";
+//    }
 
     @RequestMapping(value = "delete")
     public String delete(Contract contract, RedirectAttributes redirectAttributes) {
         contractService.delete(contract);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + adminPath + "/goodsApp/goodsAppList";
+        return "redirect:" + adminPath + "/purifier/contractList";
     }
 
 

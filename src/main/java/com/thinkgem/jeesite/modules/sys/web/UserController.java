@@ -72,6 +72,13 @@ public class UserController extends BaseController {
         model.addAttribute("page", page);
 		return "modules/sys/userList";
 	}
+
+    @RequestMapping(value = "selectList")
+    public String selectList(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Page<User> page = systemService.findUser(new Page<User>(request, response), user);
+        model.addAttribute("page", page);
+        return "modules/purifier/userSelectList";
+    }
 	
 	@ResponseBody
 	@RequiresPermissions("sys:user:view")

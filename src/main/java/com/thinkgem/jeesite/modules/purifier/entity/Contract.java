@@ -77,6 +77,30 @@ public class Contract extends DataEntity<Contract>{
      */
     private String remark;
 
+    /**
+     * 签订合同时间开始
+     */
+    private Date contractTimeBegin;
+    /**
+     * 签订合同时间结束
+     */
+    private Date contractTimeEnd;
+
+    public Date getContractTimeBegin() {
+        return contractTimeBegin;
+    }
+
+    public void setContractTimeBegin(Date contractTimeBegin) {
+        this.contractTimeBegin = contractTimeBegin;
+    }
+
+    public Date getContractTimeEnd() {
+        return contractTimeEnd;
+    }
+
+    public void setContractTimeEnd(Date contractTimeEnd) {
+        this.contractTimeEnd = contractTimeEnd;
+    }
 
     public String getContractNo() {
         return contractNo;
