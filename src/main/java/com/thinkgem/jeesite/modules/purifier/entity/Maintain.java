@@ -15,7 +15,7 @@ public class Maintain extends DataEntity<Maintain>{
     /**
      * 合同ID
      */
-    private Long contractId;
+    private Contract contract;
     /**
      * 维护人员
      */
@@ -29,15 +29,29 @@ public class Maintain extends DataEntity<Maintain>{
      */
     private Date nextMainTime;
 
+    /**
+     * 维护内容
+     */
     private String mainContent;
 
+    private String remarks;
 
-    public Long getContractId() {
-        return contractId;
+    @Override
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setContractId(Long contractId) {
-        this.contractId = contractId;
+    @Override
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 
     public String getMainContent() {

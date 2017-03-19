@@ -4,27 +4,29 @@
 
     <sql id="receivablesCol">
         a.id as id,
-        a.contractId as contractId,
+        c.id as "contract.id",
+        c.contractNo as "contract.contractNo",
         b.name as "userId.name",
         b.id as "userId.id",
         a.invoice as invoice,
         a.amount as amount,
         a.next_rec_time as nextRecTime,
-        a.rec_time as recTime
+        a.rec_time as recTime,
+        a.remarks as remarks
     </sql>
 
     <sql id="receivablesJoin">
         left join sys_user b on b.id = a.user_id
+        LEFT JOIN purifier_contract c on c.id = a.contractId
     </sql>
 
     <sql id="whereCon">
         <where>
-            1=1
-            <if test="contractId != null">a.contractId =  #{contractId}</if>
+            a.del_flag ='0'
+            <if test="contract != null and contract.contractNo != null and contract.contractNo != ''">AND c.contractNo =  #{contract.contractNo}</if>
+            <if test="contract != null and contract.id != null and contract.id != ''">AND a.contractId =  #{contract.id}</if>
         </where>
     </sql>
-
-
 
     <select id="get" resultType="Receivables">
         SELECT
@@ -49,29 +51,35 @@
         rec_time,
         next_rec_time,
         user_id,
+        amount,
+        invoice,
         create_by,
         create_date,
-        del_flag
+        del_flag,
+        remarks
         )
         VALUES (
-        #{contractId},
+        #{contract.id},
         #{recTime},
         #{nextRecTime},
         #{userId.id},
+        #{amount},
+        #{invoice},
         #{createBy.id},
         #{createDate},
-        '0'
+        '0',
+        #{remarks}
         )
     </insert>
 
     <update id="update">
         UPDATE purifier_receivables a SET
         a.update_by = #{updateBy.id},
-        <if test="recTime != null">a.rec_time=#{recTime},</if>
-        <if test="nextRecTime != null">a.next_rec_time=#{nextRecTime},</if>
-        <if test="userId != null and userId.id != null">a.user_id=#{userId.id},</if>
-        <if test="invoice != null">a.invoice=#{invoice},</if>
-        <if test="amount != null">a.amount=#{amount},</if>
+        <if test="recTime != null and recTime != ''">a.rec_time=#{recTime},</if>
+        <if test="nextRecTime != null and nextRecTime != ''">a.next_rec_time=#{nextRecTime},</if>
+        <if test="userId != null and userId.id != null and userId.id != ''">a.user_id=#{userId.id},</if>
+        <if test="invoice != null and invoice != ''">a.invoice=#{invoice},</if>
+        <if test="amount != null and amount != ''">a.amount=#{amount},</if>
         a.update_date = #{updateDate}
         where a.id=#{id}
     </update>
@@ -82,6 +90,14 @@
         del_flag = '1',
         update_date = #{updateDate}
         where id=#{id}
+    </delete>
+
+    <delete id="deleteOtherRec">
+        UPDATE purifier_receivables SET
+        update_by = #{updateBy.id},
+        del_flag = '1',
+        update_date = #{updateDate}
+        where contractId=#{contract.id}
     </delete>
     
 

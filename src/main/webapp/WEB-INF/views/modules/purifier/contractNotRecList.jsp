@@ -19,9 +19,6 @@
 	<li class="active">
 		<a href="${ctx}/contract/list/">合同单列表</a>
 	</li>
-	<li>
-		<a href="${ctx}/contract/form">合同录入</a>
-	</li>
 </ul>
 <!--tab-->
 
@@ -87,8 +84,7 @@
 			<td>${contract.installer.name}</td>
 			<td>${contract.mianCycle}天</td>
 			<td>
-				<a href="${ctx}/contract/form?id=${contract.id}">修改</a>
-				<a href="${ctx}/contract/delete?id=${contract.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)">删除</a>
+				<a href="${ctx}/reveivables/formRec?contract.id=${contract.id}">收款</a>
 			</td>
 		</tr>
 	</c:forEach>

@@ -29,16 +29,32 @@
 
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/contract/list/">合同列表</a></li>
+		<li><a href="${ctx}/contract/notMainList/">合同列表</a></li>
 		<li class="active">
-			<a href="${ctx}/contract/form?id=${contract.id}">合同${not empty contract.id?'修改':'添加'}查看
+			<a href="${ctx}/contract/notMainForm?id=${contract.id}">设定维护周期
 			</a>
 		</li>
 	</ul>
 	<br/>
-	<form:form id="inputForm" modelAttribute="contract" action="${ctx}/contract/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="contract" action="${ctx}/contract/saveMain" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
+		<div class="control-group">
+			<label class="control-label">维护周期:</label>
+			<div class="controls">
+				<form:input path="mianCycle" htmlEscape="false" maxlength="10" class="required"/>
+			</div>
+		</div>
+
+
+		<div class="control-group">
+			<label class="control-label">安装人员:</label>
+			<div class="controls">
+				<purifier:userSelect id="installer.id" labelName="installerLabel" idValue="${contract.installer.id}" labelValue="${contract.installer.name}"/>
+			</div>
+		</div>
+
+
 		<div class="control-group">
 			<label class="control-label">合同编号:</label>
 			<div class="controls">
@@ -86,7 +102,7 @@
 		<div class="control-group">
 			<label class="control-label">业务员:</label>
 			<div class="controls">
-				<purifier:userSelect id="salesman.id" labelName="salesmanLabe" idValue="${contract.salesman.id}" labelValue="${contract.salesman.name}"/>
+				<purifier:userSelect id="salesman.id" labelName="salesmanLabel" idValue="${contract.salesman.id}" labelValue="${contract.salesman.name}"/>
 			</div>
 		</div>
 
@@ -127,58 +143,6 @@
 			</div>
 		</div>
 
-		<c:if test="${not empty contract.id}">
-			<div class="control-group">
-				<label class="control-label">收款记录:</label>
-				<div class="controls">
-					<table id="receivablesTable" class="table table-striped table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th>收款人</th>
-								<th>收款时间</th>
-								<th>收款金额</th>
-								<th>发票信息</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${receivablesList}" var="receivables">
-								<tr>
-									<td>${receivables.userId.name}</td>
-									<td><fmt:formatDate value="${receivables.recTime}" pattern="yyyy-MM-dd"/></td>
-									<td>${receivables.amount}</td>
-									<td>${receivables.invoice}</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-
-				</div>
-			</div>
-
-			<div class="control-group">
-				<label class="control-label">维护记录:</label>
-				<div class="controls">
-					<table id="maintainTable" class="table table-striped table-bordered table-condensed">
-						<thead>
-						<tr>
-							<th>维护人</th>
-							<th>维护时间</th>
-							<th>维护内容</th>
-						</tr>
-						</thead>
-						<tbody>
-						<c:forEach items="${maintainList}" var="maintain">
-							<tr>
-								<td>${maintain.userId.name}</td>
-								<td><fmt:formatDate value="${maintain.mainTime}" pattern="yyyy-MM-dd"/></td>
-								<td>${maintain.mainContent}</td>
-							</tr>
-						</c:forEach>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</c:if>
 		<div class="form-actions">
 				<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

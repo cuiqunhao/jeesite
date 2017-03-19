@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2017年03月14日
  */
 @Controller
-@RequestMapping(value = "/maintain")
+@RequestMapping(value = "${adminPath}/maintain")
 public class MaintainController extends BaseController{
     @Autowired
     private MaintainService maintainService;
@@ -41,13 +41,13 @@ public class MaintainController extends BaseController{
     public String findPage(Maintain maintain, HttpServletRequest request, HttpServletResponse response,Model model){
         Page<Maintain> page = maintainService.findPage(new Page<Maintain>(request, response), maintain);
         model.addAttribute("page", page);
-        return "modules/maintain/maintainList";
+        return "modules/purifier/maintainList";
     }
 
     @RequestMapping(value = "form")
     public String form(Maintain maintain, Model model) {
         model.addAttribute("contract", maintain);
-        return "modules/maintain/maintainForm";
+        return "modules/purifier/maintainForm";
     }
 
     @RequestMapping(value = "save")
@@ -55,10 +55,9 @@ public class MaintainController extends BaseController{
         if (!beanValidator(model, maintain)){
             return form(maintain, model);
         }
-        maintain.setIsNewRecord(true);
         maintainService.save(maintain);
         addMessage(redirectAttributes, "保存成功");
-        return "redirect:" + adminPath + "/maintain/maintainList";
+        return "redirect:" + adminPath + "/maintain/list";
     }
     @RequestMapping(value = "update")
     public String update(Maintain maintain, Model model, RedirectAttributes redirectAttributes) {
@@ -69,14 +68,14 @@ public class MaintainController extends BaseController{
         maintainService.save(maintain);
         addMessage(redirectAttributes, "修改成功");
 
-        return "redirect:" + adminPath + "/maintain/maintainList";
+        return "redirect:" + adminPath + "/maintain/list";
     }
 
     @RequestMapping(value = "delete")
     public String delete(Maintain maintain, RedirectAttributes redirectAttributes) {
         maintainService.delete(maintain);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + adminPath + "/maintain/maintainList";
+        return "redirect:" + adminPath + "/maintain/list";
     }
 
 

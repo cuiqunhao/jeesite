@@ -2,8 +2,10 @@ package com.thinkgem.jeesite.modules.purifier.web;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.purifier.entity.Contract;
 import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
 import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
+import com.thinkgem.jeesite.modules.purifier.service.ContractService;
 import com.thinkgem.jeesite.modules.purifier.service.MaintainService;
 import com.thinkgem.jeesite.modules.purifier.service.ReceivablesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,12 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2017年03月14日
  */
 @Controller
-@RequestMapping(value = "/reveivables")
+@RequestMapping(value = "${adminPath}/reveivables")
 public class ReceivablesController extends BaseController{
     @Autowired
     private ReceivablesService receivablesService;
+    @Autowired
+    private ContractService contractService;
 
     @ModelAttribute
     public Receivables get(Long id){
@@ -41,13 +45,22 @@ public class ReceivablesController extends BaseController{
     public String findPage(Receivables receivables, HttpServletRequest request, HttpServletResponse response,Model model){
         Page<Receivables> page = receivablesService.findPage(new Page<Receivables>(request, response), receivables);
         model.addAttribute("page", page);
-        return "modules/receivables/receivablesList";
+        return "modules/purifier/receivablesList";
     }
 
     @RequestMapping(value = "form")
     public String form(Receivables receivables, Model model) {
         model.addAttribute("receivables", receivables);
-        return "modules/receivables/receivablesForm";
+        return "modules/purifier/receivablesForm";
+    }
+
+    @RequestMapping(value = "formRec")
+    public String formRec(Receivables receivables, Model model) {
+        Contract contract = new Contract();
+        contract.setId(receivables.getContract().getId());
+        contract = contractService.get(contract);
+        receivables.setContract(contract);
+        return "modules/purifier/receivablesForm";
     }
 
     @RequestMapping(value = "save")
@@ -55,10 +68,9 @@ public class ReceivablesController extends BaseController{
         if (!beanValidator(model, receivables)){
             return form(receivables, model);
         }
-        receivables.setIsNewRecord(true);
-        receivablesService.save(receivables);
+        receivablesService.saveRec(receivables);
         addMessage(redirectAttributes, "保存成功");
-        return "redirect:" + adminPath + "/receivables/receivablesList";
+        return "redirect:" + adminPath + "/reveivables/list?repage";
     }
     @RequestMapping(value = "update")
     public String update(Receivables receivables, Model model, RedirectAttributes redirectAttributes) {
@@ -69,14 +81,14 @@ public class ReceivablesController extends BaseController{
         receivablesService.save(receivables);
         addMessage(redirectAttributes, "修改成功");
 
-        return "redirect:" + adminPath + "/receivables/receivablesList";
+        return "redirect:" + adminPath + "/reveivables/list?repage";
     }
 
     @RequestMapping(value = "delete")
     public String delete(Receivables receivables, RedirectAttributes redirectAttributes) {
         receivablesService.delete(receivables);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + adminPath + "/receivables/receivablesList";
+        return "redirect:" + adminPath + "/reveivables/list?repage";
     }
 
 

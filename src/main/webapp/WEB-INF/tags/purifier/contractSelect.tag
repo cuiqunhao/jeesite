@@ -8,20 +8,15 @@
 <%@ attribute name="cssStyle" type="java.lang.String" required="false" description="css样式"%>
 <%@ attribute name="smallBtn" type="java.lang.Boolean" required="false" description="缩小按钮显示"%>
 <script type="text/javascript">
-	<%--function setData(id,name){--%>
-		<%--$("[id='${id}']").val(id);--%>
-		<%--$("[id='${labelName}']").val(name);--%>
-	<%--}--%>
 	$(document).ready(function() {
 		$("#${labelName}Button,#${labelName}").click(function(){
 			// 正常打开
 			top.$.jBox.open(
-					"iframe:${ctx}/sys/user/selectList",
+					"iframe:${ctx}/contract/contractSelectList",
 					"选择用户",
 					$(top.document).width()-220,
 					$(top.document).height()-220,
 					{
-						<%--ajaxData:{selectIds: $("#${id}Id").val()},--%>
 						buttons:{"确定":"ok","关闭":true},
 						submit:function(v, h, f){
 							$("[id='${id}']").val(h.find("iframe")[0].contentWindow.selectId);

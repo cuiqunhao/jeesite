@@ -75,7 +75,7 @@ public class Contract extends DataEntity<Contract>{
     /**
      * 备注
      */
-    private String remark;
+    private String remarks;
 
     /**
      * 签订合同时间开始
@@ -222,11 +222,13 @@ public class Contract extends DataEntity<Contract>{
         this.collCycle = collCycle;
     }
 
-    public String getRemark() {
-        return remark;
+    @Override
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    @Override
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

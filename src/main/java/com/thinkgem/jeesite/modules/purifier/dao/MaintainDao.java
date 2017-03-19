@@ -12,4 +12,5 @@ import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
  */
 @MyBatisDao
 public interface MaintainDao extends CrudDao<Maintain> {
+    void deleteOtherMaintain(Maintain entity);
 }

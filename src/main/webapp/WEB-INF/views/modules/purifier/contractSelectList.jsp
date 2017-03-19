@@ -5,6 +5,16 @@
 	<title>合同管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+		var selectId,selectName
+		$(document).ready(function() {
+			$("#contentTable tr").click(function () {
+				var tr = $(this);
+//                top.mainFrame.setData(tr.find("td").eq(1).text(), tr.find("td").eq(5).text());
+				selectId=tr.find("td").eq(1).text();
+				selectName=tr.find("td").eq(2).text();
+
+			});
+		});
 		function page(n,s){
 			$("#pageNo").val(n);
 			$("#pageSize").val(s);
@@ -14,16 +24,6 @@
 	</script>
 </head>
 <body>
-<!--tab-->
-<ul class="nav nav-tabs">
-	<li class="active">
-		<a href="${ctx}/contract/list/">合同单列表</a>
-	</li>
-	<li>
-		<a href="${ctx}/contract/form">合同录入</a>
-	</li>
-</ul>
-<!--tab-->
 
 <!--查询区-->
 <form:form id="searchForm" modelAttribute="contract" action="${ctx}/contract/list" method="post" class="breadcrumb form-search">
@@ -58,6 +58,8 @@
 <table id="contentTable" class="table table-striped table-bordered table-condensed">
 	<thead>
 	<tr>
+		<th>选择</th>
+		<th style="display:none;">id</th>
 		<th>合同编号</th>
 		<th>合同名称</th>
 		<th>联系人</th>
@@ -69,13 +71,14 @@
 		<th>签订时间</th>
 		<th>安装人员</th>
 		<th>维护周期</th>
-		<th>操作</th>
 	</tr>
 	</thead>
 	<tbody>
 	<c:forEach items="${page.list}" var="contract">
 		<tr>
-			<td><a href="${ctx}/contract/form?id=${contract.id}">${contract.contractNo}</a></td>
+			<td><input type="radio" id="${contract.id}" name="choose"/></td>
+			<td style="display:none;">${contract.id}</td>
+			<td>${contract.contractNo}</td>
 			<td>${contract.contractName}</td>
 			<td>${contract.contacts}</td>
 			<td>${contract.contactsPhone}</td>
@@ -86,10 +89,6 @@
 			<td><fmt:formatDate value="${contract.contractTime}" pattern="yyyy-MM-dd"/></td>
 			<td>${contract.installer.name}</td>
 			<td>${contract.mianCycle}天</td>
-			<td>
-				<a href="${ctx}/contract/form?id=${contract.id}">修改</a>
-				<a href="${ctx}/contract/delete?id=${contract.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)">删除</a>
-			</td>
 		</tr>
 	</c:forEach>
 	</tbody>

@@ -4,12 +4,13 @@
 
     <sql id="maintainCol">
         a.id as id,
-        a.contractId as contractId,
+        c.id as "contract.id",
+        c.contractNo as "contract.contractNo",
         b.name as "userId.name",
         b.id as "userId.id",
         a.main_time as mainTime,
         a.next_main_time as nextMainTime,
-         a.create_by as createBy,
+        a.create_by as createBy,
         a.create_date as createDate,
         a.update_by as updateBy,
         a.update_date as updateDate,
@@ -20,12 +21,13 @@
 
     <sql id="maintainJoin">
         left join sys_user b on b.id = a.mainId
+        LEFT JOIN purifier_contract c on c.id = a.contractId
     </sql>
 
     <sql id="whereCon">
         <where>
-            1=1
-            <if test="contractId != null">and a.contractId = #{contractId}</if>
+            a.del_flag = '0'
+            <if test="contract != null and contract.id != null and contract.id != ''">AND a.contractId = #{contract.id}</if>
         </where>
     </sql>
 
@@ -59,7 +61,7 @@
         main_content
         )
         VALUES (
-        #{contractId},
+        #{contract.id},
         #{mainTime},
         #{nextMainTime},
         #{userId.id},
@@ -87,6 +89,14 @@
        del_flag = '1',
        update_date = #{updateDate}
        where id=#{id}
+    </delete>
+
+    <delete id="deleteOtherMaintain">
+        UPDATE purifier_maintain SET
+        update_by = #{updateBy.id},
+        del_flag = '1',
+        update_date = #{updateDate}
+        where contractId=#{contract.id}
     </delete>
 
 </mapper>

@@ -36,8 +36,6 @@ public class ContractController extends BaseController{
     private MaintainService maintainService;
     @Autowired
     private ReceivablesService receivablesService;
-    @Autowired
-    private SystemService systemService;
 
     @ModelAttribute
     public Contract get(Long id){
@@ -55,23 +53,75 @@ public class ContractController extends BaseController{
         return "modules/purifier/contractList";
     }
 
+    @RequestMapping(value = "notInstallList")
+    public String findNotInstallList(Contract contract, HttpServletRequest request, HttpServletResponse response,Model model){
+        Page<Contract> page = contractService.findNotInstallList(new Page<Contract>(request, response), contract);
+        model.addAttribute("page", page);
+        return "modules/purifier/notInstallList";
+    }
+
+    @RequestMapping(value = "notMainList")
+    public String findNotMainList(Contract contract, HttpServletRequest request, HttpServletResponse response,Model model){
+        Page<Contract> page = contractService.findNotMainList(new Page<Contract>(request, response), contract);
+        model.addAttribute("page", page);
+        return "modules/purifier/notMainList";
+    }
+
+    @RequestMapping(value = "contractNotRecList")
+    public String findNotReceivablesList(Contract contract, HttpServletRequest request, HttpServletResponse response,Model model){
+        Page<Contract> page = contractService.findNotReceivablesList(new Page<Contract>(request, response), contract);
+        model.addAttribute("page", page);
+        return "modules/purifier/contractNotRecList";
+    }
+
+
+    @RequestMapping(value = "contractSelectList")
+    public String contractSelectList(Contract contract, HttpServletRequest request, HttpServletResponse response,Model model){
+        Page<Contract> page = contractService.findPage(new Page<Contract>(request, response), contract);
+        model.addAttribute("page", page);
+        return "modules/purifier/contractSelectList";
+    }
+
     @RequestMapping(value = "form")
     public String form(Contract contract, Model model) {
         model.addAttribute("contract", contract);
         if(contract.getId() != null){
             //合同收款信息
             Receivables receivables = new Receivables();
-            receivables.setContractId(Long.valueOf(contract.getId()));
+            Contract contract_tmp = new Contract();
+            contract_tmp.setId(contract.getId());
+            receivables.setContract(contract_tmp);
             List<Receivables> receivablesList= receivablesService.findList(receivables);
             model.addAttribute("receivablesList", receivablesList);
             //合同维护信息
             Maintain maintain = new Maintain();
-            maintain.setContractId(Long.valueOf(contract.getId()));
+            Contract contract1 = new Contract();
+            contract1.setId(contract.getId());
+            maintain.setContract(contract1);
             List<Maintain> maintainList = maintainService.findList(maintain);
             model.addAttribute("maintainList", maintainList);
         }
         return "modules/purifier/contractForm";
     }
+
+    @RequestMapping(value = "notInstallForm")
+    public String notInstallform(Contract contract, Model model) {
+        model.addAttribute("contract", contract);
+        return "modules/purifier/notInstallForm";
+    }
+
+    @RequestMapping(value = "notMainForm")
+    public String notMainForm(Contract contract, Model model) {
+        model.addAttribute("contract", contract);
+        return "modules/purifier/notMainForm";
+    }
+
+//    @RequestMapping(value = "notReceivablesForm")
+//    public String notReceivablesForm(Contract contract, Model model) {
+//        model.addAttribute("contract", contract);
+//        return "modules/purifier/notReceivablesForm";
+//    }
+
 
     @RequestMapping(value = "save")
     public String save(Contract contract, Model model, RedirectAttributes redirectAttributes) {
@@ -80,7 +130,27 @@ public class ContractController extends BaseController{
         }
         contractService.save(contract);
         addMessage(redirectAttributes, "保存成功");
-        return "redirect:" + adminPath + "/purifier/contractList";
+        return "redirect:" + adminPath + "/contract/list?repage";
+    }
+
+    @RequestMapping(value = "saveInstall")
+    public String saveInstall(Contract contract, Model model, RedirectAttributes redirectAttributes) {
+        if (!beanValidator(model, contract)){
+            return form(contract, model);
+        }
+        contractService.save(contract);
+        addMessage(redirectAttributes, "保存成功");
+        return "redirect:" + adminPath + "/contract/notInstallList?repage";
+    }
+
+    @RequestMapping(value = "saveMain")
+    public String saveMain(Contract contract, Model model, RedirectAttributes redirectAttributes) {
+        if (!beanValidator(model, contract)){
+            return form(contract, model);
+        }
+        contractService.save(contract);
+        addMessage(redirectAttributes, "保存成功");
+        return "redirect:" + adminPath + "/contract/notMainList?repage";
     }
 //    @RequestMapping(value = "update")
 //    public String update(Contract contract, Model model, RedirectAttributes redirectAttributes) {
@@ -97,7 +167,7 @@ public class ContractController extends BaseController{
     public String delete(Contract contract, RedirectAttributes redirectAttributes) {
         contractService.delete(contract);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + adminPath + "/purifier/contractList";
+        return "redirect:" + adminPath + "/contract/list?repage";
     }
 
 

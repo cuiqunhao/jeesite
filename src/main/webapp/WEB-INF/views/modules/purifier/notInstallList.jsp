@@ -17,11 +17,11 @@
 <!--tab-->
 <ul class="nav nav-tabs">
 	<li class="active">
-		<a href="${ctx}/contract/list/">合同单列表</a>
+		<a href="${ctx}/contract/notInstallList/">合同单列表</a>
 	</li>
-	<li>
-		<a href="${ctx}/contract/form">合同录入</a>
-	</li>
+	<%--<li>--%>
+		<%--<a href="${ctx}/contract/notInstallForm">安排安装</a>--%>
+	<%--</li>--%>
 </ul>
 <!--tab-->
 
@@ -75,7 +75,7 @@
 	<tbody>
 	<c:forEach items="${page.list}" var="contract">
 		<tr>
-			<td><a href="${ctx}/contract/form?id=${contract.id}">${contract.contractNo}</a></td>
+			<td>${contract.contractNo}</td>
 			<td>${contract.contractName}</td>
 			<td>${contract.contacts}</td>
 			<td>${contract.contactsPhone}</td>
@@ -87,8 +87,8 @@
 			<td>${contract.installer.name}</td>
 			<td>${contract.mianCycle}天</td>
 			<td>
-				<a href="${ctx}/contract/form?id=${contract.id}">修改</a>
-				<a href="${ctx}/contract/delete?id=${contract.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)">删除</a>
+				<a href="${ctx}/contract/notInstallForm?id=${contract.id}">安排安装</a>
+				<%--<a href="${ctx}/contract/delete?id=${contract.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)">删除</a>--%>
 			</td>
 		</tr>
 	</c:forEach>

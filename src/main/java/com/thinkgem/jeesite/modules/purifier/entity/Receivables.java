@@ -15,7 +15,7 @@ public class Receivables extends DataEntity<Receivables>{
     /**
      * 合同ID
      */
-    private Long contractId;
+    private Contract contract;
     /**
      * 发票信息
      */
@@ -29,7 +29,7 @@ public class Receivables extends DataEntity<Receivables>{
      */
     private Date nextRecTime;
     /**
-     * 下次收款时间
+     * 收款时间
      */
     private Date recTime;
     /**
@@ -45,12 +45,12 @@ public class Receivables extends DataEntity<Receivables>{
         this.recTime = recTime;
     }
 
-    public Long getContractId() {
-        return contractId;
+    public Contract getContract() {
+        return contract;
     }
 
-    public void setContractId(Long contractId) {
-        this.contractId = contractId;
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 
     public String getInvoice() {

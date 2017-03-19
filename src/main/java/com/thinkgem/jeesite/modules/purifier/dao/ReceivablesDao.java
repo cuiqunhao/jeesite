@@ -12,4 +12,5 @@ import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
  */
 @MyBatisDao
 public interface ReceivablesDao extends CrudDao<Receivables> {
+    void deleteOtherRec(Receivables entity);
 }

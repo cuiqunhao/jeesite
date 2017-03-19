@@ -15,4 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class ReceivablesService extends CrudService<ReceivablesDao,Receivables> {
+
+    @Transactional(readOnly = false)
+    public void saveRec(Receivables entity) {
+        if (entity.getIsNewRecord()){
+            dao.deleteOtherRec(entity);
+            entity.preInsert();
+            dao.insert(entity);
+        }else{
+            entity.preUpdate();
+            dao.update(entity);
+        }
+    }
 }

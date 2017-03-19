@@ -15,4 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class MaintainService extends CrudService<MaintainDao,Maintain> {
+
+    @Transactional(readOnly = false)
+    public void save(Maintain entity) {
+        if (entity.getIsNewRecord()){
+            dao.deleteOtherMaintain(entity);
+            entity.preInsert();
+            dao.insert(entity);
+        }else{
+            entity.preUpdate();
+            dao.update(entity);
+        }
+    }
 }
