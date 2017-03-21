@@ -34,4 +34,10 @@ public class ContractService extends CrudService<ContractDao,Contract>{
         page.setList(dao.findNotReceivablesList(contract));
         return page;
     }
+
+    public Page<Contract> findContractNotMainList(Page<Contract> page, Contract contract) {
+        contract.setPage(page);
+        page.setList(dao.findContractNotMainList(contract));
+        return page;
+    }
 }

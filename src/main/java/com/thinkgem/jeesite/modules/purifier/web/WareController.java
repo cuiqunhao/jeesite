@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * 仓库管理controller
  */
 @Controller
-@RequestMapping(value = "/ware")
+@RequestMapping(value = "${adminPath}/ware")
 public class WareController extends BaseController {
     @Autowired
     private WareService wareService;
@@ -41,13 +41,20 @@ public class WareController extends BaseController {
     public String list(Ware ware, HttpServletRequest request, HttpServletResponse response, Model model) {
         Page<Ware> page = wareService.findPage(new Page<Ware>(request, response), ware);
         model.addAttribute("page", page);
-        return "modules/ware/wareList";
+        return "modules/purifier/wareList";
+    }
+
+    @RequestMapping(value = "wareSelectList")
+    public String selectList(Ware ware, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Page<Ware> page = wareService.findPage(new Page<Ware>(request, response), ware);
+        model.addAttribute("page", page);
+        return "modules/purifier/wareSelectList";
     }
 
     @RequestMapping(value = "form")
     public String form(Ware ware,Model model){
         model.addAttribute("ware",ware);
-        return "modules/ware/wareForm";
+        return "modules/purifier/wareForm";
     }
 
     @RequestMapping(value = "save")
@@ -62,7 +69,7 @@ public class WareController extends BaseController {
         }
         wareService.save(ware);
         addMessage(redirectAttributes, "保存成功");
-        return "redirect:" + adminPath + "/ware/wareList";
+        return "redirect:" + adminPath + "/ware/list";
     }
 
 
@@ -70,7 +77,7 @@ public class WareController extends BaseController {
     public String delete(Ware ware,Model model,RedirectAttributes redirectAttributes){
         wareService.deleteWare(ware);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + adminPath + "/ware/wareList";
+        return "redirect:" + adminPath + "/ware/list";
     }
 
 }

@@ -4,6 +4,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.purifier.entity.Contract;
 import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
+import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
 import com.thinkgem.jeesite.modules.purifier.service.ContractService;
 import com.thinkgem.jeesite.modules.purifier.service.MaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 public class MaintainController extends BaseController{
     @Autowired
     private MaintainService maintainService;
+    @Autowired
+    private ContractService contractService;
 
     @ModelAttribute
     public Maintain get(Long id){
@@ -47,6 +50,15 @@ public class MaintainController extends BaseController{
     @RequestMapping(value = "form")
     public String form(Maintain maintain, Model model) {
         model.addAttribute("contract", maintain);
+        return "modules/purifier/maintainForm";
+    }
+
+    @RequestMapping(value = "formMain")
+    public String formRec(Maintain maintain, Model model) {
+        Contract contract = new Contract();
+        contract.setId(maintain.getContract().getId());
+        contract = contractService.get(contract);
+        maintain.setContract(contract);
         return "modules/purifier/maintainForm";
     }
 

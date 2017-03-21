@@ -79,6 +79,7 @@
         <if test="nextMainTime != null">a.next_main_time=#{nextMainTime},</if>
         <if test="mainContent != null">a.main_content=#{mainContent},</if>
         <if test="userId != null and userId.id != null">a.mainId=#{userId.id},</if>
+        <if test="remarks != null and remarks != ''">a.remarks=#{remarks},</if>
         a.update_date = #{updateDate}
         where a.id= #{id}
     </update>

@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2017年03月08日
  */
 @Controller
-@RequestMapping(value = "/goodsApp")
+@RequestMapping(value = "${adminPath}/goodsApp")
 public class GoodsAppController extends BaseController {
 
     @Autowired
@@ -42,13 +42,18 @@ public class GoodsAppController extends BaseController {
     public String list(GoodsApp goodsApp, HttpServletRequest request, HttpServletResponse response, Model model) {
         Page<GoodsApp> page = goodsAppService.findPage(new Page<GoodsApp>(request, response), goodsApp);
         model.addAttribute("page", page);
-        return "modules/goodsApp/goodsAppList";
+        return "modules/purifier/goodsAppList";
     }
 
     @RequestMapping(value = "form")
     public String form(GoodsApp goodsApp, Model model) {
         model.addAttribute("goodsApp", goodsApp);
-        return "modules/goodsApp/goodsAppForm";
+        return "modules/purifier/goodsAppForm";
+    }
+
+    @RequestMapping(value = "goodsAppRelForm")
+    public String relForm() {
+        return "modules/purifier/goodsAppRelForm";
     }
 
     @RequestMapping(value = "save")
@@ -58,7 +63,7 @@ public class GoodsAppController extends BaseController {
         }
         goodsAppService.insterGoodsApp(goodsApp);
         addMessage(redirectAttributes, "保存成功");
-        return "redirect:" + adminPath + "/goodsApp/goodsAppList";
+        return "redirect:" + adminPath + "/goodsApp/list";
     }
     @RequestMapping(value = "update")
     public String update(GoodsApp goodsApp, Model model, RedirectAttributes redirectAttributes) {
@@ -67,7 +72,7 @@ public class GoodsAppController extends BaseController {
         }
         goodsAppService.updateGoodsApp(goodsApp);
         addMessage(redirectAttributes, "修改成功");
-        return "redirect:" + adminPath + "/goodsApp/goodsAppList";
+        return "redirect:" + adminPath + "/goodsApp/list";
     }
 
 

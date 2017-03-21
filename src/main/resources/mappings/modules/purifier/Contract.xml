@@ -150,6 +150,15 @@
         where  d.contractId is null or 7>=datediff(d.next_rec_time,now()) and d.del_flag = '0'
     </select>
 
+    <select id="findContractNotMainList" resultType="Contract">
+        SELECT
+        <include refid="contractCol"/>
+        FROM purifier_contract a
+        <include refid="contractJoin"/>
+        left join purifier_maintain d on a.id = d.contractId
+        where  d.contractId is null or 7>=datediff(d.next_main_time,now()) and d.del_flag = '0'
+    </select>
+
     <update id="delete">
        UPDATE purifier_contract SET
        update_by = #{updateBy.id},

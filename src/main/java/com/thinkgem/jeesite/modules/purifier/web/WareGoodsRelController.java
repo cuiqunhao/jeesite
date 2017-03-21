@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2017年03月13日
  */
 @Controller
-@RequestMapping(value = "/wareGoodsRel")
+@RequestMapping(value = "${adminPath}/wareGoodsRel")
 public class WareGoodsRelController extends BaseController{
 
     @Autowired
@@ -42,14 +42,14 @@ public class WareGoodsRelController extends BaseController{
     @RequestMapping(value = "form")
     public String form(WareGoodsRel wareGoodsRel,Model model){
         model.addAttribute("wareGoodsRel",wareGoodsRel);
-        return "modules/wareGoodsRel/wareGoodsRelForm";
+        return "modules/purifier/wareGoodsRelForm";
     }
 
     @RequestMapping(value = "list")
     public String list(WareGoodsRel wareGoodsRel, HttpServletRequest request, HttpServletResponse response,Model model){
         Page<WareGoodsRel> page = wareGoodsRelService.findPage(new Page<WareGoodsRel>(request,response),wareGoodsRel);
         model.addAttribute("page", page);
-        return "modules/wareGoodsRel/wareGoodsRelList";
+        return "modules/purifier/wareLGoodsRelList";
     }
 
     @RequestMapping(value = "save")
@@ -57,27 +57,16 @@ public class WareGoodsRelController extends BaseController{
         if(!beanValidator(model,wareGoodsRel)){
             return form(wareGoodsRel,model);
         }
-        wareGoodsRel.setIsNewRecord(true);
         wareGoodsRelService.save(wareGoodsRel);
         addMessage(model,"保存成功");
-        return "modules/wareGoodsRel/wareGoodsRelList";
-    }
-
-    @RequestMapping(value = "update")
-    public String update(WareGoodsRel wareGoodsRel, Model model, RedirectAttributes redirectAttributes){
-        if(!beanValidator(model,wareGoodsRel)){
-            return form(wareGoodsRel,model);
-        }
-        wareGoodsRelService.update(wareGoodsRel);
-        addMessage(model,"保存成功");
-        return "modules/wareGoodsRel/wareGoodsRelList";
+        return "redirect:" + adminPath + "/wareGoodsRel/list";
     }
 
     @RequestMapping(value = "delete")
     public String delete(WareGoodsRel wareGoodsRel,Model model,RedirectAttributes redirectAttributes){
         wareGoodsRelService.delete(wareGoodsRel);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + adminPath + "/ware/wareList";
+        return "redirect:" + adminPath + "/wareGoodsRel/list";
     }
 
 

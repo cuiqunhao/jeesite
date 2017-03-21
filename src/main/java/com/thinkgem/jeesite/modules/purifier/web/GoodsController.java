@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2017年03月13日
  */
 @Controller
-@RequestMapping(value = "/goods")
+@RequestMapping(value = "${adminPath}/goods")
 public class GoodsController extends BaseController{
     @Autowired
     private GoodsService goodsService;
@@ -40,13 +40,21 @@ public class GoodsController extends BaseController{
     public String pageList(Goods goods, HttpServletRequest request, HttpServletResponse response,Model model){
         Page<Goods> page = goodsService.findPage(new Page<Goods>(request,response),goods);
         model.addAttribute("page",page);
-        return "modules/goods/goodsList";
+        return "modules/purifier/goodsList";
+    }
+
+
+    @RequestMapping(value = "goodsSelectList")
+    public String goodsSelectList(Goods goods, HttpServletRequest request, HttpServletResponse response,Model model){
+        Page<Goods> page = goodsService.findPage(new Page<Goods>(request,response),goods);
+        model.addAttribute("page",page);
+        return "modules/purifier/goodsSelectList";
     }
 
     @RequestMapping(value = "form")
     public String form(Goods goods,Model model){
         model.addAttribute("goods",goods);
-        return "modules/goodsApp/goodsAppForm";
+        return "modules/purifier/goodsForm";
     }
 
     @RequestMapping(value = "save")
@@ -61,14 +69,14 @@ public class GoodsController extends BaseController{
         }
         goodsService.save(goods);
         addMessage(model,"保存成功");
-        return "redirect:" + adminPath + "/goods/goodsList";
+        return "redirect:" + adminPath + "/goods/list";
     }
 
     @RequestMapping(value = "delete")
     public String delete(Goods goods,Model model,RedirectAttributes redirectAttributes){
         goodsService.delete(goods);
         addMessage(model,"删除成功");
-        return "redirect:" + adminPath + "/goods/goodsList";
+        return "redirect:" + adminPath + "/goods/list";
     }
 
 

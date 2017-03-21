@@ -38,11 +38,9 @@ public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
         goodsApp.setIsNewRecord(true);
         goodsApp.preInsert();
         int appId = dao.updateGoodsApp(goodsApp);
-
         GoodsAppRel goodsAppRel = new GoodsAppRel();
         goodsAppRel.setGoodsAppId(Long.valueOf(goodsApp.getId()));
         goodsAppRelDao.delete(goodsAppRel);
-
         dao.insterGoodsAppRel(goodsApp);
         return  appId;
     }
@@ -53,11 +51,20 @@ public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
      */
     @Transactional(readOnly = false)
     public int insterGoodsApp(GoodsApp goodsApp){
-        goodsApp.setIsNewRecord(true);
-        goodsApp.preInsert();
-        int appId = dao.insterGoodsApp(goodsApp);
-        goodsApp.setId(goodsApp.getId());
-        dao.insterGoodsAppRel(goodsApp);
+        int appId;
+        if(goodsApp.getId() != null){
+            goodsApp.preUpdate();
+            appId = dao.updateGoodsApp(goodsApp);
+            GoodsAppRel goodsAppRel = new GoodsAppRel();
+            goodsAppRel.setGoodsAppId(Long.valueOf(goodsApp.getId()));
+            goodsAppRelDao.delete(goodsAppRel);
+            dao.insterGoodsAppRel(goodsApp);
+        }else{
+            goodsApp.preInsert();
+            appId = dao.insterGoodsApp(goodsApp);
+            goodsApp.setId(goodsApp.getId());
+            dao.insterGoodsAppRel(goodsApp);
+        }
         return  appId;
     }
 

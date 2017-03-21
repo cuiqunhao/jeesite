@@ -21,4 +21,6 @@ public interface ContractDao extends CrudDao<Contract>{
     List<Contract> findNotMainList(Contract contract);
 
     List<Contract> findNotReceivablesList(Contract contract);
+
+    List<Contract> findContractNotMainList(Contract contract);
 }

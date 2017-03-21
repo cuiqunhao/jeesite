@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class WareService extends CrudService<WareDao,Ware>{
 
+    @Transactional(readOnly = false)
     public int deleteWare(Ware ware){
         int res = dao.delete(ware);
         dao.deleteByWare(ware);

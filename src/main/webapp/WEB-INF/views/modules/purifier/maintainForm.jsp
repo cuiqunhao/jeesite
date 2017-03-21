@@ -42,7 +42,7 @@
 		<div class="control-group">
 			<label class="control-label">合同编号:</label>
 			<div class="controls">
-				<purifier:contractSelect id="contract.id" labelName="contractIdLabel" idValue="${receivables.contract.id}" labelValue="${receivables.contract.contractNo}"/>
+				<purifier:contractSelect id="contract.id" labelName="contractIdLabel" idValue="${maintain.contract.id}" labelValue="${maintain.contract.contractNo}"/>
 			</div>
 		</div>
 

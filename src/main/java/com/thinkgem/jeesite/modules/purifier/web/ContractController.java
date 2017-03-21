@@ -74,6 +74,13 @@ public class ContractController extends BaseController{
         return "modules/purifier/contractNotRecList";
     }
 
+    @RequestMapping(value = "contractNotMainList")
+    public String findContractNotMainList(Contract contract, HttpServletRequest request, HttpServletResponse response,Model model){
+        Page<Contract> page = contractService.findContractNotMainList(new Page<Contract>(request, response), contract);
+        model.addAttribute("page", page);
+        return "modules/purifier/contractNotMainList";
+    }
+
 
     @RequestMapping(value = "contractSelectList")
     public String contractSelectList(Contract contract, HttpServletRequest request, HttpServletResponse response,Model model){

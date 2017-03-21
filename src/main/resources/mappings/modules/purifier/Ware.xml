@@ -71,14 +71,16 @@
 
     <update id="delete">
         UPDATE purifier_ware SET
-        del_flag = '1'
+        update_by = #{updateBy.id},
+        del_flag = '1',
+        update_date = #{updateDate}
         where id=#{id}
     </update>
 
     <delete id="deleteByWare">
         DELETE FROM purifier_ware_goods_rel b
         WHERE
-        b.wareId = #{ware.id}
+        b.wareId = #{id}
     </delete>
 
 </mapper>

@@ -17,13 +17,13 @@
 <!--tab-->
 <ul class="nav nav-tabs">
 	<li class="active">
-		<a href="${ctx}/contract/contractNotRecList/">合同单列表</a>
+		<a href="${ctx}/contract/contractNotMainList/">合同单列表</a>
 	</li>
 </ul>
 <!--tab-->
 
 <!--查询区-->
-<form:form id="searchForm" modelAttribute="contract" action="${ctx}/contract/contractNotRecList" method="post" class="breadcrumb form-search">
+<form:form id="searchForm" modelAttribute="contract" action="${ctx}/contract/contractNotMainList" method="post" class="breadcrumb form-search">
 	<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 	<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 	<div style="margin-top:8px;">
@@ -84,7 +84,7 @@
 			<td>${contract.installer.name}</td>
 			<td>${contract.mianCycle}天</td>
 			<td>
-				<a href="${ctx}/reveivables/formRec?contract.id=${contract.id}">收款</a>
+				<a href="${ctx}/maintain/formMain?contract.id=${contract.id}">维护</a>
 			</td>
 		</tr>
 	</c:forEach>

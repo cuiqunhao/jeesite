@@ -8,9 +8,13 @@
         a.consignee_phone as consigneePhone,
         a.consignee as consignee,
         a.consignee_address as consigneeAddress,
+        a.consignee_status as consigneeStatus,
         a.consignee_time as consigneeTime,
+        a.first_exa_time as firstExaTime,
         a.first_exa_status as firstExaStatus,
         a.first_exa_content as firstExaContent,
+        a.sec_exa_Time as secExaTime,
+        a.ship_time as shipTime,
         a.sec_exa_status as secExaStatus,
         a.sec_exa_content as secExaContent,
         a.ship_address as shipAddress,
@@ -91,7 +95,7 @@
         remarks,
         del_flag
         )VALUES (
-        #{appTime},
+        now(),
         #{applicantUser.id},
         #{consigneePhone},
         #{consignee},

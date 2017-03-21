@@ -48,6 +48,14 @@ public class GoodsApp extends DataEntity<GoodsApp>{
      */
     private Date consigneeTime;
     /**
+     * 确认收货状态
+     */
+    private String consigneeStatus;
+    /**
+     * 一级审核状态操作时间
+     */
+    private Date firstExaTime;
+    /**
      * 一级审核状态
      */
     private String firstExaStatus;
@@ -56,6 +64,10 @@ public class GoodsApp extends DataEntity<GoodsApp>{
      */
     private String firstExaContent;
     /**
+     * 二级审核状态操作时间
+     */
+    private Date secExaTime;
+    /**
      * 二级审核状态
      */
     private String secExaStatus;
@@ -63,6 +75,10 @@ public class GoodsApp extends DataEntity<GoodsApp>{
      * 二级审核内容
      */
     private String secExaContent;
+    /**
+     * 发货时间
+     */
+    private Date shipTime;
     /**
      * 发货地址
      */
@@ -80,6 +96,38 @@ public class GoodsApp extends DataEntity<GoodsApp>{
      */
     private List<GoodsAppRel> goodList = Lists.newArrayList();
 
+
+    public Date getShipTime() {
+        return shipTime;
+    }
+
+    public void setShipTime(Date shipTime) {
+        this.shipTime = shipTime;
+    }
+
+    public String getConsigneeStatus() {
+        return consigneeStatus;
+    }
+
+    public void setConsigneeStatus(String consigneeStatus) {
+        this.consigneeStatus = consigneeStatus;
+    }
+
+    public Date getFirstExaTime() {
+        return firstExaTime;
+    }
+
+    public void setFirstExaTime(Date firstExaTime) {
+        this.firstExaTime = firstExaTime;
+    }
+
+    public Date getSecExaTime() {
+        return secExaTime;
+    }
+
+    public void setSecExaTime(Date secExaTime) {
+        this.secExaTime = secExaTime;
+    }
 
     public List<GoodsAppRel> getGoodList() {
         return goodList;
