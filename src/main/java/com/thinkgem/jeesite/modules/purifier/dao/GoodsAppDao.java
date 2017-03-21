@@ -25,4 +25,12 @@ public interface GoodsAppDao extends CrudDao<GoodsApp> {
     int deleteGoodsApp(GoodsApp app);
 
     int deleteGoodsAppRel(GoodsApp app);
+
+    List<GoodsApp> needFirstExaList(GoodsApp entity);
+
+    List<GoodsApp> needSecExaList(GoodsApp entity);
+
+    List<GoodsApp> needShipList(GoodsApp entity);
+
+    List<GoodsApp> needConsigneeList(GoodsApp entity);
 }

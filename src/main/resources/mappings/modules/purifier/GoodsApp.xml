@@ -37,14 +37,14 @@
     <sql id="whereCon">
         <where>
             1=1
-            <if test="id != null">and a.id=#{id}</if>
-            <if test="appTimeStart != null">and a.app_time>=#{appTimeStart}</if>
-            <if test="appTimeEnd != null">and #{appTimeEnd}>=a.app_time</if>
-            <if test="consignee != null">and a.consignee=#{consignee}</if>
-            <if test="consigneePhone != null">and a.consignee_phone=#{consigneePhone}</if>
-            <if test="applicantUser != null and applicantUser.id != null">and a.applicantId=#{applicantUser.id}</if>
-            <if test="firstExaStatus != null">and a.first_exa_status=#{firstExaStatus}</if>
-            <if test="secExaStatus != null">and a.sec_exa_status=#{secExaStatus}</if>
+            <if test="id != null and id != ''">and a.id=#{id}</if>
+            <if test="appTimeStart != null and appTimeStart != ''">and a.app_time>=#{appTimeStart}</if>
+            <if test="appTimeEnd != null and appTimeEnd != ''">and #{appTimeEnd}>=a.app_time</if>
+            <if test="consignee != null and consignee != ''">and a.consignee=#{consignee}</if>
+            <if test="consigneePhone != null and consigneePhone != ''">and a.consignee_phone=#{consigneePhone}</if>
+            <if test="applicantUser != null and applicantUser.id != null and applicantUser.id != ''">and a.applicantId=#{applicantUser.id}</if>
+            <if test="firstExaStatus != null and firstExaStatus != ''">and a.first_exa_status=#{firstExaStatus}</if>
+            <if test="secExaStatus != null and secExaStatus != ''">and a.sec_exa_status=#{secExaStatus}</if>
         </where>
     </sql>
 
@@ -56,6 +56,38 @@
         <include refid="whereCon"/>
     </select>
 
+    <select id="needFirstExaList" resultType="GoodsApp">
+        SELECT
+        <include refid="goodsAppCols"/>
+        from purifier_goods_app a
+        <include refid="goodsAppJoin"/>
+        where a.first_exa_status is null
+    </select>
+
+    <select id="needSecExaList" resultType="GoodsApp">
+        SELECT
+        <include refid="goodsAppCols"/>
+        from purifier_goods_app a
+        <include refid="goodsAppJoin"/>
+        where a.first_exa_status = '1' and a.sec_exa_status is null
+    </select>
+
+    <select id="needShipList" resultType="GoodsApp">
+        SELECT
+        <include refid="goodsAppCols"/>
+        from purifier_goods_app a
+        <include refid="goodsAppJoin"/>
+        where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is null
+    </select>
+
+    <select id="needConsigneeList" resultType="GoodsApp">
+        SELECT
+        <include refid="goodsAppCols"/>
+        from purifier_goods_app a
+        <include refid="goodsAppJoin"/>
+        where a.first_exa_status = '1' and a.sec_exa_status ='1' and and a.ship_address is not null and a.consignee_status is null
+    </select>
+
 
     <select id="get" resultType="GoodsApp">
         SELECT
@@ -63,14 +95,6 @@
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
         where a.id = #{id}
-    </select>
-
-    <select id="findAllCount" resultType="long">
-        SELECT
-        count(1)
-        from purifier_goods_app a
-        <include refid="goodsAppJoin"/>
-        <include refid="whereCon"/>
     </select>
 
     <insert id="insterGoodsApp" keyProperty="id" useGeneratedKeys="true" parameterType="com.thinkgem.jeesite.modules.purifier.entity.GoodsApp">
@@ -130,32 +154,54 @@
     <update id="updateGoodsApp">
         UPDATE purifier_goods_app SET
         update_by = #{updateBy.id},
-        <if test="firstExaStatus != null">
-            first_exa_status = #{firstExaStatus},
+
+        <if test="appNo != null and appNo != ''">
+            appNo = #{appNo},
         </if>
-        <if test="firstExaContent != null">
+        <if test="remarks != null and remarks != ''">
+            remarks = #{remarks},
+        </if>
+
+        <if test="appTime != null and appTime != ''">
+            app_time = #{appTime},
+        </if>
+        <if test="applicantUser != null and applicantUser != ''">
+            applicantId = #{applicantUser.id},
+        </if>
+        <if test="consigneeStatus != null and consigneeStatus != ''">
+            consignee_status = #{consigneeStatus},
+            consignee_time = now(),
+        </if>
+
+        <if test="firstExaStatus != null and firstExaStatus != ''">
+            first_exa_status = #{firstExaStatus},
+            first_exa_time = now(),
+        </if>
+        <if test="firstExaContent != null and firstExaContent != ''">
             first_exa_content = #{firstExaContent},
         </if>
-        <if test="secExaStatus != null">
+        <if test="secExaStatus != null and secExaStatus != ''">
             sec_exa_status = #{secExaStatus},
+            sec_exa_time = now(),
         </if>
-        <if test="secExaContent != null">
+        <if test="secExaContent != null and secExaContent != ''">
             sec_exa_content = #{secExaContent},
         </if>
-        <if test="shipAddress != null">
+        <if test="shipAddress != null and shipAddress != ''">
             ship_address = #{shipAddress},
+            ship_time = now(),
         </if>
-        <if test="logistics != null">
+        <if test="logistics != null and logistics != ''">
             logistics = #{logistics},
         </if>
 
-        <if test="consigneePhone != null">
+        <if test="consigneePhone != null and consigneePhone != ''">
             consignee_phone = #{consigneePhone},
         </if>
-        <if test="consigneeAddress != null">
+        <if test="consigneeAddress != null and consigneeAddress != ''">
             consignee_address = #{consigneeAddress},
         </if>
-        <if test="consigneeTime != null">
+        <if test="consigneeTime != null and consigneeTime != ''">
             consignee_time = #{consigneeTime},
         </if>
         update_date = #{updateDate}

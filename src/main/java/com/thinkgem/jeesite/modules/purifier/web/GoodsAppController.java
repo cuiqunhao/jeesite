@@ -45,6 +45,36 @@ public class GoodsAppController extends BaseController {
         return "modules/purifier/goodsAppList";
     }
 
+    @RequestMapping(value = "needFirstExaList")
+    public String needFirstExaList(GoodsApp goodsApp, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Page<GoodsApp> page = goodsAppService.needFirstExaList(new Page<GoodsApp>(request, response), goodsApp);
+        model.addAttribute("page", page);
+        return "modules/purifier/needFirstExaList";
+    }
+
+    @RequestMapping(value = "needSecExaList")
+    public String needSecExaList(GoodsApp goodsApp, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Page<GoodsApp> page = goodsAppService.needSecExaList(new Page<GoodsApp>(request, response), goodsApp);
+        model.addAttribute("page", page);
+        return "modules/purifier/needSecExaList";
+    }
+
+    @RequestMapping(value = "needShipList")
+    public String needShipList(GoodsApp goodsApp, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Page<GoodsApp> page = goodsAppService.needShipList(new Page<GoodsApp>(request, response), goodsApp);
+        model.addAttribute("page", page);
+        return "modules/purifier/needShipList";
+    }
+
+    @RequestMapping(value = "needConsigneeList")
+    public String needConsigneeList(GoodsApp goodsApp, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Page<GoodsApp> page = goodsAppService.needConsigneeList(new Page<GoodsApp>(request, response), goodsApp);
+        model.addAttribute("page", page);
+        return "modules/purifier/needConsigneeList";
+    }
+
+
+
     @RequestMapping(value = "form")
     public String form(GoodsApp goodsApp, Model model) {
         model.addAttribute("goodsApp", goodsApp);

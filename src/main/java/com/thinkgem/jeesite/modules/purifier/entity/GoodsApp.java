@@ -91,11 +91,26 @@ public class GoodsApp extends DataEntity<GoodsApp>{
      * 申请编号
      */
     private String appNo;
+
+    /**
+     * 备注
+     */
+    private String remarks;
+
     /**
      * 商品列表
      */
     private List<GoodsAppRel> goodList = Lists.newArrayList();
 
+    @Override
+    public String getRemarks() {
+        return remarks;
+    }
+
+    @Override
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
     public Date getShipTime() {
         return shipTime;

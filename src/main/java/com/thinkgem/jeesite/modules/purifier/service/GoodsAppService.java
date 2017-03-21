@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.modules.purifier.service;
 
+import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.purifier.dao.GoodsAppDao;
 import com.thinkgem.jeesite.modules.purifier.dao.GoodsAppRelDao;
@@ -75,5 +76,30 @@ public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
         int res = dao.deleteGoodsApp(app);
         dao.deleteGoodsAppRel(app);
         return res;
+    }
+
+
+    public Page<GoodsApp> needFirstExaList(Page<GoodsApp> page, GoodsApp entity) {
+        entity.setPage(page);
+        page.setList(dao.needFirstExaList(entity));
+        return page;
+    }
+
+    public Page<GoodsApp> needSecExaList(Page<GoodsApp> page, GoodsApp entity) {
+        entity.setPage(page);
+        page.setList(dao.needSecExaList(entity));
+        return page;
+    }
+
+    public Page<GoodsApp> needShipList(Page<GoodsApp> page, GoodsApp entity) {
+        entity.setPage(page);
+        page.setList(dao.needShipList(entity));
+        return page;
+    }
+
+    public Page<GoodsApp> needConsigneeList(Page<GoodsApp> page, GoodsApp entity) {
+        entity.setPage(page);
+        page.setList(dao.needConsigneeList(entity));
+        return page;
     }
 }
