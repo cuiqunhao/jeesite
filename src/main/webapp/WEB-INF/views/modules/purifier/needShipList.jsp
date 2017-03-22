@@ -17,14 +17,14 @@
 <!--tab-->
 <ul class="nav nav-tabs">
 	<li class="active">
-		<a href="${ctx}/goodsApp/needFirstExaList/">货物申请列表</a>
+		<a href="${ctx}/goodsApp/needShipList/">货物申请列表</a>
 	</li>
 
 </ul>
 <!--tab-->
 
 <!--查询区-->
-<form:form id="searchForm" modelAttribute="goodsApp" action="${ctx}/goodsApp/needFirstExaList" method="post" class="breadcrumb form-search">
+<form:form id="searchForm" modelAttribute="goodsApp" action="${ctx}/goodsApp/needShipList" method="post" class="breadcrumb form-search">
 	<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 	<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 	<div style="margin-top:8px;">
@@ -61,10 +61,10 @@
 		<th>申请人</th>
 		<th>收货人</th>
 		<th>收货人电话</th>
-		<%--<th>一级审核状态</th>--%>
-		<%--<th>一级审核时间</th>--%>
-		<%--<th>二级审核状态</th>--%>
-		<%--<th>二级审核时间</th>--%>
+		<th>一级审核状态</th>
+		<th>一级审核时间</th>
+		<th>二级审核状态</th>
+		<th>二级审核时间</th>
 		<%--<th>发货地址</th>--%>
 		<%--<th>发货时间</th>--%>
 		<%--<th>收货状态</th>--%>
@@ -80,16 +80,16 @@
 			<td>${goodsApp.applicantUser.name}</td>
 			<td>${goodsApp.consignee}</td>
 			<td>${goodsApp.consigneePhone}</td>
-			<%--<td>${goodsApp.firstExaStatus}</td>--%>
-			<%--<td><fmt:formatDate value="${goodsApp.firstExaTime}" pattern="yyyy-MM-dd"/></td>--%>
-			<%--<td>${goodsApp.secExaStatus}</td>--%>
-			<%--<td><fmt:formatDate value="${goodsApp.secExaTime}" pattern="yyyy-MM-dd"/></td>--%>
+			<td>${goodsApp.firstExaStatus}</td>
+			<td><fmt:formatDate value="${goodsApp.firstExaTime}" pattern="yyyy-MM-dd"/></td>
+			<td>${goodsApp.secExaStatus}</td>
+			<td><fmt:formatDate value="${goodsApp.secExaTime}" pattern="yyyy-MM-dd"/></td>
 			<%--<td>${goodsApp.shipAddress}</td>--%>
 			<%--<td><fmt:formatDate value="${goodsApp.shipTime}" pattern="yyyy-MM-dd"/></td>--%>
 			<%--<td>${goodsApp.consigneeStatus}</td>--%>
 			<%--<td><fmt:formatDate value="${goodsApp.consigneeTime}" pattern="yyyy-MM-dd"/></td>--%>
 			<td>
-				<a href="${ctx}/goodsApp/needFirstExaForm?id=${goodsApp.id}">审核</a>
+				<a href="${ctx}/goodsApp/needShipForm?id=${goodsApp.id}">发货</a>
 			</td>
 		</tr>
 	</c:forEach>

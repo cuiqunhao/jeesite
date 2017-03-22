@@ -81,6 +81,30 @@ public class GoodsAppController extends BaseController {
         return "modules/purifier/goodsAppForm";
     }
 
+    @RequestMapping(value = "needFirstExaForm")
+    public String needFirstExaForm(GoodsApp goodsApp, Model model) {
+        model.addAttribute("goodsApp", goodsApp);
+        return "modules/purifier/needFirstExaForm";
+    }
+
+    @RequestMapping(value = "needSecExaForm")
+    public String needSecExaForm(GoodsApp goodsApp, Model model) {
+        model.addAttribute("goodsApp", goodsApp);
+        return "modules/purifier/needSecExaForm";
+    }
+
+    @RequestMapping(value = "needShipForm")
+    public String needShipForm(GoodsApp goodsApp, Model model) {
+        model.addAttribute("goodsApp", goodsApp);
+        return "modules/purifier/needShipForm";
+    }
+
+    @RequestMapping(value = "needConsigneeForm")
+    public String needConsigneeForm(GoodsApp goodsApp, Model model) {
+        model.addAttribute("goodsApp", goodsApp);
+        return "modules/purifier/needConsigneeForm";
+    }
+
     @RequestMapping(value = "goodsAppRelForm")
     public String relForm() {
         return "modules/purifier/goodsAppRelForm";
