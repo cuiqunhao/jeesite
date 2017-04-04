@@ -34,7 +34,7 @@
 		<label>仓库：</label>
 		<purifier:wareSelect id="ware.id" labelName="wareLableName" />
 		<label>商品：</label>
-		<purifier:goodsSelect id="good.id" labelName="goodLableName"/>
+		<purifier:goodsSelect id="good.id" labelName="goodLableName" type="good.type"/>
 		&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 	</div>
 </form:form>
@@ -63,8 +63,8 @@
 			<td>${wareGoodsRel.good.type}</td>
 			<td>${wareGoodsRel.num}</td>
 			<td>
-				<a href="${ctx}/wareGoodsRel/form?id=${wareGoodsRel.id}">修改</a>
-				<a href="${ctx}/wareGoodsRel/delete?id=${wareGoodsRel.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)">删除</a>
+				<a href="${ctx}/wareGoodsRel/form?wareId=${wareGoodsRel.ware.id}&goodId=${wareGoodsRel.good.id}">修改</a>
+				<a href="${ctx}/wareGoodsRel/delete?wareId=${wareGoodsRel.ware.id}&goodId=${wareGoodsRel.good.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)">删除</a>
 			</td>
 		</tr>
 	</c:forEach>

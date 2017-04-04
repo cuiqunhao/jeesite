@@ -31,7 +31,7 @@
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/goods/list/">商品列表</a></li>
 		<li class="active">
-			<a href="${ctx}/goods/form?id=${goods.id}">商品${not empty contract.id?'修改':'添加'}查看
+			<a href="${ctx}/goods/form?id=${goods.id}">商品${not empty contract.id?'修改':'添加'}
 			</a>
 		</li>
 	</ul>
@@ -49,6 +49,14 @@
 			<label class="control-label">商品型号:</label>
 			<div class="controls">
 				<form:input path="type" htmlEscape="false" maxlength="64" class="required"/>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">商品图片:</label>
+			<div class="controls">
+				<form:hidden  id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="input-xlarge"/>
+				<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="150" maxHeight="150"/>
 			</div>
 		</div>
 

@@ -23,6 +23,25 @@
 				}
 			});
 		});
+		function calNext(){
+			var collCycle = parseInt($("#collCycle").val());
+			var thisTime = $("#recTime").val();
+			var date = new Date(thisTime);
+			// 加五天.
+			date.setDate(date.getDate() + collCycle);
+
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			var d = date.getDate();
+			if(m <= 9) m = "0"+m;
+			if(d <= 9) d = "0"+d;
+			var cdate = y+"-"+m+"-"+d;
+
+			$("#nextRecTime").val(cdate);
+		}
+
+
+
 	</script>
 </head>
 
@@ -42,7 +61,7 @@
 		<div class="control-group">
 			<label class="control-label">合同编号:</label>
 			<div class="controls">
-				<purifier:contractSelect id="contract.id" labelName="contractIdLabel" idValue="${receivables.contract.id}" labelValue="${receivables.contract.contractNo}"/>
+				<purifier:contractSelect id="contract.id" labelName="contractIdLabel" collCycleValue="${receivables.contract.collCycle}" idValue="${receivables.contract.id}" labelValue="${receivables.contract.contractNo}"/>
 			</div>
 		</div>
 
@@ -65,7 +84,7 @@
 			<div class="controls">
 				<input id="recTime" name="recTime" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
 				value="<fmt:formatDate value="${receivables.recTime}" pattern="yyyy-MM-dd"/>"
-				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});" onchange="calNext()"/>
 			</div>
 		</div>
 
@@ -74,7 +93,14 @@
 			<div class="controls">
 				<input id="nextRecTime" name="nextRecTime" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
 				value="<fmt:formatDate value="${receivables.nextRecTime}" pattern="yyyy-MM-dd"/>"
-				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				/>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">是否开票:</label>
+			<div class="controls">
+				<form:checkbox path="isInvoice" value="1" htmlEscape="false"/>
 			</div>
 		</div>
 

@@ -74,7 +74,6 @@ public class GoodsAppController extends BaseController {
     }
 
 
-
     @RequestMapping(value = "form")
     public String form(GoodsApp goodsApp, Model model) {
         model.addAttribute("goodsApp", goodsApp);
@@ -129,12 +128,11 @@ public class GoodsAppController extends BaseController {
         return "redirect:" + adminPath + "/goodsApp/list";
     }
 
-
     @RequestMapping(value = "delete")
     public String delete(GoodsApp goodsApp, RedirectAttributes redirectAttributes) {
         goodsAppService.deleteGoodsApp(goodsApp);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + adminPath + "/goodsApp/goodsAppList";
+        return "redirect:" + adminPath + "/goodsApp/list";
     }
 
 }

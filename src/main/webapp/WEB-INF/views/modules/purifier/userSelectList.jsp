@@ -5,13 +5,15 @@
 	<title>用户列表</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		var selectId,selectName
+		var selectId,selectName,selectOfficeCode,selectOfficeName
         $(document).ready(function() {
             $("#contentTable tr").click(function () {
                 var tr = $(this);
 //                top.mainFrame.setData(tr.find("td").eq(1).text(), tr.find("td").eq(5).text());
 				selectId=tr.find("td").eq(1).text();
-				selectName=tr.find("td").eq(5).text();
+				selectName=tr.find("td").eq(6).text();
+				selectOfficeCode = tr.find("td").eq(4).text();
+				selectOfficeName = tr.find("td").eq(3).text();
 
             });
         });
@@ -44,7 +46,19 @@
 </form:form>
 <sys:message content="${message}"/>
 <table id="contentTable" class="table table-striped table-bordered table-condensed">
-	<thead><tr><th>选择</th><th style="display:none;">id</th><th>归属公司</th><th>归属部门</th><th class="sort-column login_name">登录名</th><th class="sort-column name">姓名</th><th>电话</th><th>手机</th><%--<th>角色</th> --%></tr></thead>
+	<thead>
+	<tr>
+		<th>选择</th>
+		<th style="display:none;">id</th>
+		<th>归属公司</th>
+		<th>归属部门</th>
+		<th style="display:none;">部门编号</th>
+		<th class="sort-column login_name">登录名</th>
+		<th class="sort-column name">姓名</th>
+		<th>电话</th>
+		<th>手机</th><%--<th>角色</th> --%>
+	</tr>
+	</thead>
 	<tbody>
 	<c:forEach items="${page.list}" var="user">
 		<tr>
@@ -52,6 +66,7 @@
             <td style="display:none;">${user.id}</td>
 			<td>${user.company.name}</td>
 			<td>${user.office.name}</td>
+			<td style="display:none;">${user.office.code}</td>
 			<td><a href="${ctx}/sys/user/form?id=${user.id}">${user.loginName}</a></td>
 			<td>${user.name}</td>
 			<td>${user.phone}</td>

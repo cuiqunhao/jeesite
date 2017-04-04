@@ -5,13 +5,15 @@
 	<title>合同管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		var selectId,selectName
+		var selectId,selectName,collCycle,mianCycle
 		$(document).ready(function() {
 			$("#contentTable tr").click(function () {
 				var tr = $(this);
 //                top.mainFrame.setData(tr.find("td").eq(1).text(), tr.find("td").eq(5).text());
 				selectId=tr.find("td").eq(1).text();
 				selectName=tr.find("td").eq(2).text();
+				collCycle=tr.find("td").eq(9).text();
+				mianCycle=tr.find("td").eq(12).text();
 
 			});
 		});
@@ -67,10 +69,10 @@
 		<th>业务员</th>
 		<th>所属项目</th>
 		<th>合同金额</th>
-		<th>合同收款周期</th>
+		<th>合同收款周期(天)</th>
 		<th>签订时间</th>
 		<th>安装人员</th>
-		<th>维护周期</th>
+		<th>维护周期(天)</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -85,10 +87,10 @@
 			<td>${contract.salesman.name}</td>
 			<td>${contract.item}</td>
 			<td>${contract.contractAmount}</td>
-			<td>${contract.collCycle}天</td>
+			<td>${contract.collCycle}</td>
 			<td><fmt:formatDate value="${contract.contractTime}" pattern="yyyy-MM-dd"/></td>
 			<td>${contract.installer.name}</td>
-			<td>${contract.mianCycle}天</td>
+			<td>${contract.mianCycle}</td>
 		</tr>
 	</c:forEach>
 	</tbody>

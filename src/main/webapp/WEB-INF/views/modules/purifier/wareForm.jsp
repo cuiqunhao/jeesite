@@ -31,7 +31,7 @@
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/ware/list/">合同列表</a></li>
 		<li class="active">
-			<a href="${ctx}/ware/form?id=${ware.id}">仓库${not empty contract.id?'修改':'添加'}查看
+			<a href="${ctx}/ware/form?id=${ware.id}">仓库${not empty contract.id?'修改':'添加'}
 			</a>
 		</li>
 	</ul>

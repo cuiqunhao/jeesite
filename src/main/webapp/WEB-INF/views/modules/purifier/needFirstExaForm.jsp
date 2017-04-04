@@ -31,7 +31,7 @@
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/goodsApp/needFirstExaList/">货物申请列表</a></li>
 		<li class="active">
-			<a href="${ctx}/goodsApp/needFirstExaForm?id=${goodsApp.id}">申请单${not empty goodsApp.id?'修改':'添加'}查看
+			<a href="${ctx}/goodsApp/needFirstExaForm?id=${goodsApp.id}">申请单${not empty goodsApp.id?'修改':'添加'}
 			</a>
 		</li>
 	</ul>
@@ -42,7 +42,7 @@
 		<div class="control-group">
 			<label class="control-label">申请编号:</label>
 			<div class="controls">
-				<form:input path="appNo" htmlEscape="false" maxlength="64" class="required"/>
+				<form:input path="appNo" htmlEscape="false" maxlength="64" class="required" disabled="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -54,37 +54,38 @@
 		<div class="control-group">
 			<label class="control-label">收货人:</label>
 			<div class="controls">
-				<form:input path="consignee" htmlEscape="false" maxlength="20" class="required"/>
+				<form:input path="consignee" htmlEscape="false" maxlength="20" class="required" disabled="true"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">收货人电话:</label>
 			<div class="controls">
-				<form:input path="consigneePhone" htmlEscape="false" maxlength="11" class="required digits"/>
+				<form:input path="consigneePhone" htmlEscape="false" maxlength="11" class="required digits" disabled="true"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">收货人地址:</label>
 			<div class="controls">
-				<form:input path="consigneeAddress" htmlEscape="false" maxlength="11" class="required digits"/>
+				<form:input path="consigneeAddress" htmlEscape="false" maxlength="11" class="required digits" disabled="true"/>
 			</div>
 		</div>
 
 		<div class="control-group">
 			<label class="control-label">备注:</label>
 			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
+				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge" disabled="true"/>
 			</div>
 		</div>
 			<div class="control-group">
 				<label class="control-label">申请商品:</label>
 				<div class="controls">
-					<input id="goodsBtnSubmit" class="btn btn-primary" type="button" value="添加商品"/>
+					<input id="goodsBtnSubmit" class="btn btn-primary" type="button" value="添加商品" disabled="true"/>
 					<table id="goodsAppTable" class="table table-striped table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th>商品id</th>
 								<th>商品名称</th>
+								<th>商品型号</th>
 								<th>用途</th>
 								<th>数量</th>
 							</tr>
@@ -95,11 +96,13 @@
 							<td></td>
 							<td></td>
 							<td></td>
+							<td></td>
 						</tr>
 						<c:forEach items="${goodsApp.goodList}" var="good" varStatus="s">
 						<tr>
-							<td><input type="text" name="goodList[${s.index }].good.id" value="${good.good.id}" /></td>
-							<td><input type="text" name="goodList[${s.index }].good.goodName" value="${good.good.goodName}" /></td>
+							<td><input type="text"  readonly='readonly' name="goodList[${s.index }].good.id" value="${good.good.id}" /></td>
+							<td><input type="text" readonly='readonly' name="goodList[${s.index }].good.goodName" value="${good.good.goodName}" /></td>
+							<td><input type="text" readonly='readonly' name="goodList[${s.index }].good.type" value="${good.good.type}" /></td>
 							<td><input type="text" name="goodList[${s.index }].usefor" value="${good.usefor}" /></td>
 							<td><input type="text" name="goodList[${s.index }].appNum" value="${good.appNum}" /></td>
 						</tr>

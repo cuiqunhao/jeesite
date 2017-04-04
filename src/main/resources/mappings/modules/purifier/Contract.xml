@@ -26,12 +26,15 @@
         a.update_by as updateBy,
         a.update_date as updateDate,
         a.remarks as remarks,
-        a.del_flag as delFlag
+        a.del_flag as delFlag,
+        o.name AS "salesman.office.name",
+		o.code AS "salesman.office.code"
     </sql>
 
     <sql id="contractJoin">
         left join sys_user b on a.salesman = b.id
         left join sys_user c on a.installer = c.id
+        LEFT JOIN sys_office o ON o.id = b.office_id and o.id = C.office_id
     </sql>
 
     <sql id="whereCon">
@@ -43,10 +46,11 @@
             <if test="salesman != null and salesman.id != null and salesman.id != ''">and b.id = #{salesman.id}</if>
             <if test="contractName != null and contractName != ''">and a.contract_name = #{contractName}</if>
             <if test="contacts != null and contacts != ''">and a.contacts = #{contacts}</if>
+            <if test="salesman != null and salesman.office.code != null and salesman.office.code != ''">and o.code = #{salesman.office.code}</if>
         </where>
     </sql>
 
-    <insert id="insert">
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="com.thinkgem.jeesite.modules.purifier.entity.Contract">
         INSERT INTO purifier_contract(
         contractNo,
         contract_name,
@@ -103,6 +107,7 @@
         <if test="contractTime != null and contractTime!=''">contract_time = #{contractTime},</if>
         <if test="collCycle != null and collCycle!=''">coll_cycle = #{collCycle},</if>
         <if test="remarks != null and remarks!=''">remarks = #{remarks},</if>
+        <if test="salesman != null and salesman.id != null and salesman.id != ''">salesman = #{salesman.id},</if>
         update_date=#{updateDate}
         where id = #{id}
     </update>
@@ -130,7 +135,7 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        where c.id is null
+        where c.id is null and a.del_flag ='0'
     </select>
 
     <select id="findNotMainList" resultType="Contract">
@@ -138,7 +143,7 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        where c.id is not null and a.mian_cycle is null
+        where c.id is not null and a.mian_cycle is null and a.del_flag ='0'
     </select>
 
     <select id="findNotReceivablesList" resultType="Contract">
@@ -146,8 +151,8 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        left join purifier_receivables d on a.id = d.contractId
-        where  d.contractId is null or 7>=datediff(d.next_rec_time,now()) and d.del_flag = '0'
+        left join purifier_receivables d on a.id = d.contractId and d.del_flag = '0'
+        where  (d.contractId is null or 7>=datediff(d.next_rec_time,now())) and a.del_flag = '0' and a.mian_cycle is not null
     </select>
 
     <select id="findContractNotMainList" resultType="Contract">
@@ -155,8 +160,8 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        left join purifier_maintain d on a.id = d.contractId
-        where  d.contractId is null or 7>=datediff(d.next_main_time,now()) and d.del_flag = '0'
+        left join purifier_maintain d on a.id = d.contractId and d.del_flag = '0'
+        where  (d.contractId is null or 7>=datediff(d.next_main_time,now()))  and a.del_flag = '0' and a.mian_cycle is not null
     </select>
 
     <update id="delete">
@@ -166,4 +171,20 @@
        update_date = #{updateDate}
        where id=#{id}
     </update>
+
+
+    <delete id="deleteContractGoodsRel">
+        DELETE FROM purifier_goods_contract_rel
+        where contractId=#{id}
+    </delete>
+
+    <insert id="insterContractGoodsRel">
+        INSERT INTO purifier_goods_contract_rel(contractId,goodId,appNum,usefor,remark)
+        <foreach collection="goodList" item="goodRel" separator=" union all ">
+            SELECT #{id},#{goodRel.good.id},#{goodRel.appNum},#{goodRel.usefor},#{goodRel.remark}
+            <if test="dbName != 'mssql'">
+                FROM dual
+            </if>
+        </foreach>
+    </insert>
 </mapper>

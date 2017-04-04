@@ -17,10 +17,10 @@
 <!--tab-->
 <ul class="nav nav-tabs">
 	<li class="active">
-		<a href="${ctx}/contract/list/">合同单列表</a>
+		<a href="${ctx}/contract/list/">订单列表</a>
 	</li>
 	<li>
-		<a href="${ctx}/contract/form">合同录入</a>
+		<a href="${ctx}/contract/form">订单录入</a>
 	</li>
 </ul>
 <!--tab-->
@@ -41,8 +41,10 @@
 		<label>合同编号：</label>
 		<form:input path="contractNo" htmlEscape="false" maxlength="64" class="input-medium"/>
 		<label>业务员：</label>
-		<%--<form:input path="salesman.id" htmlEscape="false" maxlength="10" class="input-medium"/>--%>
 		<purifier:userSelect id="salesman.id" labelName="salesmanLabe"/>
+		<label>代理商：</label>
+		<purifier:treeselect id="salesman.office.code" name="salesman.office.code" value="" labelName="salesmanLabe" labelValue=""
+							 title="部门" url="/sys/office/treeData?type=2"  notAllowSelectParent="true" allowClear="true"/>
 		<label>联系人：</label>
 		<form:input path="contacts" htmlEscape="false" maxlength="32" class="input-medium"/>
 		<label>合同名称：</label>
@@ -82,10 +84,28 @@
 			<td>${contract.salesman.name}</td>
 			<td>${contract.item}</td>
 			<td>${contract.contractAmount}</td>
-			<td>${contract.collCycle}天</td>
+			<td>
+				<c:choose>
+					<c:when test="${not empty contract.collCycle}">${contract.collCycle}天</c:when>
+					<c:when test="${empty contract.collCycle}">未维护</c:when>
+				</c:choose>
+
+			</td>
 			<td><fmt:formatDate value="${contract.contractTime}" pattern="yyyy-MM-dd"/></td>
-			<td>${contract.installer.name}</td>
-			<td>${contract.mianCycle}天</td>
+			<td>
+				<c:choose>
+					<c:when test="${not empty contract.installer.name}">${contract.installer.name}</c:when>
+					<c:when test="${empty contract.installer.name}">未安装</c:when>
+				</c:choose>
+
+			</td>
+			<td>
+
+				<c:choose>
+					<c:when test="${not empty contract.mianCycle}">${contract.mianCycle}天</c:when>
+					<c:when test="${empty contract.mianCycle}">未维护</c:when>
+				</c:choose>
+			</td>
 			<td>
 				<a href="${ctx}/contract/form?id=${contract.id}">修改</a>
 				<a href="${ctx}/contract/delete?id=${contract.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)">删除</a>

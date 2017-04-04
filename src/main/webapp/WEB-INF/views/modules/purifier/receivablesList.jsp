@@ -46,6 +46,7 @@
 		<th>合同编号</th>
 		<th>收款人</th>
 		<th>收款日期</th>
+		<th>是否开发票</th>
 		<th>发票信息</th>
 		<th>收款金额</th>
 		<th>下次收款时间</th>
@@ -58,6 +59,7 @@
 			<td><a href="${ctx}/reveivables/form?id=${reveivables.id}">${reveivables.contract.contractNo}</a></td>
 			<td>${reveivables.userId.name}</td>
 			<td><fmt:formatDate value="${reveivables.recTime}" pattern="yyyy-MM-dd"/></td>
+			<td>${reveivables.isInvoice eq '1'? '是':'否'}</td>
 			<td>${reveivables.invoice}</td>
 			<td>${reveivables.amount}</td>
 			<td><fmt:formatDate value="${reveivables.nextRecTime}" pattern="yyyy-MM-dd"/></td>

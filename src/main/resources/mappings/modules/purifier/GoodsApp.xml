@@ -4,7 +4,6 @@
     <sql id="goodsAppCols">
         a.id as id,
         a.app_time as appTime,
---         a.applicantId as applicantId,
         a.consignee_phone as consigneePhone,
         a.consignee as consignee,
         a.consignee_address as consigneeAddress,
@@ -27,16 +26,20 @@
         a.remarks as remarks,
         a.del_flag as delFlag,
         b.name as "applicantUser.name",
-        b.mobile as "applicantUser.mobile"
+        b.mobile as "applicantUser.mobile",
+        c.id as "ware.id",
+        c.ware_name as "ware.wareName",
+        c.ware_address as "ware.wareAddress"
     </sql>
 
     <sql id="goodsAppJoin">
          left join sys_user b on a.applicantId=b.id
+         left join purifier_ware c on a.wareId = c.id
     </sql>
 
     <sql id="whereCon">
         <where>
-            1=1
+            a.del_flag = '0'
             <if test="id != null and id != ''">and a.id=#{id}</if>
             <if test="appTimeStart != null and appTimeStart != ''">and a.app_time>=#{appTimeStart}</if>
             <if test="appTimeEnd != null and appTimeEnd != ''">and #{appTimeEnd}>=a.app_time</if>
@@ -61,7 +64,7 @@
         <include refid="goodsAppCols"/>
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
-        where a.first_exa_status is null
+        where a.first_exa_status is null and a.del_flag='0'
     </select>
 
     <select id="needSecExaList" resultType="GoodsApp">
@@ -69,7 +72,7 @@
         <include refid="goodsAppCols"/>
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
-        where a.first_exa_status = '1' and a.sec_exa_status is null
+        where a.first_exa_status = '1' and a.sec_exa_status is null and a.del_flag='0'
     </select>
 
     <select id="needShipList" resultType="GoodsApp">
@@ -77,7 +80,7 @@
         <include refid="goodsAppCols"/>
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
-        where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is null
+        where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is null and a.del_flag='0'
     </select>
 
     <select id="needConsigneeList" resultType="GoodsApp">
@@ -85,7 +88,7 @@
         <include refid="goodsAppCols"/>
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
-        where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is not null and a.consignee_status is null
+        where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is not null and a.consignee_status is null and a.del_flag='0'
     </select>
 
 
@@ -190,6 +193,9 @@
             ship_address = #{shipAddress},
             ship_time = now(),
         </if>
+        <if test="ware != null and ware.id != null and ware.id != ''">
+            wareId = #{ware.id},
+        </if>
         <if test="logistics != null and logistics != ''">
             logistics = #{logistics},
         </if>
@@ -215,11 +221,8 @@
         update_date = #{updateDate}
     </update>
 
-    <update id="deleteGoodsAppRel">
-        UPDATE purifier_goods_app_rel SET
-        update_by = #{updateBy.id},
-        del_flag = '1',
-        update_date = #{updateDate}
+    <delete id="deleteGoodsAppRel">
+        DELETE FROM purifier_goods_app_rel
         where goodsAppId=#{id}
-    </update>
+    </delete>
 </mapper>

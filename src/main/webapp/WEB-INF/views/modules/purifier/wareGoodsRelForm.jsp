@@ -48,7 +48,7 @@
 		<div class="control-group">
 			<label class="control-label">商品:</label>
 			<div class="controls">
-				<purifier:goodsSelect id="good.id" labelName="goodLableName" idValue="${wareGoodsRel.good.id}" labelValue="${wareGoodsRel.good.goodName}"/>
+				<purifier:goodsSelect type="good.type" id="good.id" labelName="goodLableName" idValue="${wareGoodsRel.good.id}" labelValue="${wareGoodsRel.good.goodName}"/>
 			</div>
 		</div>
 

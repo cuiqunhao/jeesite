@@ -1,9 +1,9 @@
 package com.thinkgem.jeesite.modules.purifier.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
-import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.purifier.entity.Contract;
+import com.thinkgem.jeesite.modules.purifier.entity.GoodsApp;
 
 import java.util.List;
 
@@ -23,4 +23,8 @@ public interface ContractDao extends CrudDao<Contract>{
     List<Contract> findNotReceivablesList(Contract contract);
 
     List<Contract> findContractNotMainList(Contract contract);
+
+    int insterContractGoodsRel(Contract contract);
+
+    int deleteContractGoodsRel(Contract contract);
 }

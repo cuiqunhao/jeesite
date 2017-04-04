@@ -7,6 +7,7 @@
 <%@ attribute name="cssClass" type="java.lang.String" required="false" description="css样式"%>
 <%@ attribute name="cssStyle" type="java.lang.String" required="false" description="css样式"%>
 <%@ attribute name="smallBtn" type="java.lang.Boolean" required="false" description="缩小按钮显示"%>
+<%@ attribute name="disable" type="java.lang.Boolean" required="false" description="是否可用"%>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#${labelName}Button,#${labelName}").click(function(){
@@ -31,7 +32,7 @@
 	});
 </script>
 <div class="input-append">
-	<input id="${id}" name="${id}" class="${cssClass}" type="hidden" value="${idValue}"/>
-	<input id="${labelName}" name="${labelName}" type="text" class="${cssClass}" style="${cssStyle}" value="${labelValue}"/>
-	<a id="${labelName}Button" href="javascript:" class="btn">&nbsp;<i class="icon-search"></i>&nbsp;</a>&nbsp;&nbsp;
+	<input id="${id}" name="${id}" class="${cssClass}" type="hidden" value="${idValue}"  ${disable?"disabled":""}/>
+	<input id="${labelName}" name="${labelName}" type="text" class="${cssClass}" style="${cssStyle}" value="${labelValue}" ${disable?"disabled":""}/>
+	<a id="${labelName}Button" href="javascript:" class="btn" ${disable?"disabled":""}>&nbsp;<i class="icon-search"></i>&nbsp;</a>&nbsp;&nbsp;
 </div>

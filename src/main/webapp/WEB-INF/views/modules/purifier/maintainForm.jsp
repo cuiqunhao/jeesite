@@ -23,6 +23,23 @@
 				}
 			});
 		});
+		function calNext(){
+			var mianCycle = parseInt($("#mianCycle").val());
+			var thisTime = $("#mainTime").val();
+			var date = new Date(thisTime);
+			// 加五天.
+			date.setDate(date.getDate() + mianCycle);
+
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			var d = date.getDate();
+			if(m <= 9) m = "0"+m;
+			if(d <= 9) d = "0"+d;
+			var cdate = y+"-"+m+"-"+d;
+
+
+			$("#nextMainTime").val(cdate);
+		}
 	</script>
 </head>
 
@@ -42,7 +59,7 @@
 		<div class="control-group">
 			<label class="control-label">合同编号:</label>
 			<div class="controls">
-				<purifier:contractSelect id="contract.id" labelName="contractIdLabel" idValue="${maintain.contract.id}" labelValue="${maintain.contract.contractNo}"/>
+				<purifier:contractSelect id="contract.id" labelName="contractIdLabel"  mianCycleValue="${maintain.contract.mianCycle}" idValue="${maintain.contract.id}" labelValue="${maintain.contract.contractNo}"/>
 			</div>
 		</div>
 
@@ -58,7 +75,7 @@
 			<div class="controls">
 				<input id="mainTime" name="mainTime" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
 				value="<fmt:formatDate value="${maintain.mainTime}" pattern="yyyy-MM-dd"/>"
-				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});" onchange="calNext()"/>
 			</div>
 		</div>
 
@@ -67,7 +84,7 @@
 			<div class="controls">
 				<input id="nextMainTime" name="nextMainTime" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
 				value="<fmt:formatDate value="${maintain.nextMainTime}" pattern="yyyy-MM-dd"/>"
-				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				/>
 			</div>
 		</div>
 

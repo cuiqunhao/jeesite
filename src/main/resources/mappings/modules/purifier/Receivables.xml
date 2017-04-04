@@ -12,7 +12,8 @@
         a.amount as amount,
         a.next_rec_time as nextRecTime,
         a.rec_time as recTime,
-        a.remarks as remarks
+        a.remarks as remarks,
+        a.is_invoice as isInvoice
     </sql>
 
     <sql id="receivablesJoin">
@@ -56,7 +57,8 @@
         create_by,
         create_date,
         del_flag,
-        remarks
+        remarks,
+        is_invoice
         )
         VALUES (
         #{contract.id},
@@ -68,7 +70,8 @@
         #{createBy.id},
         #{createDate},
         '0',
-        #{remarks}
+        #{remarks},
+        #{isInvoice}
         )
     </insert>
 
@@ -80,6 +83,7 @@
         <if test="userId != null and userId.id != null and userId.id != ''">a.user_id=#{userId.id},</if>
         <if test="invoice != null and invoice != ''">a.invoice=#{invoice},</if>
         <if test="amount != null and amount != ''">a.amount=#{amount},</if>
+        <if test="isInvoice != null and isInvoice != ''">a.is_invoice=#{isInvoice},</if>
         a.update_date = #{updateDate}
         where a.id=#{id}
     </update>

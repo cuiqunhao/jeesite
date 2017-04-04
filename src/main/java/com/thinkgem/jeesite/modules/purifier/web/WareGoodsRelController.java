@@ -2,6 +2,8 @@ package com.thinkgem.jeesite.modules.purifier.web;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.purifier.entity.Goods;
+import com.thinkgem.jeesite.modules.purifier.entity.Ware;
 import com.thinkgem.jeesite.modules.purifier.entity.WareGoodsRel;
 import com.thinkgem.jeesite.modules.purifier.service.WareGoodsRelService;
 import org.apache.commons.lang3.StringUtils;
@@ -31,9 +33,16 @@ public class WareGoodsRelController extends BaseController{
 
 
     @ModelAttribute
-    public WareGoodsRel get(@RequestParam(value = "id",required = false) Long id){
-        if(id != null){
-            return wareGoodsRelService.get(id.toString());
+    public WareGoodsRel get(@RequestParam(value = "wareId",required = false) Long wareId,@RequestParam(value = "goodId",required = false) Long goodId){
+        if(wareId != null && goodId != null){
+            WareGoodsRel wareGoodsRel = new WareGoodsRel();
+            Ware ware = new Ware();
+            ware.setId(wareId.toString());
+            wareGoodsRel.setWare(ware);
+            Goods goods = new Goods();
+            goods.setId(goodId.toString());
+            wareGoodsRel.setGood(goods);
+            return wareGoodsRelService.get(wareGoodsRel);
         }else {
             return new WareGoodsRel();
         }
@@ -57,7 +66,7 @@ public class WareGoodsRelController extends BaseController{
         if(!beanValidator(model,wareGoodsRel)){
             return form(wareGoodsRel,model);
         }
-        wareGoodsRelService.save(wareGoodsRel);
+        wareGoodsRelService.update(wareGoodsRel);
         addMessage(model,"保存成功");
         return "redirect:" + adminPath + "/wareGoodsRel/list";
     }

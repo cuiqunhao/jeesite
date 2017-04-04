@@ -12,8 +12,8 @@
     </sql>
 
     <sql id="wareGoodsRelJoin">
-        left join purifier_ware_goods_rel b on a.id=b.wareId
-        left join purifier_goods c on c.id=b.goodId
+        INNER join purifier_ware_goods_rel b on a.id=b.wareId
+        INNER join purifier_goods c on c.id=b.goodId
     </sql>
 
     <sql id="whereCon">
@@ -46,7 +46,7 @@
 
     <select id="get" resultType="WareGoodsRel">
         SELECT
-        <include refid="wareGoodsRelCols"></include>
+        <include refid="wareGoodsRelCols"/>
         FROM purifier_ware a
         <include refid="wareGoodsRelJoin"/>
         WHERE
@@ -64,10 +64,10 @@
     </update>
 
     <delete id="delete">
-       DELETE FROM purifier_ware_goods_rel b
+       DELETE FROM purifier_ware_goods_rel
         WHERE
-        b.goodId = #{good.id}
-        and b.wareId = #{ware.id}
+        goodId = #{good.id}
+        and wareId = #{ware.id}
    </delete>
 
 </mapper>

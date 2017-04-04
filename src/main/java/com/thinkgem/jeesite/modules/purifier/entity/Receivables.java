@@ -36,6 +36,18 @@ public class Receivables extends DataEntity<Receivables>{
      * 收款人ID
      */
     private User userId;
+    /**
+     * 是否开发票
+     */
+    private String isInvoice;
+
+    public String getIsInvoice() {
+        return isInvoice;
+    }
+
+    public void setIsInvoice(String isInvoice) {
+        this.isInvoice = isInvoice;
+    }
 
     public Date getRecTime() {
         return recTime;

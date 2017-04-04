@@ -5,13 +5,13 @@
 	<title>商品管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		var selectId,selectName
+		var goodsId,goodsName,goodsType
 		$(document).ready(function() {
 			$("#contentTable tr").click(function () {
 				var tr = $(this);
-//                top.mainFrame.setData(tr.find("td").eq(1).text(), tr.find("td").eq(5).text());
-				selectId=tr.find("td").eq(1).text();
-				selectName=tr.find("td").eq(2).text();
+				goodsId=tr.find("td").eq(1).text();
+				goodsName=tr.find("td").eq(2).text();
+				goodsType=tr.find("td").eq(3).text();
 
 			});
 		});

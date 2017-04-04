@@ -2,10 +2,12 @@ package com.thinkgem.jeesite.modules.purifier.service;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.purifier.dao.GoodsAppDao;
 import com.thinkgem.jeesite.modules.purifier.dao.GoodsAppRelDao;
-import com.thinkgem.jeesite.modules.purifier.entity.GoodsApp;
-import com.thinkgem.jeesite.modules.purifier.entity.GoodsAppRel;
+import com.thinkgem.jeesite.modules.purifier.dao.WareDao;
+import com.thinkgem.jeesite.modules.purifier.dao.WareGoodsRelDao;
+import com.thinkgem.jeesite.modules.purifier.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
     @Autowired
     private GoodsAppRelDao goodsAppRelDao;
+    @Autowired
+    private WareGoodsRelDao wareGoodsRelDao;
 
     /**
      * 根据申请单ID获取申请单详情
@@ -30,7 +34,7 @@ public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
     public GoodsApp getByGoodsAppId(Long id){
         GoodsApp goodsApp =  dao.get(String.valueOf(id));
         GoodsAppRel goodsAppRel = new GoodsAppRel();
-        goodsAppRel.setId(goodsApp.getId());
+        goodsAppRel.setGoodsAppId(id);
         goodsApp.setGoodList(goodsAppRelDao.findAllList(goodsAppRel));
         return goodsApp;
     }
@@ -53,13 +57,31 @@ public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
     @Transactional(readOnly = false)
     public int insterGoodsApp(GoodsApp goodsApp){
         int appId;
-        if(goodsApp.getId() != null){
+        if(StringUtils.isNotEmpty(goodsApp.getId())){
             goodsApp.preUpdate();
             appId = dao.updateGoodsApp(goodsApp);
             GoodsAppRel goodsAppRel = new GoodsAppRel();
             goodsAppRel.setGoodsAppId(Long.valueOf(goodsApp.getId()));
             goodsAppRelDao.delete(goodsAppRel);
             dao.insterGoodsAppRel(goodsApp);
+
+            //减少库存
+            if("1".equals(goodsApp.getConsigneeStatus())){
+                for(GoodsAppRel goodsAppRel1:goodsApp.getGoodList()){
+                    WareGoodsRel wareGoodsRel = new WareGoodsRel();
+                    Ware ware = new Ware();
+                    ware.setId(goodsApp.getWare().getId());
+                    wareGoodsRel.setWare(ware);
+                    Goods goods = new Goods();
+                    goods.setId(goodsAppRel1.getGood().getId());
+                    wareGoodsRel.setGood(goods);
+                    wareGoodsRel = wareGoodsRelDao.get(wareGoodsRel);
+                    wareGoodsRel.setNum(wareGoodsRel.getNum()-goodsAppRel1.getAppNum());
+                    wareGoodsRelDao.delete(wareGoodsRel);
+                    wareGoodsRelDao.insert(wareGoodsRel);
+                }
+            }
+
         }else{
             goodsApp.preInsert();
             appId = dao.insterGoodsApp(goodsApp);

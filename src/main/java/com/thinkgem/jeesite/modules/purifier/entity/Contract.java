@@ -1,9 +1,11 @@
 package com.thinkgem.jeesite.modules.purifier.entity;
 
+import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 合同单
@@ -85,6 +87,19 @@ public class Contract extends DataEntity<Contract>{
      * 签订合同时间结束
      */
     private Date contractTimeEnd;
+
+    /**
+     * 商品列表
+     */
+    private List<ContractGoodsRel> goodList = Lists.newArrayList();
+
+    public List<ContractGoodsRel> getGoodList() {
+        return goodList;
+    }
+
+    public void setGoodList(List<ContractGoodsRel> goodList) {
+        this.goodList = goodList;
+    }
 
     public Date getContractTimeBegin() {
         return contractTimeBegin;

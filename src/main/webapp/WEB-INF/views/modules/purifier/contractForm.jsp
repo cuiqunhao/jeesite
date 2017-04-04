@@ -23,15 +23,50 @@
 				}
 			});
 		});
+		$(document).ready(function() {
+			var rowNum = 0;
+			$("#goodsBtnSubmit").click(function(){
+				// 正常打开
+				top.$.jBox.open(
+						"iframe:${ctx}/goodsApp/goodsAppRelForm",
+						"选择商品",
+						$(top.document).width()-220,
+						$(top.document).height()-220,
+						{
+							<%--ajaxData:{selectIds: $("#${id}Id").val()},--%>
+							buttons:{"确定":"ok","关闭":true},
+							submit:function(v, h, f){
+								var a = h.find("iframe")[0].contentWindow.document.getElementById("good.id").value;
+								var b = h.find("iframe")[0].contentWindow.document.getElementById("goodLableName").value;
+								var c = h.find("iframe")[0].contentWindow.document.getElementById("num").value;
+								var d = h.find("iframe")[0].contentWindow.document.getElementById("useFor").value;
+								var e = h.find("iframe")[0].contentWindow.document.getElementById("good.type").value;
+								var tr = $('#goodsAppTable tbody tr').eq(0).clone();
+								rowNum = $('#goodsAppTable tbody tr').length -1;
+								$('#goodsAppTable tbody').append(tr);
+								tr.children("td:eq(0)").append("<input type='text' readonly='readonly' name='goodList["+rowNum+"].good.id' value='"+a+"' />");
+								tr.children("td:eq(1)").append("<input type='text' readonly='readonly' name='goodList["+rowNum+"].good.goodName' value='"+b+"' />");
+								tr.children("td:eq(2)").append("<input type='text' readonly='readonly' name='goodList["+rowNum+"].good.type' value='"+e+"' />");
+								tr.children("td:eq(3)").append("<input type='text' name='goodList["+rowNum+"].usefor' value='"+d+"' />");
+								tr.children("td:eq(4)").append("<input type='text' name='goodList["+rowNum+"].appNum' value='"+c+"' />");
+
+								rowNum++;
+							},
+							loaded:function(h){
+								$(".jbox-content", top.document).css("overflow-y","hidden");
+							}
+						});
+			});
+		});
 	</script>
 </head>
 
 
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/contract/list/">合同列表</a></li>
+		<li><a href="${ctx}/contract/list/">订单列表</a></li>
 		<li class="active">
-			<a href="${ctx}/contract/form?id=${contract.id}">合同${not empty contract.id?'修改':'添加'}查看
+			<a href="${ctx}/contract/form?id=${contract.id}">订单${not empty contract.id?'修改':'添加'}
 			</a>
 		</li>
 	</ul>
@@ -42,7 +77,7 @@
 		<div class="control-group">
 			<label class="control-label">合同编号:</label>
 			<div class="controls">
-				<form:input path="contractNo" htmlEscape="false" maxlength="64" class="required"/>
+				<form:input path="contractNo" htmlEscape="false" maxlength="64" class="required" disabled="${contract.id != null || not empty contract.id?true:false}"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -54,7 +89,7 @@
 		<div class="control-group">
 			<label class="control-label">合同金额:</label>
 			<div class="controls">
-				<form:input path="contractAmount" htmlEscape="false" maxlength="20" class="required"/>
+				<form:input path="contractAmount" htmlEscape="false" maxlength="20" class="required" />
 			</div>
 		</div>
 		<div class="control-group">
@@ -84,11 +119,56 @@
 
 
 		<div class="control-group">
+			<label class="control-label">代理商编号:</label>
+			<div class="controls">
+				<form:input path="salesman.office.code" htmlEscape="false" maxlength="64" readonly="true"/>
+			</div>
+			<label class="control-label">代理商名称:</label>
+			<div class="controls">
+				<form:input path="salesman.office.name" htmlEscape="false" maxlength="64" readonly="true"/>
+			</div>
 			<label class="control-label">业务员:</label>
 			<div class="controls">
 				<purifier:userSelect id="salesman.id" labelName="salesmanLabe" idValue="${contract.salesman.id}" labelValue="${contract.salesman.name}"/>
 			</div>
 		</div>
+
+		<div class="control-group">
+			<label class="control-label">申请商品:</label>
+			<div class="controls">
+				<input id="goodsBtnSubmit" class="btn btn-primary" type="button" value="添加商品"  ${contract.id != null || not empty contract.id?"disabled":""}/>
+				<table id="goodsAppTable" class="table table-striped table-bordered table-condensed">
+					<thead>
+					<tr>
+						<th>商品id</th>
+						<th>商品名称</th>
+						<th>商品型号</th>
+						<th>用途</th>
+						<th>数量</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<c:forEach items="${contract.goodList}" var="good" varStatus="s">
+						<tr>
+							<td><input type="text" readonly='readonly' name="goodList[${s.index }].good.id" value="${good.good.id}" /></td>
+							<td><input type="text" readonly='readonly' name="goodList[${s.index }].good.goodName" value="${good.good.goodName}" /></td>
+							<td><input type="text" readonly='readonly' name="goodList[${s.index }].good.type" value="${good.good.type}" /></td>
+							<td><input type="text"  name="goodList[${s.index }].usefor" value="${good.usefor}" /></td>
+							<td><input type="text" name="goodList[${s.index }].appNum" value="${good.appNum}" /></td>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
 
 		<div class="control-group">
 			<label class="control-label">所属项目:</label>

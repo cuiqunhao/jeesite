@@ -40,7 +40,7 @@ public class ContractController extends BaseController{
     @ModelAttribute
     public Contract get(Long id){
         if(id != null){
-            return contractService.get(id.toString());
+            return contractService.getByGoodsAppId(id);
         }else{
             return new Contract();
         }
@@ -135,7 +135,7 @@ public class ContractController extends BaseController{
         if (!beanValidator(model, contract)){
             return form(contract, model);
         }
-        contractService.save(contract);
+        contractService.insterContract(contract);
         addMessage(redirectAttributes, "保存成功");
         return "redirect:" + adminPath + "/contract/list?repage";
     }
@@ -172,7 +172,7 @@ public class ContractController extends BaseController{
 
     @RequestMapping(value = "delete")
     public String delete(Contract contract, RedirectAttributes redirectAttributes) {
-        contractService.delete(contract);
+        contractService.deleteContract(contract);
         addMessage(redirectAttributes, "删除成功");
         return "redirect:" + adminPath + "/contract/list?repage";
     }

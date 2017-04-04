@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.GoodsAppRelDao">
-    <sql id="goodsAppRelCols">
-        a.goodsAppId,
+<mapper namespace="com.thinkgem.jeesite.modules.purifier.dao.ContractGoodsRelDao">
+    <sql id="contractGoodsRelCols">
+        a.contractId,
         a.appNum,
         a.usefor,
         a.remark,
@@ -17,28 +17,27 @@
         b.type as "good.type"
     </sql>
 
-    <sql id="goodsAppRelJoin">
+    <sql id="contractGoodsRelJoin">
          INNER join purifier_goods b on a.goodId = b.id
     </sql>
 
     <sql id="whereCon">
         <where>
             1=1
-            <if test="goodsAppId != null">and a.goodsAppId=#{goodsAppId}</if>
+            <if test="contractId != null and contractId != ''">and a.contractId=#{contractId}</if>
         </where>
     </sql>
 
-    <select id="findAllList" resultType="GoodsAppRel">
+    <select id="findAllList" resultType="ContractGoodsRel">
         SELECT
-        <include refid="goodsAppRelCols"/>
-        from purifier_goods_app_rel a
-        <include refid="goodsAppRelJoin"/>
+        <include refid="contractGoodsRelCols"/>
+        from purifier_goods_contract_rel a
+        <include refid="contractGoodsRelJoin"/>
         <include refid="whereCon"/>
     </select>
 
     <delete id="delete">
-        DELETE FROM  purifier_goods_app_rel where goodsAppId=#{goodsAppId}
+        DELETE FROM  purifier_goods_contract_rel where contractId=#{contractId}
     </delete>
-
 
 </mapper>

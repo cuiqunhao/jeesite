@@ -82,13 +82,25 @@
 			<td>${goodsApp.applicantUser.name}</td>
 			<td>${goodsApp.consignee}</td>
 			<td>${goodsApp.consigneePhone}</td>
-			<td>${goodsApp.firstExaStatus}</td>
+			<td>
+				<c:choose>
+					<c:when test="${goodsApp.firstExaStatus eq 1}">通过</c:when>
+					<c:when test="${empty goodsApp.firstExaStatus}">未审核</c:when>
+					<c:when test="${goodsApp.firstExaStatus eq 0}">未通过</c:when>
+				</c:choose>
+			</td>
 			<td><fmt:formatDate value="${goodsApp.firstExaTime}" pattern="yyyy-MM-dd"/></td>
-			<td>${goodsApp.secExaStatus}</td>
+			<td>
+			<c:choose>
+				<c:when test="${goodsApp.secExaStatus eq 1}">通过</c:when>
+				<c:when test="${empty goodsApp.secExaStatus}">未审核</c:when>
+				<c:when test="${goodsApp.secExaStatus eq 0}">未通过</c:when>
+			</c:choose>
+			</td>
 			<td><fmt:formatDate value="${goodsApp.secExaTime}" pattern="yyyy-MM-dd"/></td>
 			<td>${goodsApp.shipAddress}</td>
 			<td><fmt:formatDate value="${goodsApp.shipTime}" pattern="yyyy-MM-dd"/></td>
-			<td>${goodsApp.consigneeStatus}</td>
+			<td>${goodsApp.consigneeStatus eq '1'?'已发货':'未发货'}</td>
 			<td><fmt:formatDate value="${goodsApp.consigneeTime}" pattern="yyyy-MM-dd"/></td>
 			<td>
 				<a href="${ctx}/goodsApp/form?id=${goodsApp.id}">修改</a>

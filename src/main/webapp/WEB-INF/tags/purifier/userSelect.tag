@@ -7,6 +7,7 @@
 <%@ attribute name="cssClass" type="java.lang.String" required="false" description="css样式"%>
 <%@ attribute name="cssStyle" type="java.lang.String" required="false" description="css样式"%>
 <%@ attribute name="smallBtn" type="java.lang.Boolean" required="false" description="缩小按钮显示"%>
+<%@ attribute name="disJudgeId" type="java.lang.String" required="false" description="id值"%>
 <script type="text/javascript">
 	<%--function setData(id,name){--%>
 		<%--$("[id='${id}']").val(id);--%>
@@ -26,6 +27,9 @@
 						submit:function(v, h, f){
 							$("[id='${id}']").val(h.find("iframe")[0].contentWindow.selectId);
 							$("[id='${labelName}']").val(h.find("iframe")[0].contentWindow.selectName);
+
+							$("[id='salesman.office.code']").val(h.find("iframe")[0].contentWindow.selectOfficeCode);
+							$("[id='salesman.office.name']").val(h.find("iframe")[0].contentWindow.selectOfficeName);
 						},
 						loaded:function(h){
 							$(".jbox-content", top.document).css("overflow-y","hidden");
@@ -33,9 +37,11 @@
 					});
 		});
 	});
+
+
 </script>
 <div class="input-append">
-	<input id="${id}" name="${id}" class="${cssClass}" type="hidden" value="${idValue}"/>
-	<input id="${labelName}" name="${labelName}" type="text" class="${cssClass}" style="${cssStyle}" value="${labelValue}"/>
-	<a id="${labelName}Button" href="javascript:" class="btn">&nbsp;<i class="icon-search"></i>&nbsp;</a>&nbsp;&nbsp;
+	<input id="${id}" name="${id}" class="${cssClass}" type="hidden" value="${idValue}" ${disJudgeId != null || not empty disJudgeId?"disabled":""}/>
+	<input id="${labelName}" name="${labelName}" type="text" class="${cssClass}" style="${cssStyle}" value="${labelValue}" ${disJudgeId != null || not empty disJudgeId?"disabled":""}/>
+	<a id="${labelName}Button" href="javascript:" class="btn" ${disJudgeId != null || not empty disJudgeId?"disabled":""}>&nbsp;<i class="icon-search"></i>&nbsp;</a>&nbsp;&nbsp;
 </div>

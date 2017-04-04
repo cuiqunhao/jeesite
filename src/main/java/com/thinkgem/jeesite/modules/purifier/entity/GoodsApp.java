@@ -98,6 +98,11 @@ public class GoodsApp extends DataEntity<GoodsApp>{
     private String remarks;
 
     /**
+     * 发货仓库
+     */
+    private Ware ware;
+
+    /**
      * 商品列表
      */
     private List<GoodsAppRel> goodList = Lists.newArrayList();
@@ -110,6 +115,14 @@ public class GoodsApp extends DataEntity<GoodsApp>{
     @Override
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Ware getWare() {
+        return ware;
+    }
+
+    public void setWare(Ware ware) {
+        this.ware = ware;
     }
 
     public Date getShipTime() {

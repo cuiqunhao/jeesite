@@ -15,6 +15,7 @@ public class WareGoodsRelService extends CrudService<WareGoodsRelDao,WareGoodsRe
 
     @Transactional(readOnly = false)
     public int update(WareGoodsRel wareGoodsRel){
-        return dao.update(wareGoodsRel);
+        dao.delete(wareGoodsRel);
+        return dao.insert(wareGoodsRel);
     }
 }

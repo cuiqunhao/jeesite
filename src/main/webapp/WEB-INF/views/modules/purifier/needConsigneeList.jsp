@@ -89,7 +89,7 @@
 			<%--<td>${goodsApp.consigneeStatus}</td>--%>
 			<%--<td><fmt:formatDate value="${goodsApp.consigneeTime}" pattern="yyyy-MM-dd"/></td>--%>
 			<td>
-				<a href="${ctx}/goodsApp/needConsigneeForm?id=${goodsApp.id}">审核</a>
+				<a href="${ctx}/goodsApp/needConsigneeForm?id=${goodsApp.id}">确认收货</a>
 			</td>
 		</tr>
 	</c:forEach>

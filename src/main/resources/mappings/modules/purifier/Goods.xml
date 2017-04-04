@@ -4,26 +4,29 @@
     <sql id="goodsCol">
         a.id as id,
         a.good_name as goodName,
-        a.type as type
+        a.type as type,
+        a.photo as photo
     </sql>
 
     <sql id="whereCon">
         <where>
             1=1
-            <if test="goodName != null">and a.good_name = #{goodName}</if>
+            <if test="goodName != null and goodName != ''">and a.good_name = #{goodName}</if>
+            <if test="type != null and type != ''">and a.type = #{type}</if>
         </where>
     </sql>
 
     <insert id="insert">
-        INSERT INTO purifier_goods(good_name,type,create_by,create_date)
-        VALUES (#{goodName},#{type},#{createBy.id},#{createDate})
+        INSERT INTO purifier_goods(good_name,type,create_by,create_date,photo)
+        VALUES (#{goodName},#{type},#{createBy.id},#{createDate},#{photo})
     </insert>
 
     <update id="update">
         UPDATE purifier_goods SET
         update_by = #{updateBy.id},
-        <if test="goodName != null">good_name=#{goodName},</if>
-        <if test="type != null">type=#{type},</if>
+        <if test="goodName != null and goodName != ''">good_name=#{goodName},</if>
+        <if test="type != null and type != '' ">type=#{type},</if>
+        <if test="photo != null and photo !=''">photo=#{photo},</if>
         update_date = #{updateDate}
         WHERE
         id = #{id}

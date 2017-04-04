@@ -17,7 +17,7 @@
 <!--tab-->
 <ul class="nav nav-tabs">
 	<li class="active">
-		<a href="${ctx}/contract/contractNotRecList/">合同单列表</a>
+		<a href="${ctx}/contract/contractNotRecList/">订单单列表</a>
 	</li>
 </ul>
 <!--tab-->
@@ -79,10 +79,28 @@
 			<td>${contract.salesman.name}</td>
 			<td>${contract.item}</td>
 			<td>${contract.contractAmount}</td>
-			<td>${contract.collCycle}天</td>
+			<td>
+				<c:choose>
+					<c:when test="${not empty contract.collCycle}">${contract.collCycle}天</c:when>
+					<c:when test="${empty contract.collCycle}">未维护</c:when>
+				</c:choose>
+
+			</td>
 			<td><fmt:formatDate value="${contract.contractTime}" pattern="yyyy-MM-dd"/></td>
-			<td>${contract.installer.name}</td>
-			<td>${contract.mianCycle}天</td>
+			<td>
+				<c:choose>
+					<c:when test="${not empty contract.installer.name}">${contract.installer.name}</c:when>
+					<c:when test="${empty contract.installer.name}">未安装</c:when>
+				</c:choose>
+
+			</td>
+			<td>
+
+				<c:choose>
+					<c:when test="${not empty contract.mianCycle}">${contract.mianCycle}天</c:when>
+					<c:when test="${empty contract.mianCycle}">未维护</c:when>
+				</c:choose>
+			</td>
 			<td>
 				<a href="${ctx}/reveivables/formRec?contract.id=${contract.id}">收款</a>
 			</td>

@@ -75,17 +75,35 @@
 	<tbody>
 	<c:forEach items="${page.list}" var="contract">
 		<tr>
-			<td>${contract.contractNo}</td>
+			<td><a href="${ctx}/contract/form?id=${contract.id}">${contract.contractNo}</a></td>
 			<td>${contract.contractName}</td>
 			<td>${contract.contacts}</td>
 			<td>${contract.contactsPhone}</td>
 			<td>${contract.salesman.name}</td>
 			<td>${contract.item}</td>
 			<td>${contract.contractAmount}</td>
-			<td>${contract.collCycle}天</td>
+			<td>
+				<c:choose>
+					<c:when test="${not empty contract.collCycle}">${contract.collCycle}天</c:when>
+					<c:when test="${empty contract.collCycle}">未维护</c:when>
+				</c:choose>
+
+			</td>
 			<td><fmt:formatDate value="${contract.contractTime}" pattern="yyyy-MM-dd"/></td>
-			<td>${contract.installer.name}</td>
-			<td>${contract.mianCycle}天</td>
+			<td>
+				<c:choose>
+					<c:when test="${not empty contract.installer.name}">${contract.installer.name}</c:when>
+					<c:when test="${empty contract.installer.name}">未安装</c:when>
+				</c:choose>
+
+			</td>
+			<td>
+
+				<c:choose>
+					<c:when test="${not empty contract.mianCycle}">${contract.mianCycle}天</c:when>
+					<c:when test="${empty contract.mianCycle}">未维护</c:when>
+				</c:choose>
+			</td>
 			<td>
 				<a href="${ctx}/contract/notInstallForm?id=${contract.id}">安排安装</a>
 				<%--<a href="${ctx}/contract/delete?id=${contract.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)">删除</a>--%>
