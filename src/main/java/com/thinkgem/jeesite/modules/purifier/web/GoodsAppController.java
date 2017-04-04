@@ -1,11 +1,18 @@
 package com.thinkgem.jeesite.modules.purifier.web;
 
+import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.oa.entity.OaNotify;
+import com.thinkgem.jeesite.modules.oa.entity.OaNotifyRecord;
+import com.thinkgem.jeesite.modules.oa.service.OaNotifyService;
 import com.thinkgem.jeesite.modules.purifier.entity.GoodsApp;
 import com.thinkgem.jeesite.modules.purifier.service.GoodsAppService;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 货物申请controller
@@ -26,9 +34,13 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping(value = "${adminPath}/goodsApp")
 public class GoodsAppController extends BaseController {
-
+    @Autowired
+    private OaNotifyService oaNotifyService;
     @Autowired
     private GoodsAppService goodsAppService;
+
+    @Autowired
+    private SystemService systemService;
 
     @ModelAttribute
     public GoodsApp get(@RequestParam(value = "id",required = false) Long id) {
@@ -110,11 +122,91 @@ public class GoodsAppController extends BaseController {
     }
 
     @RequestMapping(value = "save")
-    public String save(GoodsApp goodsApp, Model model, RedirectAttributes redirectAttributes) {
+    public String save(GoodsApp goodsApp, Model model, RedirectAttributes redirectAttributes,@RequestParam(value = "opt",required = false) String opt) {
         if (!beanValidator(model, goodsApp)){
             return form(goodsApp, model);
         }
         goodsAppService.insterGoodsApp(goodsApp);
+
+        if("1".equals(goodsApp.getSecExaStatus()) && "ecsh".equals(opt)){//二次审核通过
+            //发货通知
+            OaNotify oaNotify = new OaNotify();
+            oaNotify.setContent("申请单号"+goodsApp.getAppNo()+"二级审核通过，请查看发货提醒");
+            oaNotify.setTitle("安排发货提醒");
+            oaNotify.setStatus("1");
+            oaNotify.setType("4");
+            List<User> userList = systemService.findUser(new User(systemService.getRoleByEnname("ckgly")));
+            List<OaNotifyRecord> oaNotifyRecordList = Lists.newArrayList();
+            for(User u:userList){
+                OaNotifyRecord entity = new OaNotifyRecord();
+                entity.setId(IdGen.uuid());
+                entity.setOaNotify(oaNotify);
+                entity.setUser(u);
+                entity.setReadFlag("0");
+                oaNotifyRecordList.add(entity);
+            }
+            oaNotify.setOaNotifyRecordList(oaNotifyRecordList);
+            oaNotifyService.save(oaNotify);
+        }else if("0".equals(goodsApp.getSecExaStatus()) && "ecsh".equals(opt)){
+            //发货通知
+            OaNotify oaNotify = new OaNotify();
+            oaNotify.setContent("申请单号"+goodsApp.getAppNo()+"二级审核不通过，请查看具体原因");
+            oaNotify.setTitle("二级审核不通过");
+            oaNotify.setStatus("1");
+            oaNotify.setType("4");
+            List<User> userList = systemService.findUser(new User(systemService.getRoleByEnname("ywy")));
+            List<OaNotifyRecord> oaNotifyRecordList = Lists.newArrayList();
+            for(User u:userList){
+                OaNotifyRecord entity = new OaNotifyRecord();
+                entity.setId(IdGen.uuid());
+                entity.setOaNotify(oaNotify);
+                entity.setUser(u);
+                entity.setReadFlag("0");
+                oaNotifyRecordList.add(entity);
+            }
+            oaNotify.setOaNotifyRecordList(oaNotifyRecordList);
+            oaNotifyService.save(oaNotify);
+        }else if("0".equals(goodsApp.getFirstExaStatus()) && "ycsh".equals(opt)){
+            //发货通知
+            OaNotify oaNotify = new OaNotify();
+            oaNotify.setContent("申请单号"+goodsApp.getAppNo()+"一级审核不通过，请查看具体原因");
+            oaNotify.setTitle("一级审核不通过");
+            oaNotify.setStatus("1");
+            oaNotify.setType("4");
+            List<User> userList = systemService.findUser(new User(systemService.getRoleByEnname("ywy")));
+            List<OaNotifyRecord> oaNotifyRecordList = Lists.newArrayList();
+            for(User u:userList){
+                OaNotifyRecord entity = new OaNotifyRecord();
+                entity.setId(IdGen.uuid());
+                entity.setOaNotify(oaNotify);
+                entity.setUser(u);
+                entity.setReadFlag("0");
+                oaNotifyRecordList.add(entity);
+            }
+            oaNotify.setOaNotifyRecordList(oaNotifyRecordList);
+            oaNotifyService.save(oaNotify);
+        }else if(StringUtils.isNotEmpty(goodsApp.getShipAddress()) && "fh".equals(opt)){
+            //发货通知
+            OaNotify oaNotify = new OaNotify();
+            oaNotify.setContent("申请单号"+goodsApp.getAppNo()+"已经发货，请查看发货提醒");
+            oaNotify.setTitle("已发货提醒");
+            oaNotify.setStatus("1");
+            oaNotify.setType("4");
+            List<User> userList = systemService.findUser(new User(systemService.getRoleByEnname("ywy")));
+            List<OaNotifyRecord> oaNotifyRecordList = Lists.newArrayList();
+            for(User u:userList){
+                OaNotifyRecord entity = new OaNotifyRecord();
+                entity.setId(IdGen.uuid());
+                entity.setOaNotify(oaNotify);
+                entity.setUser(u);
+                entity.setReadFlag("0");
+                oaNotifyRecordList.add(entity);
+            }
+            oaNotify.setOaNotifyRecordList(oaNotifyRecordList);
+            oaNotifyService.save(oaNotify);
+        }
+
+
         addMessage(redirectAttributes, "保存成功");
         return "redirect:" + adminPath + "/goodsApp/list";
     }

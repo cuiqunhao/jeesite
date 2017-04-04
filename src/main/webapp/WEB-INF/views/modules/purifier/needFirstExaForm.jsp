@@ -36,7 +36,7 @@
 		</li>
 	</ul>
 	<br/>
-	<form:form id="inputForm" modelAttribute="goodsApp" action="${ctx}/goodsApp/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="goodsApp" action="${ctx}/goodsApp/save?opt=ycsh" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
