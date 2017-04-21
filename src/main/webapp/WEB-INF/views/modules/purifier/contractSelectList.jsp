@@ -28,7 +28,7 @@
 <body>
 
 <!--查询区-->
-<form:form id="searchForm" modelAttribute="contract" action="${ctx}/contract/list" method="post" class="breadcrumb form-search">
+<form:form id="searchForm" modelAttribute="contract" action="${ctx}/contract/contractSelectList" method="post" class="breadcrumb form-search">
 	<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 	<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 	<div style="margin-top:8px;">

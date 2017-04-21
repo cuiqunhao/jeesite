@@ -93,8 +93,7 @@ public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
 
     @Transactional(readOnly = false)
     public int deleteGoodsApp(GoodsApp app){
-        app.setIsNewRecord(true);
-        app.preInsert();
+        app.preUpdate();
         int res = dao.deleteGoodsApp(app);
         dao.deleteGoodsAppRel(app);
         return res;

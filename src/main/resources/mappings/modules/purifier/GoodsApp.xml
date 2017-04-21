@@ -18,6 +18,7 @@
         a.sec_exa_content as secExaContent,
         a.ship_address as shipAddress,
         a.logistics as logistics,
+        a.logistics_company as logisticsCompany,
         a.appNo as appNo,
         a.create_by as createBy,
         a.create_date as createDate,
@@ -114,6 +115,7 @@
         sec_exa_content,
         ship_address,
         logistics,
+        logistics_company,
         appNo,
         create_by,
         create_date,
@@ -134,6 +136,7 @@
         #{secExaContent},
         #{shipAddress},
         #{logistics},
+        #{logisticsCompany},
         #{appNo},
         #{createBy.id},
         #{createDate},
@@ -199,6 +202,9 @@
         <if test="logistics != null and logistics != ''">
             logistics = #{logistics},
         </if>
+        <if test="logisticsCompany != null and logisticsCompany != ''">
+            logistics_company= #{logisticsCompany},
+        </if>
 
         <if test="consigneePhone != null and consigneePhone != ''">
             consignee_phone = #{consigneePhone},
@@ -219,6 +225,7 @@
         update_by = #{updateBy.id},
         del_flag = '1',
         update_date = #{updateDate}
+        where id = #{id}
     </update>
 
     <delete id="deleteGoodsAppRel">

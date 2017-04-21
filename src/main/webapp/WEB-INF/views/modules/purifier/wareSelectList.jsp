@@ -27,13 +27,13 @@
 <!--tab-->
 <ul class="nav nav-tabs">
 	<li class="active">
-		<a href="${ctx}/ware/list/">仓库列表</a>
+		<a href="${ctx}/ware/wareSelectList/">仓库列表</a>
 	</li>
 </ul>
 <!--tab-->
 
 <!--查询区-->
-<form:form id="searchForm" modelAttribute="ware" action="${ctx}/ware/list" method="post" class="breadcrumb form-search">
+<form:form id="searchForm" modelAttribute="ware" action="${ctx}/ware/wareSelectList" method="post" class="breadcrumb form-search">
 	<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 	<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 

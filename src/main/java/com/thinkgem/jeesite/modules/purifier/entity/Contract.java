@@ -19,6 +19,10 @@ public class Contract extends DataEntity<Contract>{
      */
     private String contractNo;
     /**
+     * 合同类型
+     */
+    private String contractType;
+    /**
      * 合同名称
      */
     private String contractName;
@@ -111,6 +115,14 @@ public class Contract extends DataEntity<Contract>{
 
     public Date getContractTimeEnd() {
         return contractTimeEnd;
+    }
+
+    public String getContractType() {
+        return contractType;
+    }
+
+    public void setContractType(String contractType) {
+        this.contractType = contractType;
     }
 
     public void setContractTimeEnd(Date contractTimeEnd) {

@@ -81,7 +81,7 @@
 		<div class="control-group">
 			<label class="control-label">收货人地址:</label>
 			<div class="controls">
-				<form:input path="consigneeAddress" htmlEscape="false" maxlength="11" class="required digits" disabled="true"/>
+				<form:input path="consigneeAddress" htmlEscape="false" maxlength="11" class="input-xxlarge required" disabled="true"/>
 			</div>
 		</div>
 
@@ -169,7 +169,12 @@
 				<purifier:wareSelect id="ware.id" labelName="shipAddress" disable="false" idValue="${goodsApp.ware.id}" labelValue="${goodsApp.ware.wareName}"/>
 			</div>
 		</div>
-
+		<div class="control-group">
+			<label class="control-label">物流公司:</label>
+			<div class="controls">
+				<form:input path="logisticsCompany" htmlEscape="false" maxlength="150" class="input-xxlarge required"/>
+			</div>
+		</div>
 		<div class="control-group">
 			<label class="control-label">物流信息:</label>
 			<div class="controls">

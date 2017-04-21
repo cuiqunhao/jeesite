@@ -6,6 +6,7 @@
         a.id as id,
         a.contractNo as contractNo,
         a.contract_name as contractName,
+        a.contract_type as contractType,
         a.contract_amount as contractAmount,
         a.contract_bengin_time as contractBenginTime,
         a.contract_end_time as contractEndTime,
@@ -54,6 +55,7 @@
         INSERT INTO purifier_contract(
         contractNo,
         contract_name,
+        contract_type,
         contract_amount,
         contract_bengin_time,
         contract_end_time,
@@ -72,6 +74,7 @@
         )VALUES (
         #{contractNo},
         #{contractName},
+         #{contractType},
         #{contractAmount},
         #{contractBenginTime},
         #{contractEndTime},
@@ -97,6 +100,7 @@
         <if test="mianCycle != null and mianCycle != ''">mian_cycle = #{mianCycle},</if>
         <if test="contractNo != null and contractNo != ''">contractNo = #{contractNo},</if>
         <if test="contractName != null and contractName != ''">contract_name = #{contractName},</if>
+        <if test="contractType != null and contractType != ''">contract_type = #{contractType},</if>
         <if test="contractAmount != null and contractAmount != ''">contract_amount = #{contractAmount},</if>
         <if test="contractBenginTime != null and contractBenginTime != ''">contract_bengin_time = #{contractBenginTime},</if>
         <if test="contractEndTime != null and contractEndTime != ''">contract_end_time = #{contractEndTime},</if>

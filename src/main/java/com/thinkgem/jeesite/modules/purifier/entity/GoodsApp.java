@@ -88,6 +88,10 @@ public class GoodsApp extends DataEntity<GoodsApp>{
      */
     private String logistics;
     /**
+     * 物流公司名称
+     */
+    private String logisticsCompany;
+    /**
      * 申请编号
      */
     private String appNo;
@@ -106,6 +110,14 @@ public class GoodsApp extends DataEntity<GoodsApp>{
      * 商品列表
      */
     private List<GoodsAppRel> goodList = Lists.newArrayList();
+
+    public String getLogisticsCompany() {
+        return logisticsCompany;
+    }
+
+    public void setLogisticsCompany(String logisticsCompany) {
+        this.logisticsCompany = logisticsCompany;
+    }
 
     @Override
     public String getRemarks() {
@@ -284,4 +296,5 @@ public class GoodsApp extends DataEntity<GoodsApp>{
     public void setAppNo(String appNo) {
         this.appNo = appNo;
     }
+
 }

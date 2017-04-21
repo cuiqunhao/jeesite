@@ -131,19 +131,7 @@
 					$(this).click();
 				}
 			});
-			// 获取通知数目  <c:set var="oaNotifyRemindInterval" value="${fns:getConfig('oa.notify.remind.interval')}"/>
-			function getNotifyNum(){
-				$.get("${ctx}/oa/oaNotify/self/count?updateSession=0&t="+new Date().getTime(),function(data){
-					var num = parseFloat(data);
-					if (num > 0){
-						$("#notifyNum,#notifyNum2").show().html("("+num+")");
-					}else{
-						$("#notifyNum,#notifyNum2").hide()
-					}
-				});
-			}
-			getNotifyNum(); //<c:if test="${oaNotifyRemindInterval ne '' && oaNotifyRemindInterval ne '0'}">
-			setInterval(getNotifyNum, ${oaNotifyRemindInterval}); //</c:if>
+
 		});
 		// <c:if test="${tabmode eq '1'}"> 添加一个页签
 		function addTab($this, refresh){
@@ -196,7 +184,7 @@
 				<!-- 用户信息开始 -->
 				<li id="userInfo" class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" title="个人信息">
-						您好, ${fns:getUser().name}&nbsp;<span id="notifyNum" class="label label-info hide"></span>
+						您好, ${fns:getUser().name}&nbsp;<span id="notifyImg" class="icon-bell"></span><span id="notifyNum" class="label label-info hide"></span>
 					</a>
 					<ul class="dropdown-menu">
 						<li><a href="${ctx}/sys/user/info" target="mainFrame"><i class="icon-user"></i>&nbsp; 个人信息</a></li>
@@ -308,6 +296,36 @@
 	function openCloseClickCallBack(b){
 		$.fn.jerichoTab.resize();
 	} // </c:if>
+
+
+	var  t;
+	function showNotify(){
+		var notifyImg = $("#notifyImg")
+		if(notifyImg.css("visibility") == "visible"){
+			notifyImg.css({"visibility":"hidden"});
+		}else{
+			notifyImg.css({"visibility":"visible"});
+		}
+		t = setTimeout('showNotify()',300);
+	}
+	// 获取通知数目  <c:set var="oaNotifyRemindInterval" value="${fns:getConfig('oa.notify.remind.interval')}"/>
+	function getNotifyNum(){
+		$.get("${ctx}/oa/oaNotify/self/count?updateSession=0&t="+new Date().getTime(),function(data){
+			var num = parseFloat(data);
+			if (num > 0){
+				$("#notifyNum,#notifyNum2").show().html("("+num+")");
+				showNotify();
+			}else{
+				$("#notifyNum,#notifyNum2,#notifyImg").hide();
+				clearTimeout(t);
+			}
+		});
+	}
+	getNotifyNum(); //<c:if test="${oaNotifyRemindInterval ne '' && oaNotifyRemindInterval ne '0'}">
+	setInterval(getNotifyNum, ${oaNotifyRemindInterval}); //</c:if>
+
+
+
 </script>
 <script src="${ctxStatic}/common/wsize.min.js" type="text/javascript"></script>
 </body>

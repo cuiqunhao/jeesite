@@ -112,13 +112,13 @@
 	<div class="control-group">
 		<label class="control-label">收货人电话:</label>
 		<div class="controls">
-			<form:input path="consigneePhone" htmlEscape="false" maxlength="11" class="required digits"  />
+			<form:input path="consigneePhone" htmlEscape="false" maxlength="13" class="required"  />
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label">收货人地址:</label>
 		<div class="controls">
-			<form:input path="consigneeAddress" htmlEscape="false" maxlength="11" class="required digits" />
+			<form:input path="consigneeAddress" htmlEscape="false" maxlength="150" class="input-xxlarge required"/>
 		</div>
 	</div>
 
@@ -203,6 +203,13 @@
 		<label class="control-label">发货仓库:</label>
 		<div class="controls">
 			<purifier:wareSelect id="ware.id" labelName="shipAddress" disable="true" idValue="${goodsApp.ware.id}" labelValue="${goodsApp.ware.wareName}"/>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label">物流公司:</label>
+		<div class="controls">
+			<form:input path="logisticsCompany" htmlEscape="false" maxlength="150" class="input-xxlarge required" disabled="true"/>
 		</div>
 	</div>
 

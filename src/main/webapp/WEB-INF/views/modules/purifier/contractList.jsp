@@ -62,6 +62,7 @@
 	<tr>
 		<th>合同编号</th>
 		<th>合同名称</th>
+		<th>合同类型</th>
 		<th>联系人</th>
 		<th>联系电话</th>
 		<th>业务员</th>
@@ -79,6 +80,14 @@
 		<tr>
 			<td><a href="${ctx}/contract/form?id=${contract.id}">${contract.contractNo}</a></td>
 			<td>${contract.contractName}</td>
+			<td>
+				<c:choose>
+					<c:when test="${contract.contractType eq 1}">家用</c:when>
+					<c:when test="${empty contract.contractType}"></c:when>
+					<c:when test="${contract.contractType eq 2}">商用</c:when>
+				</c:choose>
+
+			</td>
 			<td>${contract.contacts}</td>
 			<td>${contract.contactsPhone}</td>
 			<td>${contract.salesman.name}</td>
