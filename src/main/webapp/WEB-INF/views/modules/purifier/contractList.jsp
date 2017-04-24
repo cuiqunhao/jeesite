@@ -5,6 +5,21 @@
 	<title>合同管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#btnExport").click(function(){
+				top.$.jBox.confirm("确认要导出订单数据吗？","系统提示",function(v,h,f){
+					if(v=="ok"){
+						$("#searchForm").attr("action","${ctx}/contract/export");
+						$("#searchForm").submit();
+					}
+				},{buttonsFocus:1});
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});
+			$("#btnImport").click(function(){
+				$.jBox($("#importBox").html(), {title:"导入数据", buttons:{"关闭":true},
+					bottomText:"导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"});
+			});
+		});
 		function page(n,s){
 			$("#pageNo").val(n);
 			$("#pageSize").val(s);
@@ -14,6 +29,14 @@
 	</script>
 </head>
 <body>
+<div id="importBox" class="hide">
+	<form id="importForm" action="${ctx}/contract/import" method="post" enctype="multipart/form-data"
+		  class="form-search" style="padding-left:20px;text-align:center;" onsubmit="loading('正在导入，请稍等...');"><br/>
+		<input id="uploadFile" name="file" type="file" style="width:330px"/><br/><br/>　　
+		<input id="btnImportSubmit" class="btn btn-primary" type="submit" value="   导    入   "/>
+		<a href="${ctx}/contract/import/template">下载模板</a>
+	</form>
+</div>
 <!--tab-->
 <ul class="nav nav-tabs">
 	<li class="active">
@@ -50,6 +73,8 @@
 		<label>合同名称：</label>
 		<form:input path="contractName" htmlEscape="false" maxlength="64" class="input-medium"/>
 		&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+		<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
+		<input id="btnImport" class="btn btn-primary" type="button" value="导入"/>
 	</div>
 </form:form>
 <!--查询区-->

@@ -72,4 +72,9 @@ public class ContractGoodsRel extends DataEntity<ContractGoodsRel>{
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    @Override
+    public String toString() {
+        return good.getGoodName()+"#"+good.getType()+"#"+appNum+"#"+usefor;
+    }
 }

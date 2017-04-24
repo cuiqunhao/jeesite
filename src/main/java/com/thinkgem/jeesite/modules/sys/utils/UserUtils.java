@@ -48,6 +48,7 @@ public class UserUtils {
 	public static final String CACHE_ROLE_LIST = "roleList";
 	public static final String CACHE_MENU_LIST = "menuList";
 	public static final String CACHE_AREA_LIST = "areaList";
+	public static final String CACHE_USER_LIST = "userList";
 	public static final String CACHE_OFFICE_LIST = "officeList";
 	public static final String CACHE_OFFICE_ALL_LIST = "officeAllList";
 	
@@ -186,6 +187,20 @@ public class UserUtils {
 			putCache(CACHE_AREA_LIST, areaList);
 		}
 		return areaList;
+	}
+
+	/**
+	 * 获取所有
+	 * @return
+	 */
+	public static List<User> getUserList(){
+		@SuppressWarnings("unchecked")
+		List<User> userList = (List<User>)getCache(CACHE_USER_LIST);
+		if (userList == null){
+			userList = userDao.findAllList(new User());
+			putCache(CACHE_USER_LIST, userList);
+		}
+		return userList;
 	}
 	
 	/**

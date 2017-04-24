@@ -2,6 +2,8 @@ package com.thinkgem.jeesite.modules.purifier.entity;
 
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.common.utils.excel.fieldtype.GoodListType;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
 import java.util.Date;
@@ -17,84 +19,104 @@ public class Contract extends DataEntity<Contract>{
     /**
      * 合同编号
      */
+    @ExcelField(title="合同编号", align=2, sort=1)
     private String contractNo;
     /**
      * 合同类型
      */
+    @ExcelField(title="合同类型", align=2, sort=2)
     private String contractType;
     /**
      * 合同名称
      */
+    @ExcelField(title="合同名称", align=2, sort=3)
     private String contractName;
     /**
      * 合同金额
      */
+    @ExcelField(title="合同金额", align=2, sort=4)
     private Double contractAmount;
     /**
      * 合同期限开始
      */
+    @ExcelField(title="合同期限开始", align=2, sort=5)
     private Date contractBenginTime;
     /**
      * 合同期限结束
      */
+    @ExcelField(title="合同期限结束", align=2, sort=6)
     private Date contractEndTime;
     /**
      * 联系人
      */
+    @ExcelField(title="联系人", align=2, sort=7)
     private String contacts;
     /**
      * 联系电话
      */
+    @ExcelField(title="联系电话", align=2, sort=7)
     private String contactsPhone;
     /**
      * 业务员
      */
+    @ExcelField(title="业务员", align=2, sort=7)
     private User salesman;
     /**
      * 所属项目
      */
+    @ExcelField(title="所属项目", align=2, sort=7)
     private String item;
     /**
      * 联系地址
      */
+    @ExcelField(title="联系地址", align=2, sort=7)
     private String contactsAddress;
     /**
      * 签订合同时间
      */
+    @ExcelField(title="签订合同时间", align=2, sort=7)
     private Date contractTime;
     /**
      * 项目施工完成时间
      */
+    @ExcelField(title="项目施工完成时间", align=2, sort=7)
     private Date completeTime;
     /**
      * 安装人员
      */
+    @ExcelField(title="安装人员", align=2, sort=7)
     private User installer;
     /**
      * 维护周期
      */
+    @ExcelField(title="维护周期", align=2, sort=7)
     private Integer mianCycle;
     /**
      * 合同收款周期
      */
+    @ExcelField(title="合同收款周期", align=2, sort=7)
     private Integer collCycle;
     /**
      * 备注
      */
+    @ExcelField(title="备注", align=2, sort=7)
     private String remarks;
 
     /**
      * 签订合同时间开始
      */
+    @ExcelField(title="签订合同时间开始", align=2, sort=7)
     private Date contractTimeBegin;
     /**
      * 签订合同时间结束
      */
+    @ExcelField(title="签订合同时间结束", align=2, sort=7)
     private Date contractTimeEnd;
 
     /**
      * 商品列表
      */
+    @ExcelField(title="商品列表", align=2, sort=7,fieldType = GoodListType.class)
     private List<ContractGoodsRel> goodList = Lists.newArrayList();
 
     public List<ContractGoodsRel> getGoodList() {
