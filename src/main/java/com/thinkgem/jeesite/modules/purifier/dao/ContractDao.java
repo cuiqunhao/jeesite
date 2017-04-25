@@ -27,4 +27,6 @@ public interface ContractDao extends CrudDao<Contract>{
     int insterContractGoodsRel(Contract contract);
 
     int deleteContractGoodsRel(Contract contract);
+
+    Contract getByContractNo(Contract contract);
 }

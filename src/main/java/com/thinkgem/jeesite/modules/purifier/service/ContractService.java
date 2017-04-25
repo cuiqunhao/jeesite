@@ -88,4 +88,8 @@ public class ContractService extends CrudService<ContractDao,Contract>{
         contract.setGoodList(contractGoodsRelDao.findAllList(contractGoodsRel));
         return contract;
     }
+
+    public Contract getByContractNo(Contract contract){
+       return dao.getByContractNo(contract);
+    }
 }

@@ -1,15 +1,13 @@
 package com.thinkgem.jeesite.common.utils.excel.fieldtype;
 
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * Created by Admin on 2017/4/24.
  */
-public class InstallerType {
-
+public class UserType {
     /**
      * 导出
      * @param val

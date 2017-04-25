@@ -75,6 +75,6 @@ public class ContractGoodsRel extends DataEntity<ContractGoodsRel>{
 
     @Override
     public String toString() {
-        return good.getGoodName()+"#"+good.getType()+"#"+appNum+"#"+usefor;
+        return this.good.getGoodName()+"#"+this.good.getType()+"#"+this.appNum+"#"+this.usefor;
     }
 }

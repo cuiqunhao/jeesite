@@ -3,6 +3,7 @@ package com.thinkgem.jeesite.modules.purifier.entity;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.common.utils.excel.fieldtype.ContractType;
 import com.thinkgem.jeesite.common.utils.excel.fieldtype.GoodListType;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
@@ -24,7 +25,7 @@ public class Contract extends DataEntity<Contract>{
     /**
      * 合同类型
      */
-    @ExcelField(title="合同类型", align=2, sort=2)
+    @ExcelField(title="合同类型", align=2, sort=2,dictType = "contractType")
     private String contractType;
     /**
      * 合同名称
@@ -105,12 +106,12 @@ public class Contract extends DataEntity<Contract>{
     /**
      * 签订合同时间开始
      */
-    @ExcelField(title="签订合同时间开始", align=2, sort=7)
+//    @ExcelField(title="签订合同时间开始", align=2, sort=7)
     private Date contractTimeBegin;
     /**
      * 签订合同时间结束
      */
-    @ExcelField(title="签订合同时间结束", align=2, sort=7)
+//    @ExcelField(title="签订合同时间结束", align=2, sort=7)
     private Date contractTimeEnd;
 
     /**

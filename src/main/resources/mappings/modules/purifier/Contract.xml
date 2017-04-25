@@ -125,6 +125,15 @@
         a.id = #{id}
     </select>
 
+    <select id="getByContractNo" resultType="Contract">
+        SELECT
+        <include refid="contractCol"/>
+        FROM purifier_contract a
+        <include refid="contractJoin"/>
+        WHERE
+        contractNo = #{contractNo}
+    </select>
+
     <select id="findList" resultType="Contract">
         SELECT
         <include refid="contractCol"/>

@@ -9,6 +9,7 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.purifier.entity.Contract;
+import com.thinkgem.jeesite.modules.purifier.entity.ContractGoodsRel;
 import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
 import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
 import com.thinkgem.jeesite.modules.purifier.service.ContractService;
@@ -201,7 +202,7 @@ public class ContractController extends BaseController{
         try {
             String fileName = "订单数据导入模板.xlsx";
             List<Contract> list = Lists.newArrayList();
-            list.add(contractService.get("1"));
+            list.add(contractService.getByGoodsAppId(17l));
             new ExportExcel("订单数据", Contract.class, 2).setDataList(list).write(response, fileName).dispose();
             return null;
         } catch (Exception e) {
@@ -223,7 +224,12 @@ public class ContractController extends BaseController{
         try {
             String fileName = "订单数据"+ DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<Contract> page = contractService.findPage(new Page<Contract>(request, response, -1), contract);
-            new ExportExcel("订单数据", Contract.class).setDataList(page.getList()).write(response, fileName).dispose();
+            List<Contract> exList = Lists.newArrayList();
+            for(Contract contract1:page.getList()){
+                contract1 = contractService.getByGoodsAppId(Long.valueOf(contract1.getId()));
+                exList.add(contract1);
+            }
+            new ExportExcel("订单数据", Contract.class).setDataList(exList).write(response, fileName).dispose();
             return null;
         } catch (Exception e) {
             addMessage(redirectAttributes, "导出订单失败！失败信息："+e.getMessage());
@@ -254,7 +260,7 @@ public class ContractController extends BaseController{
                 try{
                     if ("true".equals(checkContractNo(contract.getContractNo()))){
                         BeanValidators.validateWithException(validator, contract);
-                        contractService.save(contract);
+                        contractService.insterContract(contract);
                         successNum++;
                     }else{
                         failureMsg.append("<br/>订单 "+contract.getContractNo()+" 已存在; ");
@@ -268,6 +274,7 @@ public class ContractController extends BaseController{
                         failureNum++;
                     }
                 }catch (Exception ex) {
+                    logger.error("导入失败",ex);
                     failureMsg.append("<br/>订单 "+contract.getContractNo()+" 导入失败："+ex.getMessage());
                 }
             }
@@ -289,7 +296,7 @@ public class ContractController extends BaseController{
     private String checkContractNo(String contractNo) {
         Contract contract = new Contract();
         contract.setContractNo(contractNo);
-        if (contractNo !=null && contractService.get(contract) == null) {
+        if (contractNo !=null && contractService.getByContractNo(contract) == null) {
             return "true";
         }
         return "false";
