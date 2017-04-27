@@ -53,6 +53,12 @@
         FROM purifier_goods a
         <include refid="whereCon"/>
     </select>
+    <select id="findAllList" resultType="Goods">
+        SELECT
+        <include refid="goodsCol"/>
+        FROM purifier_goods a
+        <include refid="whereCon"/>
+    </select>
 
 
 </mapper>

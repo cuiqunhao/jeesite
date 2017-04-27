@@ -1,35 +1,41 @@
 package com.thinkgem.jeesite.common.utils.excel.fieldtype;
 
-import com.google.common.collect.Lists;
-import com.thinkgem.jeesite.common.utils.Collections3;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.purifier.entity.ContractGoodsRel;
-import com.thinkgem.jeesite.modules.purifier.entity.Goods;
+import com.thinkgem.jeesite.modules.purifier.dao.ContractDao;
+import com.thinkgem.jeesite.modules.purifier.entity.Contract;
 
 import java.util.List;
 
 /**
- * Created by Admin on 2017/4/24.
+ * Created by pintec on 17/4/27.
  */
 public class ContractType {
+    private static ContractDao contractDao = SpringContextHolder.getBean(ContractDao.class);
     /**
-     * 获取对象值（导入）
+     * 导出
+     * @param val
+     * @return
      */
-    public static Object getValue(String val) {
-        if(StringUtils.isEmpty(val)){
-            return "";
-        }
-        return "家用".equals(val)?"1":"2";
-    }
-
-    /**
-     * 设置对象值（导出）
-     */
-    public static String setValue(Object val) {
-        if (val != null){
-            return "1".equals(val)?"家用":"商用";
+    public static String setValue(Object val){
+        if (val != null && ((Contract)val).getContractNo() != null){
+            return ((Contract)val).getContractNo();
         }
         return "";
     }
 
+    /**
+     * 导入
+     * @param val
+     * @return
+     */
+    public static Object getValue(String val){
+        List<Contract> contractList = contractDao.findAllList(new Contract());
+        for (Contract e : contractList){
+            if (StringUtils.trimToEmpty(val).equals(e.getContractNo())){
+                return e;
+            }
+        }
+        return null;
+    }
 }

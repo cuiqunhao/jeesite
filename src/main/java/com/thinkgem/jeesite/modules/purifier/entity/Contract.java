@@ -3,7 +3,6 @@ package com.thinkgem.jeesite.modules.purifier.entity;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
-import com.thinkgem.jeesite.common.utils.excel.fieldtype.ContractType;
 import com.thinkgem.jeesite.common.utils.excel.fieldtype.GoodListType;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
@@ -100,7 +99,7 @@ public class Contract extends DataEntity<Contract>{
     /**
      * 备注
      */
-    @ExcelField(title="备注", align=2, sort=7)
+//    @ExcelField(title="备注", align=2, sort=7)
     private String remarks;
 
     /**

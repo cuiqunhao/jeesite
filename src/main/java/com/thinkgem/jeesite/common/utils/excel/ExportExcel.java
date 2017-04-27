@@ -73,7 +73,8 @@ public class ExportExcel {
 	 * 注解列表（Object[]{ ExcelField, Field/Method }）
 	 */
 	List<Object[]> annotationList = Lists.newArrayList();
-	
+
+
 	/**
 	 * 构造函数
 	 * @param title 表格标题，传“空值”，表示无标题
@@ -90,8 +91,16 @@ public class ExportExcel {
 	 * @param type 导出类型（1:导出数据；2：导出模板）
 	 * @param groups 导入分组
 	 */
-	public ExportExcel(String title, Class<?> cls, int type, int... groups){
-		// Get annotation field 
+	public ExportExcel(String title, Class<?> cls, int type,int... groups){
+		wb = new SXSSFWorkbook(500);
+		List<String> headerList = genHeaderList(cls, type, groups);
+		addSheet(title, headerList);
+	}
+
+	public List<String> genHeaderList(Class<?> cls, int type, int[] groups) {
+		annotationList.clear();
+		annotationList = Lists.newArrayList();
+		// Get annotation field
 		Field[] fs = cls.getDeclaredFields();
 		for (Field f : fs){
 			ExcelField ef = f.getAnnotation(ExcelField.class);
@@ -159,16 +168,16 @@ public class ExportExcel {
 			}
 			headerList.add(t);
 		}
-		initialize(title, headerList);
+		return headerList;
 	}
-	
+
 	/**
 	 * 构造函数
 	 * @param title 表格标题，传“空值”，表示无标题
 	 * @param headers 表头数组
 	 */
 	public ExportExcel(String title, String[] headers) {
-		initialize(title, Lists.newArrayList(headers));
+		addSheet(title, Lists.newArrayList(headers));
 	}
 	
 	/**
@@ -177,7 +186,7 @@ public class ExportExcel {
 	 * @param headerList 表头列表
 	 */
 	public ExportExcel(String title, List<String> headerList) {
-		initialize(title, headerList);
+		addSheet(title, headerList);
 	}
 	
 	/**
@@ -185,9 +194,9 @@ public class ExportExcel {
 	 * @param title 表格标题，传“空值”，表示无标题
 	 * @param headerList 表头列表
 	 */
-	private void initialize(String title, List<String> headerList) {
-		this.wb = new SXSSFWorkbook(500);
-		this.sheet = wb.createSheet("Export");
+	public void addSheet(String title, List<String> headerList) {
+		rownum = 0;
+		this.sheet = wb.createSheet(title);
 		this.styles = createStyles(wb);
 		// Create title
 		if (StringUtils.isNotBlank(title)){
@@ -432,7 +441,7 @@ public class ExportExcel {
 	
 	/**
 	 * 输出到文件
-	 * @param fileName 输出文件名
+	 * @param name 输出文件名
 	 */
 	public ExportExcel writeFile(String name) throws FileNotFoundException, IOException{
 		FileOutputStream os = new FileOutputStream(name);

@@ -1,6 +1,7 @@
 package com.thinkgem.jeesite.modules.purifier.entity;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
 import java.util.Date;
@@ -15,23 +16,28 @@ public class Maintain extends DataEntity<Maintain>{
     /**
      * 合同ID
      */
+    @ExcelField(title="合同编号", align=2, sort=1)
     private Contract contract;
     /**
      * 维护人员
      */
+    @ExcelField(title="维护人员", align=2, sort=1)
     private User userId;
     /**
      * 本次维护时间
      */
+    @ExcelField(title="本次维护时间", align=2, sort=1)
     private Date mainTime;
     /**
      * 下次维护时间
      */
+    @ExcelField(title="下次维护时间", align=2, sort=1)
     private Date nextMainTime;
 
     /**
      * 维护内容
      */
+    @ExcelField(title="维护内容", align=2, sort=1)
     private String mainContent;
 
     private String remarks;

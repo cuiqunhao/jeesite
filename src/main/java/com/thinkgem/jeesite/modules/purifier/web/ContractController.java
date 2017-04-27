@@ -8,16 +8,14 @@ import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.purifier.entity.Contract;
-import com.thinkgem.jeesite.modules.purifier.entity.ContractGoodsRel;
-import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
-import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
+import com.thinkgem.jeesite.modules.purifier.entity.*;
 import com.thinkgem.jeesite.modules.purifier.service.ContractService;
 import com.thinkgem.jeesite.modules.purifier.service.MaintainService;
 import com.thinkgem.jeesite.modules.purifier.service.ReceivablesService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -202,8 +201,85 @@ public class ContractController extends BaseController{
         try {
             String fileName = "订单数据导入模板.xlsx";
             List<Contract> list = Lists.newArrayList();
-            list.add(contractService.getByGoodsAppId(17l));
-            new ExportExcel("订单数据", Contract.class, 2).setDataList(list).write(response, fileName).dispose();
+
+            Contract contract = new Contract();
+            contract.setCollCycle(30);
+            contract.setCompleteTime(new Date());
+            contract.setContacts("张三");
+            contract.setCompleteTime(new Date());
+            contract.setContactsAddress("北京地址");
+            contract.setContactsPhone("15620679609");
+            contract.setContractAmount(11d);
+            contract.setContractBenginTime(new Date());
+            contract.setContractName("订单名称");
+            contract.setContractNo("x234445d");
+            contract.setContractEndTime(new Date());
+            contract.setContractTime(new Date());
+            contract.setContractType("1");
+            contract.setInstaller(UserUtils.getUser());
+            contract.setItem("项目");
+            contract.setMianCycle(30);
+            contract.setSalesman(UserUtils.getUser());
+            contract.setContractTimeBegin(new Date());
+            contract.setContractTimeEnd(new Date());
+
+            List<ContractGoodsRel> goodList = Lists.newArrayList();
+            ContractGoodsRel contractGoodsRel = new ContractGoodsRel();
+            contractGoodsRel.setAppNum(10L);
+            Goods good = new Goods();
+            good.setGoodName("商品名");good.setType("x1");
+            contractGoodsRel.setGood(good);
+            contractGoodsRel.setUsefor("其他用途");
+            goodList.add(contractGoodsRel);
+            goodList.add(contractGoodsRel);
+            goodList.add(contractGoodsRel);
+            contract.setGoodList(goodList);
+
+            list.add(contract);
+//            new ExportExcel("订单数据", Contract.class, 2).setDataList(list).write(response, fileName).dispose();
+
+            List<Contract> exList = Lists.newArrayList();
+            List<Receivables> exRecList = Lists.newArrayList();
+            List<Maintain> exMainList = Lists.newArrayList();
+
+            for(Contract contract1:list){
+                exList.add(contract1);
+
+                //合同收款信息
+                List<Receivables> receivablesList= Lists.newArrayList();
+                Receivables receivables = new Receivables();
+                receivables.setAmount(100D);
+                receivables.setContract(contract1);
+                receivables.setInvoice("发票信息");
+                receivables.setIsInvoice("1");
+                receivables.setNextRecTime(new Date());
+                receivables.setRecTime(new Date());
+                receivables.setUserId(UserUtils.getUser());
+                receivablesList.add(receivables);
+
+                exRecList.addAll(receivablesList);
+                //合同维护信息
+                List<Maintain> maintainList = Lists.newArrayList();
+                Maintain maintain = new Maintain();
+                maintain.setContract(contract1);
+                maintain.setMainContent("维护内容");
+                maintain.setUserId(UserUtils.getUser());
+                maintain.setMainTime(new Date());
+                maintain.setNextMainTime(new Date());
+                maintainList.add(maintain);
+                exMainList.addAll(maintainList);
+
+            }
+
+            ExportExcel exportExcel = new ExportExcel("订单数据", Contract.class,1);
+            exportExcel.setDataList(list);
+            exportExcel.addSheet("收款信息",exportExcel.genHeaderList(Receivables.class,1,null));
+            exportExcel.setDataList(exRecList);
+            exportExcel.addSheet("维护信息",exportExcel.genHeaderList(Maintain.class,1,null));
+            exportExcel.setDataList(exMainList);
+            exportExcel.write(response, fileName).dispose();
+
+
             return null;
         } catch (Exception e) {
             addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
@@ -225,11 +301,33 @@ public class ContractController extends BaseController{
             String fileName = "订单数据"+ DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<Contract> page = contractService.findPage(new Page<Contract>(request, response, -1), contract);
             List<Contract> exList = Lists.newArrayList();
+            List<Receivables> exRecList = Lists.newArrayList();
+            List<Maintain> exMainList = Lists.newArrayList();
             for(Contract contract1:page.getList()){
                 contract1 = contractService.getByGoodsAppId(Long.valueOf(contract1.getId()));
                 exList.add(contract1);
+
+                //合同收款信息
+                Receivables receivables = new Receivables();
+                receivables.setContract(contract1);
+                List<Receivables> receivablesList= receivablesService.findList(receivables);
+                exRecList.addAll(receivablesList);
+                //合同维护信息
+                Maintain maintain = new Maintain();
+                maintain.setContract(contract1);
+                List<Maintain> maintainList = maintainService.findList(maintain);
+                exMainList.addAll(maintainList);
+
             }
-            new ExportExcel("订单数据", Contract.class).setDataList(exList).write(response, fileName).dispose();
+
+
+            ExportExcel exportExcel = new ExportExcel("订单数据", Contract.class,1);
+            exportExcel.setDataList(exList);
+            exportExcel.addSheet("收款信息",exportExcel.genHeaderList(Receivables.class,1,null));
+            exportExcel.setDataList(exRecList);
+            exportExcel.addSheet("维护信息",exportExcel.genHeaderList(Maintain.class,1,null));
+            exportExcel.setDataList(exMainList);
+            exportExcel.write(response, fileName).dispose();
             return null;
         } catch (Exception e) {
             addMessage(redirectAttributes, "导出订单失败！失败信息："+e.getMessage());
@@ -278,6 +376,66 @@ public class ContractController extends BaseController{
                     failureMsg.append("<br/>订单 "+contract.getContractNo()+" 导入失败："+ex.getMessage());
                 }
             }
+            ImportExcel ei2 = new ImportExcel(file, 2, 0);
+            List<Receivables> list2 = ei2.getDataList(Receivables.class);
+            ImportExcel ei3 = new ImportExcel(file, 3, 0);
+            List<Maintain> list3 = ei3.getDataList(Maintain.class);
+
+            for (Contract contract : list){
+                for (Receivables receivables : list2){
+                    try{
+                        if(contract.getContractNo().equals(receivables.getContract().getContractNo())){
+                            receivables.setContract(contract);
+                            BeanValidators.validateWithException(validator, receivables);
+                            receivablesService.saveRec(receivables);
+                            successNum++;
+                        }else{
+                            continue;
+                        }
+                    }catch(ConstraintViolationException ex){
+                        failureMsg.append("<br/>订单收款 "+receivables.getContract().getContractNo()+" 导入失败：");
+                        List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
+                        for (String message : messageList){
+                            failureMsg.append(message+"; ");
+                            failureNum++;
+                        }
+                    }catch (Exception ex) {
+                        logger.error("导入失败",ex);
+                        failureMsg.append("<br/>订单收款 "+receivables.getContract().getContractNo()+" 导入失败："+ex.getMessage());
+                    }
+                }
+
+                for (Maintain maintain : list3){
+                    try{
+                        if(contract.getContractNo().equals(maintain.getContract().getContractNo())){
+                            maintain.setContract(contract);
+                            BeanValidators.validateWithException(validator, maintain);
+                            maintainService.save(maintain);
+                            successNum++;
+                        }else{
+                            continue;
+                        }
+
+                    }catch(ConstraintViolationException ex){
+                        failureMsg.append("<br/>订单het "+maintain.getContract().getContractNo()+" 导入失败：");
+                        List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
+                        for (String message : messageList){
+                            failureMsg.append(message+"; ");
+                            failureNum++;
+                        }
+                    }catch (Exception ex) {
+                        logger.error("导入失败",ex);
+                        failureMsg.append("<br/>订单het "+maintain.getContract().getContractNo()+" 导入失败："+ex.getMessage());
+                    }
+                }
+
+            }
+
+
+
+
+
+
             if (failureNum>0){
                 failureMsg.insert(0, "，失败 "+failureNum+" 条订单，导入信息如下：");
             }

@@ -141,6 +141,13 @@
         <include refid="contractJoin"/>
         <include refid="whereCon"/>
     </select>
+    <select id="findAllList" resultType="Contract">
+        SELECT
+        <include refid="contractCol"/>
+        FROM purifier_contract a
+        <include refid="contractJoin"/>
+        <include refid="whereCon"/>
+    </select>
 
 
     <select id="findNotInstallList" resultType="Contract">
