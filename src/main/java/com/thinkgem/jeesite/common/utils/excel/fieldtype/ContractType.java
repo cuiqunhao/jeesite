@@ -36,6 +36,8 @@ public class ContractType {
                 return e;
             }
         }
-        return null;
+        Contract contract = new Contract();
+        contract.setContractNo(StringUtils.trimToEmpty(val));
+        return contract;
     }
 }

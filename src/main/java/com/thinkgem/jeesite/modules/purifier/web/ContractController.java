@@ -227,12 +227,12 @@ public class ContractController extends BaseController{
             ContractGoodsRel contractGoodsRel = new ContractGoodsRel();
             contractGoodsRel.setAppNum(10L);
             Goods good = new Goods();
-            good.setGoodName("商品名");good.setType("x1");
+            good.setGoodName("海之眼");good.setType("1x");
             contractGoodsRel.setGood(good);
             contractGoodsRel.setUsefor("其他用途");
+//            goodList.add(contractGoodsRel);
             goodList.add(contractGoodsRel);
-            goodList.add(contractGoodsRel);
-            goodList.add(contractGoodsRel);
+//            goodList.add(contractGoodsRel);
             contract.setGoodList(goodList);
 
             list.add(contract);
@@ -376,9 +376,9 @@ public class ContractController extends BaseController{
                     failureMsg.append("<br/>订单 "+contract.getContractNo()+" 导入失败："+ex.getMessage());
                 }
             }
-            ImportExcel ei2 = new ImportExcel(file, 2, 0);
+            ImportExcel ei2 = new ImportExcel(file, 1, 1);
             List<Receivables> list2 = ei2.getDataList(Receivables.class);
-            ImportExcel ei3 = new ImportExcel(file, 3, 0);
+            ImportExcel ei3 = new ImportExcel(file, 1, 2);
             List<Maintain> list3 = ei3.getDataList(Maintain.class);
 
             for (Contract contract : list){
@@ -430,12 +430,6 @@ public class ContractController extends BaseController{
                 }
 
             }
-
-
-
-
-
-
             if (failureNum>0){
                 failureMsg.insert(0, "，失败 "+failureNum+" 条订单，导入信息如下：");
             }
