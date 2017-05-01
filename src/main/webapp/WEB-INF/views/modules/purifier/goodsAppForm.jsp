@@ -47,8 +47,8 @@
 									tr.children("td:eq(0)").append("<input type='text' readonly='readonly' name='goodList["+rowNum+"].good.id' value='"+a+"' />");
 									tr.children("td:eq(1)").append("<input type='text' readonly='readonly' name='goodList["+rowNum+"].good.goodName' value='"+b+"' />");
 									tr.children("td:eq(2)").append("<input type='text' readonly='readonly' name='goodList["+rowNum+"].good.type' value='"+e+"' />");
-									tr.children("td:eq(4)").append("<input type='text' name='goodList["+rowNum+"].usefor' value='"+d+"' />");
-									tr.children("td:eq(3)").append("<input type='text' name='goodList["+rowNum+"].appNum' value='"+c+"' />");
+									tr.children("td:eq(3)").append("<input type='text' name='goodList["+rowNum+"].usefor' value='"+d+"' />");
+									tr.children("td:eq(4)").append("<input type='text' name='goodList["+rowNum+"].appNum' value='"+c+"' />");
 
 									rowNum++;
 								},
