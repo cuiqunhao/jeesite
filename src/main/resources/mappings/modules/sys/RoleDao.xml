@@ -88,7 +88,7 @@
 		WHERE a.enname = #{enname} AND a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
 	
-	<select id="findList" resultMap="roleResult">
+	<select id="findList" resultMap="Role">
 		SELECT <!-- DISTINCT -->
 			<include refid="roleColumns"/>,
 			ro.office_id AS "officeList.id"
