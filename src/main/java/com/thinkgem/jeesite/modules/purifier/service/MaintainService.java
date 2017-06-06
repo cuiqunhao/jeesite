@@ -18,7 +18,7 @@ public class MaintainService extends CrudService<MaintainDao,Maintain> {
 
     @Transactional(readOnly = false)
     public void save(Maintain entity) {
-        if (entity.getIsNewRecord()){
+        if (dao.get(entity) != null){
             dao.deleteOtherMaintain(entity);
             entity.preInsert();
             dao.insert(entity);

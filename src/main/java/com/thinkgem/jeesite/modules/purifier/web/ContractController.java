@@ -356,13 +356,15 @@ public class ContractController extends BaseController{
             List<Contract> list = ei.getDataList(Contract.class);
             for (Contract contract : list){
                 try{
-                    if ("true".equals(checkContractNo(contract.getContractNo()))){
+                    Contract contractHased = contractService.getByContractNo(contract);
+                    if (contractHased == null){
                         BeanValidators.validateWithException(validator, contract);
                         contractService.insterContract(contract);
                         successNum++;
                     }else{
-                        failureMsg.append("<br/>订单 "+contract.getContractNo()+" 已存在; ");
-                        failureNum++;
+                        contract.setId(contractHased.getId());
+                        contractService.insterContract(contract);
+                        successNum++;
                     }
                 }catch(ConstraintViolationException ex){
                     failureMsg.append("<br/>订单 "+contract.getContractNo()+" 导入失败：");
@@ -440,19 +442,19 @@ public class ContractController extends BaseController{
         return "redirect:" + adminPath + "/contract/list?repage";
     }
 
-    /**
-     *
-     * @param contractNo
-     * @return
-     */
-    private String checkContractNo(String contractNo) {
-        Contract contract = new Contract();
-        contract.setContractNo(contractNo);
-        if (contractNo !=null && contractService.getByContractNo(contract) == null) {
-            return "true";
-        }
-        return "false";
-    }
+//    /**
+//     *
+//     * @param contractNo
+//     * @return
+//     */
+//    private String checkContractNo(String contractNo) {
+//        Contract contract = new Contract();
+//        contract.setContractNo(contractNo);
+//        if (contractNo !=null && contractService.getByContractNo(contract) == null) {
+//            return "true";
+//        }
+//        return "false";
+//    }
 
 
 }
