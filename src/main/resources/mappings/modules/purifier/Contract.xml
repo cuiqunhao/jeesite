@@ -35,7 +35,7 @@
     <sql id="contractJoin">
         left join sys_user b on a.salesman = b.id
         left join sys_user c on a.installer = c.id
-        LEFT JOIN sys_office o ON o.id = b.office_id and o.id = c.office_id
+        LEFT JOIN sys_office o ON o.id = b.office_id
     </sql>
 
     <sql id="whereCon">
@@ -98,12 +98,12 @@
     <update id="update">
         UPDATE purifier_contract SET
         update_by=#{updateBy.id},
+        contract_amount = #{contractAmount},
         <if test="installer != null and installer.id != null and installer.id != ''">installer = #{installer.id},</if>
         <if test="mianCycle != null and mianCycle != ''">mian_cycle = #{mianCycle},</if>
         <if test="contractNo != null and contractNo != ''">contractNo = #{contractNo},</if>
         <if test="contractName != null and contractName != ''">contract_name = #{contractName},</if>
         <if test="contractType != null and contractType != ''">contract_type = #{contractType},</if>
-        <if test="contractAmount != null and contractAmount != ''">contract_amount = #{contractAmount},</if>
         <if test="contractBenginTime != null and contractBenginTime != ''">contract_bengin_time = #{contractBenginTime},</if>
         <if test="contractEndTime != null and contractEndTime != ''">contract_end_time = #{contractEndTime},</if>
         <if test="contacts != null and contacts != ''">contacts = #{contacts},</if>
@@ -142,6 +142,7 @@
         FROM purifier_contract a
         <include refid="contractJoin"/>
         <include refid="whereCon"/>
+        ${sqlMap.dsf}
     </select>
     <select id="findAllList" resultType="Contract">
         SELECT
@@ -149,6 +150,7 @@
         FROM purifier_contract a
         <include refid="contractJoin"/>
         <include refid="whereCon"/>
+        ${sqlMap.dsf}
     </select>
 
 
@@ -157,7 +159,7 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        where c.id is null and a.del_flag ='0'
+        where c.id is null and a.del_flag ='0' ${sqlMap.dsf}
     </select>
 
     <select id="findNotMainList" resultType="Contract">
@@ -165,7 +167,7 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        where c.id is not null and a.mian_cycle is null and a.del_flag ='0'
+        where c.id is not null and a.mian_cycle is null and a.del_flag ='0' ${sqlMap.dsf}
     </select>
 
     <select id="findNotReceivablesList" resultType="Contract">
@@ -174,7 +176,7 @@
         FROM purifier_contract a
         <include refid="contractJoin"/>
         left join purifier_receivables d on a.id = d.contractId and d.del_flag = '0'
-        where  (d.contractId is null or 7>=datediff(d.next_rec_time,now())) and a.del_flag = '0' and a.mian_cycle is not null
+        where  (d.contractId is null or 7>=datediff(d.next_rec_time,now())) and a.del_flag = '0' and a.mian_cycle is not null ${sqlMap.dsf}
     </select>
 
     <select id="findContractNotMainList" resultType="Contract">
@@ -183,7 +185,7 @@
         FROM purifier_contract a
         <include refid="contractJoin"/>
         left join purifier_maintain d on a.id = d.contractId and d.del_flag = '0'
-        where  (d.contractId is null or 7>=datediff(d.next_main_time,now()))  and a.del_flag = '0' and a.mian_cycle is not null
+        where  (d.contractId is null or 7>=datediff(d.next_main_time,now()))  and a.del_flag = '0' and a.mian_cycle is not null ${sqlMap.dsf}
     </select>
 
     <update id="delete">

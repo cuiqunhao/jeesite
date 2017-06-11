@@ -51,11 +51,13 @@ public class ContractController extends BaseController{
 
     @ModelAttribute
     public Contract get(Long id){
+        Contract contract = new Contract();
         if(id != null){
-            return contractService.getByGoodsAppId(id);
-        }else{
-            return new Contract();
+            contract =  contractService.getByGoodsAppId(id);
         }
+        User user = UserUtils.getUser();
+        contract.getSqlMap().put("dsf",contractService.dataScopeFilter(user, "o", "b"));
+        return contract;
     }
 
     @RequestMapping(value = "list")
