@@ -24,7 +24,7 @@
     <sql id="whereCon">
         <where>
             a.del_flag ='0'
-            <if test="contract != null and contract.contractNo != null and contract.contractNo != ''">AND c.contractNo =  #{contract.contractNo}</if>
+            <if test="contract != null and contract.contractNo != null and contract.contractNo != ''">AND c.contractNo LIKE  '%${contract.contractNo}%'</if>
             <if test="contract != null and contract.id != null and contract.id != ''">AND a.contractId =  #{contract.id}</if>
         </where>
     </sql>

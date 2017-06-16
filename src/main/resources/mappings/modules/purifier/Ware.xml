@@ -16,7 +16,7 @@
     <sql id="whereCon">
         <where>
             1=1
-            <if test="wareName != null">and a.ware_name=#{wareName}</if>
+            <if test="wareName != null and wareName != ''">and a.ware_name LIKE '%${wareName}%'</if>
         </where>
     </sql>
 

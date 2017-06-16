@@ -18,7 +18,7 @@ public class ReceivablesService extends CrudService<ReceivablesDao,Receivables> 
 
     @Transactional(readOnly = false)
     public void saveRec(Receivables entity) {
-        if (dao.get(entity) != null){
+        if (dao.get(entity) == null){
             dao.deleteOtherRec(entity);
             entity.preInsert();
             dao.insert(entity);

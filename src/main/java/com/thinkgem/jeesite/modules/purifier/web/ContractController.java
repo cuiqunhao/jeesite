@@ -443,20 +443,4 @@ public class ContractController extends BaseController{
         }
         return "redirect:" + adminPath + "/contract/list?repage";
     }
-
-//    /**
-//     *
-//     * @param contractNo
-//     * @return
-//     */
-//    private String checkContractNo(String contractNo) {
-//        Contract contract = new Contract();
-//        contract.setContractNo(contractNo);
-//        if (contractNo !=null && contractService.getByContractNo(contract) == null) {
-//            return "true";
-//        }
-//        return "false";
-//    }
-
-
 }
