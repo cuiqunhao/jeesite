@@ -94,7 +94,7 @@
 	<div class="control-group">
 		<label class="control-label">申请编号:</label>
 		<div class="controls">
-			<form:input path="appNo" htmlEscape="false" maxlength="64" class="required" disabled="${goodsApp.id != null || not empty goodsApp.id ?true:false}"/>
+			<form:input path="appNo" htmlEscape="false" maxlength="64" class="required" disabled="${goodsApp.id != null || not empty goodsApp.id?'true':'false'}"/>
 		</div>
 	</div>
 	<div class="control-group">

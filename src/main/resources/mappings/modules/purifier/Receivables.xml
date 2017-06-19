@@ -19,6 +19,7 @@
     <sql id="receivablesJoin">
         left join sys_user b on b.id = a.user_id
         LEFT JOIN purifier_contract c on c.id = a.contractId
+        LEFT JOIN sys_office o ON o.id = b.office_id
     </sql>
 
     <sql id="whereCon">

@@ -13,6 +13,7 @@ import com.thinkgem.jeesite.modules.purifier.service.GoodsAppService;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,11 +45,15 @@ public class GoodsAppController extends BaseController {
 
     @ModelAttribute
     public GoodsApp get(@RequestParam(value = "id",required = false) Long id) {
+        GoodsApp goodsApp = new GoodsApp();
         if (id != null){
-            return goodsAppService.getByGoodsAppId(id);
-        }else{
-            return new GoodsApp();
+            goodsApp =  goodsAppService.getByGoodsAppId(id);
         }
+        User user = UserUtils.getUser();
+        goodsApp.getSqlMap().put("dsf",goodsAppService.dataScopeFilter(user, "o", "b"));
+
+        return goodsApp;
+
     }
     @RequestMapping(value = "list")
     public String list(GoodsApp goodsApp, HttpServletRequest request, HttpServletResponse response, Model model) {

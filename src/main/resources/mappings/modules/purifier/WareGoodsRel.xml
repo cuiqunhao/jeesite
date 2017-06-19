@@ -19,8 +19,11 @@
     <sql id="whereCon">
         <where>
             1=1
-            <if test="good != null and good.goodName != null">AND c.good_name=#{good.goodName}</if>
-            <if test="ware != null and ware.wareName != null">AND a.ware_name=#{ware.wareName}</if>
+            <if test="good != null and good.goodName != null and good.goodName != ''">AND c.good_name=#{good.goodName}</if>
+            <if test="ware != null and ware.wareName != null and ware.wareName != ''">AND a.ware_name=#{ware.wareName}</if>
+            <if test="good != null and good.id != null and good.id != ''">AND c.id=#{good.id}</if>
+            <if test="good != null and good.type != null and good.type != ''">AND c.type=#{good.type}</if>
+            <if test="ware != null and ware.id != null and ware.id != ''">AND a.id=#{ware.id}</if>
         </where>
     </sql>
 

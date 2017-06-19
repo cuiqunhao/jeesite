@@ -36,6 +36,7 @@
     <sql id="goodsAppJoin">
          left join sys_user b on a.applicantId=b.id
          left join purifier_ware c on a.wareId = c.id
+          LEFT JOIN sys_office o ON o.id = b.office_id
     </sql>
 
     <sql id="whereCon">
@@ -58,6 +59,7 @@
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
         <include refid="whereCon"/>
+        ${sqlMap.dsf}
     </select>
 
     <select id="needFirstExaList" resultType="GoodsApp">
@@ -66,6 +68,7 @@
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
         where a.first_exa_status is null and a.del_flag='0'
+        ${sqlMap.dsf}
     </select>
 
     <select id="needSecExaList" resultType="GoodsApp">
@@ -74,6 +77,7 @@
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
         where a.first_exa_status = '1' and a.sec_exa_status is null and a.del_flag='0'
+        ${sqlMap.dsf}
     </select>
 
     <select id="needShipList" resultType="GoodsApp">
@@ -82,6 +86,7 @@
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
         where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is null and a.del_flag='0'
+        ${sqlMap.dsf}
     </select>
 
     <select id="needConsigneeList" resultType="GoodsApp">
@@ -90,6 +95,7 @@
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
         where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is not null and a.consignee_status is null and a.del_flag='0'
+        ${sqlMap.dsf}
     </select>
 
 
