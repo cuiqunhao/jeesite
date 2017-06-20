@@ -17,7 +17,7 @@
 <!--tab-->
 <ul class="nav nav-tabs">
 	<li class="active">
-		<a href="${ctx}/contract/contractNotRecList/">订单单列表</a>
+		<a href="${ctx}/contract/contractNotRecList/">订单列表</a>
 	</li>
 </ul>
 <!--tab-->

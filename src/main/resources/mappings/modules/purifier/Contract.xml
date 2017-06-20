@@ -47,7 +47,7 @@
             <if test="salesman != null and salesman.id != null and salesman.id != ''">and b.id = #{salesman.id}</if>
             <if test="contractName != null and contractName != ''">and a.contract_name = #{contractName}</if>
             <if test="contacts != null and contacts != ''">and a.contacts = #{contacts}</if>
-            <if test="salesman != null and salesman.office.code != null and salesman.office.code != ''">and o.code = #{salesman.office.code}</if>
+            <if test="salesman != null and salesman.office != null and salesman.office.code != null and salesman.office.code != ''">and o.code = #{salesman.office.code}</if>
         </where>
     </sql>
 
@@ -160,7 +160,8 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        where c.id is null and a.del_flag ='0' ${sqlMap.dsf}
+        <include refid="whereCon"/>
+        AND c.id is null and a.del_flag ='0' ${sqlMap.dsf}
     </select>
 
     <select id="findNotMainList" resultType="Contract">
@@ -168,7 +169,8 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        where c.id is not null and a.mian_cycle is null and a.del_flag ='0' ${sqlMap.dsf}
+        <include refid="whereCon"/>
+        AND c.id is not null and a.mian_cycle is null and a.del_flag ='0' ${sqlMap.dsf}
     </select>
 
     <select id="findNotReceivablesList" resultType="Contract">
@@ -176,8 +178,8 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        left join purifier_receivables d on a.id = d.contractId and d.del_flag = '0'
-        where  (d.contractId is null or 7>=datediff(d.next_rec_time,now())) and a.del_flag = '0' and a.mian_cycle is not null ${sqlMap.dsf}
+        left join purifier_receivables d on a.id = d.contractId
+        <include refid="whereCon"/> AND  (d.contractId is null or 7>=datediff(d.next_rec_time,now())) and a.del_flag = '0' and a.mian_cycle is not null ${sqlMap.dsf}
     </select>
 
     <select id="findContractNotMainList" resultType="Contract">
@@ -185,8 +187,8 @@
         <include refid="contractCol"/>
         FROM purifier_contract a
         <include refid="contractJoin"/>
-        left join purifier_maintain d on a.id = d.contractId and d.del_flag = '0'
-        where  (d.contractId is null or 7>=datediff(d.next_main_time,now()))  and a.del_flag = '0' and a.mian_cycle is not null ${sqlMap.dsf}
+        left join purifier_maintain d on a.id = d.contractId
+        <include refid="whereCon"/> AND  (d.contractId is null or 7>=datediff(d.next_main_time,now()))  and a.del_flag = '0' and a.mian_cycle is not null ${sqlMap.dsf}
     </select>
 
     <update id="delete">
