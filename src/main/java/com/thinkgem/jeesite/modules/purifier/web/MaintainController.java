@@ -7,6 +7,8 @@ import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
 import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
 import com.thinkgem.jeesite.modules.purifier.service.ContractService;
 import com.thinkgem.jeesite.modules.purifier.service.MaintainService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,11 +35,14 @@ public class MaintainController extends BaseController{
 
     @ModelAttribute
     public Maintain get(Long id){
+        Maintain maintain = new Maintain();
         if(id != null){
-            return maintainService.get(id.toString());
-        }else{
-            return new Maintain();
+            maintain =  maintainService.get(id.toString());
         }
+        User user = UserUtils.getUser();
+        maintain.getSqlMap().put("dsf",contractService.dataScopeFilter(user, "o", "b"));
+        return maintain;
+
     }
 
     @RequestMapping(value = "list")

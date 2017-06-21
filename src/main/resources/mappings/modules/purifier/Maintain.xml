@@ -48,6 +48,7 @@
         FROM purifier_maintain a
         <include refid="maintainJoin"/>
         <include refid="whereCon"/>
+        ${sqlMap.dsf}
     </select>
 
 

@@ -44,6 +44,7 @@
         FROM purifier_receivables a
         <include refid="receivablesJoin"/>
         <include refid="whereCon"/>
+        ${sqlMap.dsf}
     </select>
 
 
