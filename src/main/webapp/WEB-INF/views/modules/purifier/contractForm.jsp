@@ -77,12 +77,12 @@
 		<div class="control-group">
 			<label class="control-label">合同编号:</label>
 			<div class="controls">
-				<c:if test="${not empty contract.id}">
-					<form:input path="contractNo" htmlEscape="false" maxlength="64" class="required" disabled="true"/>
-				</c:if>
-				<c:if test="${empty contract.id}">
+				<%--<c:if test="${not empty contract.id}">--%>
+					<%--<form:input path="contractNo" htmlEscape="false" maxlength="64" class="required"/>--%>
+				<%--</c:if>--%>
+				<%--<c:if test="${empty contract.id}">--%>
 					<form:input path="contractNo" htmlEscape="false" maxlength="64" class="required"/>
-				</c:if>
+				<%--</c:if>--%>
 			</div>
 		</div>
 		<div class="control-group">

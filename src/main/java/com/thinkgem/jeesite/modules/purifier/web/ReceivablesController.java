@@ -5,6 +5,7 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.purifier.entity.Contract;
 import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
 import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
+import com.thinkgem.jeesite.modules.purifier.job.AnnotationTask;
 import com.thinkgem.jeesite.modules.purifier.service.ContractService;
 import com.thinkgem.jeesite.modules.purifier.service.MaintainService;
 import com.thinkgem.jeesite.modules.purifier.service.ReceivablesService;
@@ -33,6 +34,8 @@ public class ReceivablesController extends BaseController{
     private ReceivablesService receivablesService;
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private AnnotationTask annotationTask;
 
     @ModelAttribute
     public Receivables get(Long id){
@@ -74,6 +77,7 @@ public class ReceivablesController extends BaseController{
             return form(receivables, model);
         }
         receivablesService.saveRec(receivables);
+        annotationTask.job1();
         addMessage(redirectAttributes, "保存成功");
         return "redirect:" + adminPath + "/reveivables/list?repage";
     }

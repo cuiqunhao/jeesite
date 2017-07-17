@@ -15,7 +15,7 @@
 
     <sql id="whereCon">
         <where>
-            1=1
+            1=1 and del_flag='0'
             <if test="wareName != null and wareName != ''">and a.ware_name LIKE '%${wareName}%'</if>
         </where>
     </sql>
@@ -78,9 +78,9 @@
     </update>
 
     <delete id="deleteByWare">
-        DELETE FROM purifier_ware_goods_rel b
+        DELETE FROM purifier_ware_goods_rel
         WHERE
-        b.wareId = #{id}
+        wareId = #{id}
     </delete>
 
 </mapper>

@@ -86,6 +86,8 @@
         <if test="invoice != null and invoice != ''">a.invoice=#{invoice},</if>
         <if test="amount != null and amount != ''">a.amount=#{amount},</if>
         <if test="isInvoice != null and isInvoice != ''">a.is_invoice=#{isInvoice},</if>
+        <if test="remarks != null and remarks != ''">a.remarks=#{remarks},</if>
+        <if test="contract != null and contract.id != null and contract.id != ''">a.contractId=#{contract.id},</if>
         a.update_date = #{updateDate}
         where a.id=#{id}
     </update>
