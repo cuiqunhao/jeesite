@@ -77,7 +77,6 @@ public class ReceivablesController extends BaseController{
             return form(receivables, model);
         }
         receivablesService.saveRec(receivables);
-        annotationTask.job1();
         addMessage(redirectAttributes, "保存成功");
         return "redirect:" + adminPath + "/reveivables/list?repage";
     }

@@ -49,7 +49,7 @@
 		<if test="isSelf">
 			JOIN oa_notify_record r ON r.oa_notify_id = a.id AND r.user_id = #{currentUser.id}
 		</if>
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} and   date(create_date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
 		<if test="title != null and title != ''">
 			AND a.TITLE LIKE 
 					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
