@@ -5,6 +5,7 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -354,11 +355,15 @@ public class ContractController extends BaseController{
         try {
             int successNum_contract = 0;
             int failureNum_contract = 0;
+            StringBuilder failureNum_contract_str = new StringBuilder();
 
             ImportExcel ei = new ImportExcel(file, 1, 0);
             List<Contract> list = ei.getDataList(Contract.class);
             for (Contract contract : list){
                 try{
+                    if(StringUtils.isEmpty(contract.getContractNo())){
+                        continue;
+                    }
                     Contract contractHased = contractService.getByContractNo(contract);
                     if (contractHased == null){
                         BeanValidators.validateWithException(validator, contract);
@@ -372,6 +377,7 @@ public class ContractController extends BaseController{
                 }catch (Exception ex) {
                     failureMsg.append("<br/>订单 "+contract.getContractNo()+" 导入失败："+ex.getMessage());
                     failureNum_contract++;
+                    failureNum_contract_str.append(contract.getContractNo()+",");
                 }
             }
             ImportExcel ei2 = new ImportExcel(file, 1, 1);
@@ -414,14 +420,14 @@ public class ContractController extends BaseController{
 
                     }catch (Exception ex) {
                         failureMsg.append("<br/>订单维护 "+maintain.getContract().getContractNo()+" 导入失败："+ex.getMessage());
-                        successNum_main++;
+                        failureNum_main++;
                     }
                 }
             }
             if("".equals(failureMsg.toString())){
                 addMessage(redirectAttributes, "已成功导入 "+successNum_contract+" 条订单，"+"已成功导入 "+successNum_rec+" 条收款，"+"已成功导入 "+successNum_main+" 条维护");
             }else{
-               throw new NullPointerException("失败 "+failureNum_contract+" 条订单，"+"失败 "+failureNum_rec+" 条收款，"+"失败 "+failureNum_main+" 条维护,存在失败的订单.");
+               throw new NullPointerException("失败 "+failureNum_contract+" 条订单,请检查以下订单："+failureNum_contract_str.toString()+"失败 "+failureNum_rec+" 条收款，"+"失败 "+failureNum_main+" 条维护,存在失败的订单.");
             }
         } catch (Exception e) {
             logger.error("导入失败"+failureMsg.toString(),e);
