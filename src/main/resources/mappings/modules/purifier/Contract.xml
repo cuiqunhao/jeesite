@@ -179,7 +179,7 @@
         FROM purifier_contract a
         <include refid="contractJoin"/>
         left join purifier_receivables d on a.id = d.contractId
-        <include refid="whereCon"/>a.coll_cycle >0 AND  (d.contractId is null or 7>=datediff(d.next_rec_time,now())) and d.del_flag = '0' and a.mian_cycle is not null ${sqlMap.dsf}
+        <include refid="whereCon"/>and a.coll_cycle >0 AND  (d.contractId is null or 7>=datediff(d.next_rec_time,now())) and (d.del_flag = '0' or d.del_flag is null) and a.coll_cycle is not null ${sqlMap.dsf}
     </select>
 
     <select id="findContractNotMainList" resultType="Contract">
@@ -188,7 +188,7 @@
         FROM purifier_contract a
         <include refid="contractJoin"/>
         left join purifier_maintain d on a.id = d.contractId
-        <include refid="whereCon"/> and a.mian_cycle >0 AND  (d.contractId is null or 7>=datediff(d.next_main_time,now()))  and d.del_flag = '0' and a.mian_cycle is not null ${sqlMap.dsf}
+        <include refid="whereCon"/> and a.mian_cycle >0 AND  (d.contractId is null or 7>=datediff(d.next_main_time,now()))  and (d.del_flag = '0' or d.del_flag is null) and a.mian_cycle is not null ${sqlMap.dsf}
     </select>
 
     <update id="delete">
