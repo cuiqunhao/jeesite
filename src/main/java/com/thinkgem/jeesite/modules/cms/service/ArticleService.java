@@ -153,7 +153,7 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 	 * 更新索引
 	 */
 	public void createIndex(){
-		//dao.createIndex();
+//		dao.createIndex();
 	}
 	
 	/**

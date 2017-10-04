@@ -20,14 +20,16 @@
     </sql>
 
     <sql id="maintainJoin">
-        left join sys_user b on b.id = a.mainId
-        LEFT JOIN purifier_contract c on c.id = a.contractId
+        inner join sys_user b on b.id = a.mainId
+        inner JOIN purifier_contract c on c.id = a.contractId
+        inner JOIN sys_office o ON o.id = b.office_id
     </sql>
 
     <sql id="whereCon">
         <where>
-            a.del_flag = '0'
-            <if test="contract != null and contract.id != null and contract.id != ''">AND a.contractId = #{contract.id}</if>
+            a.del_flag ='0'
+            <if test="contract != null and contract.contractNo != null and contract.contractNo != ''">AND c.contractNo LIKE  '%${contract.contractNo}%'</if>
+            <if test="contract != null and contract.id != null and contract.id != ''">AND a.contractId =  #{contract.id}</if>
         </where>
     </sql>
 
@@ -46,6 +48,7 @@
         FROM purifier_maintain a
         <include refid="maintainJoin"/>
         <include refid="whereCon"/>
+        ${sqlMap.dsf}
     </select>
 
 

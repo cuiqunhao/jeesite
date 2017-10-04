@@ -21,7 +21,7 @@
 		function page(n,s){
 			if(n) $("#pageNo").val(n);
 			if(s) $("#pageSize").val(s);
-			$("#searchForm").attr("action","${ctx}/sys/user/list");
+			$("#searchForm").attr("action","${ctx}/sys/user/selectList");
 			$("#searchForm").submit();
 			return false;
 		}

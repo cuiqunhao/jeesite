@@ -30,14 +30,13 @@ public class ContractType {
      * @return
      */
     public static Object getValue(String val){
-        List<Contract> contractList = contractDao.findAllList(new Contract());
-        for (Contract e : contractList){
-            if (StringUtils.trimToEmpty(val).equals(e.getContractNo())){
-                return e;
-            }
-        }
         Contract contract = new Contract();
         contract.setContractNo(StringUtils.trimToEmpty(val));
+        Contract contractTmp = contractDao.getByContractNo(contract);
+        if(contractTmp != null){
+            contract = contractTmp;
+        }
+
         return contract;
     }
 }

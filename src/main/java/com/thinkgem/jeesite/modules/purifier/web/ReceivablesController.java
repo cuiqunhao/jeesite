@@ -5,9 +5,12 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.purifier.entity.Contract;
 import com.thinkgem.jeesite.modules.purifier.entity.Maintain;
 import com.thinkgem.jeesite.modules.purifier.entity.Receivables;
+import com.thinkgem.jeesite.modules.purifier.job.AnnotationTask;
 import com.thinkgem.jeesite.modules.purifier.service.ContractService;
 import com.thinkgem.jeesite.modules.purifier.service.MaintainService;
 import com.thinkgem.jeesite.modules.purifier.service.ReceivablesService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,14 +34,19 @@ public class ReceivablesController extends BaseController{
     private ReceivablesService receivablesService;
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private AnnotationTask annotationTask;
 
     @ModelAttribute
     public Receivables get(Long id){
+        Receivables receivables = new Receivables();
         if(id != null){
-            return receivablesService.get(id.toString());
-        }else{
-            return new Receivables();
+            receivables =  receivablesService.get(id.toString());
         }
+        User user = UserUtils.getUser();
+        receivables.getSqlMap().put("dsf",contractService.dataScopeFilter(user, "o", "b"));
+        return receivables;
+
     }
 
     @RequestMapping(value = "list")

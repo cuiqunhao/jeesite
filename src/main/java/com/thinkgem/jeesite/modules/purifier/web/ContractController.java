@@ -5,6 +5,7 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -51,11 +52,13 @@ public class ContractController extends BaseController{
 
     @ModelAttribute
     public Contract get(Long id){
+        Contract contract = new Contract();
         if(id != null){
-            return contractService.getByGoodsAppId(id);
-        }else{
-            return new Contract();
+            contract =  contractService.getByGoodsAppId(id);
         }
+        User user = UserUtils.getUser();
+        contract.getSqlMap().put("dsf",contractService.dataScopeFilter(user, "o", "b"));
+        return contract;
     }
 
     @RequestMapping(value = "list")
@@ -348,32 +351,33 @@ public class ContractController extends BaseController{
             addMessage(redirectAttributes, "演示模式，不允许操作！");
             return "redirect:" + adminPath + "/contract/list?repage";
         }
+        StringBuilder failureMsg = new StringBuilder();
         try {
-            int successNum = 0;
-            int failureNum = 0;
-            StringBuilder failureMsg = new StringBuilder();
+            int successNum_contract = 0;
+            int failureNum_contract = 0;
+            StringBuilder failureNum_contract_str = new StringBuilder();
+
             ImportExcel ei = new ImportExcel(file, 1, 0);
             List<Contract> list = ei.getDataList(Contract.class);
             for (Contract contract : list){
                 try{
-                    if ("true".equals(checkContractNo(contract.getContractNo()))){
+                    if(StringUtils.isEmpty(contract.getContractNo())){
+                        continue;
+                    }
+                    Contract contractHased = contractService.getByContractNo(contract);
+                    if (contractHased == null){
                         BeanValidators.validateWithException(validator, contract);
                         contractService.insterContract(contract);
-                        successNum++;
                     }else{
-                        failureMsg.append("<br/>订单 "+contract.getContractNo()+" 已存在; ");
-                        failureNum++;
+                        contract.setId(contractHased.getId());
+                        contract.setDelFlag("0");
+                        contractService.insterContract(contract);
                     }
-                }catch(ConstraintViolationException ex){
-                    failureMsg.append("<br/>订单 "+contract.getContractNo()+" 导入失败：");
-                    List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
-                    for (String message : messageList){
-                        failureMsg.append(message+"; ");
-                        failureNum++;
-                    }
+                    successNum_contract++;
                 }catch (Exception ex) {
-                    logger.error("导入失败",ex);
                     failureMsg.append("<br/>订单 "+contract.getContractNo()+" 导入失败："+ex.getMessage());
+                    failureNum_contract++;
+                    failureNum_contract_str.append(contract.getContractNo()+",");
                 }
             }
             ImportExcel ei2 = new ImportExcel(file, 1, 1);
@@ -381,6 +385,11 @@ public class ContractController extends BaseController{
             ImportExcel ei3 = new ImportExcel(file, 1, 2);
             List<Maintain> list3 = ei3.getDataList(Maintain.class);
 
+            int successNum_rec= 0;
+            int failureNum_rec = 0;
+
+            int successNum_main= 0;
+            int failureNum_main = 0;
             for (Contract contract : list){
                 for (Receivables receivables : list2){
                     try{
@@ -388,20 +397,13 @@ public class ContractController extends BaseController{
                             receivables.setContract(contract);
                             BeanValidators.validateWithException(validator, receivables);
                             receivablesService.saveRec(receivables);
-                            successNum++;
+                            successNum_rec++;
                         }else{
                             continue;
                         }
-                    }catch(ConstraintViolationException ex){
-                        failureMsg.append("<br/>订单收款 "+receivables.getContract().getContractNo()+" 导入失败：");
-                        List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
-                        for (String message : messageList){
-                            failureMsg.append(message+"; ");
-                            failureNum++;
-                        }
                     }catch (Exception ex) {
-                        logger.error("导入失败",ex);
                         failureMsg.append("<br/>订单收款 "+receivables.getContract().getContractNo()+" 导入失败："+ex.getMessage());
+                        failureNum_rec++;
                     }
                 }
 
@@ -411,48 +413,26 @@ public class ContractController extends BaseController{
                             maintain.setContract(contract);
                             BeanValidators.validateWithException(validator, maintain);
                             maintainService.save(maintain);
-                            successNum++;
+                            successNum_main++;
                         }else{
                             continue;
                         }
 
-                    }catch(ConstraintViolationException ex){
-                        failureMsg.append("<br/>订单het "+maintain.getContract().getContractNo()+" 导入失败：");
-                        List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
-                        for (String message : messageList){
-                            failureMsg.append(message+"; ");
-                            failureNum++;
-                        }
                     }catch (Exception ex) {
-                        logger.error("导入失败",ex);
-                        failureMsg.append("<br/>订单het "+maintain.getContract().getContractNo()+" 导入失败："+ex.getMessage());
+                        failureMsg.append("<br/>订单维护 "+maintain.getContract().getContractNo()+" 导入失败："+ex.getMessage());
+                        failureNum_main++;
                     }
                 }
-
             }
-            if (failureNum>0){
-                failureMsg.insert(0, "，失败 "+failureNum+" 条订单，导入信息如下：");
+            if("".equals(failureMsg.toString())){
+                addMessage(redirectAttributes, "已成功导入 "+successNum_contract+" 条订单，"+"已成功导入 "+successNum_rec+" 条收款，"+"已成功导入 "+successNum_main+" 条维护");
+            }else{
+               throw new NullPointerException("失败 "+failureNum_contract+" 条订单,请检查以下订单："+failureNum_contract_str.toString()+"失败 "+failureNum_rec+" 条收款，"+"失败 "+failureNum_main+" 条维护,存在失败的订单.");
             }
-            addMessage(redirectAttributes, "已成功导入 "+successNum+" 条订单"+failureMsg);
         } catch (Exception e) {
+            logger.error("导入失败"+failureMsg.toString(),e);
             addMessage(redirectAttributes, "导入订单失败！失败信息："+e.getMessage());
         }
         return "redirect:" + adminPath + "/contract/list?repage";
     }
-
-    /**
-     *
-     * @param contractNo
-     * @return
-     */
-    private String checkContractNo(String contractNo) {
-        Contract contract = new Contract();
-        contract.setContractNo(contractNo);
-        if (contractNo !=null && contractService.getByContractNo(contract) == null) {
-            return "true";
-        }
-        return "false";
-    }
-
-
 }

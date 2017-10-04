@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 请填写类注释
+ * 维护
  *
  * @author addison
  * @since 2017年03月14日
@@ -18,7 +18,7 @@ public class MaintainService extends CrudService<MaintainDao,Maintain> {
 
     @Transactional(readOnly = false)
     public void save(Maintain entity) {
-        if (entity.getIsNewRecord()){
+        if (dao.get(entity) == null){
             dao.deleteOtherMaintain(entity);
             entity.preInsert();
             dao.insert(entity);

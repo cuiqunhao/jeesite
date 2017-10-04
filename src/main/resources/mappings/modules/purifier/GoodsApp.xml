@@ -36,12 +36,14 @@
     <sql id="goodsAppJoin">
          left join sys_user b on a.applicantId=b.id
          left join purifier_ware c on a.wareId = c.id
+          LEFT JOIN sys_office o ON o.id = b.office_id
     </sql>
 
     <sql id="whereCon">
         <where>
             a.del_flag = '0'
             <if test="id != null and id != ''">and a.id=#{id}</if>
+            <if test="appNo != null and appNo != ''">and a.appNo=#{appNo}</if>
             <if test="appTimeStart != null and appTimeStart != ''">and a.app_time>=#{appTimeStart}</if>
             <if test="appTimeEnd != null and appTimeEnd != ''">and #{appTimeEnd}>=a.app_time</if>
             <if test="consignee != null and consignee != ''">and a.consignee=#{consignee}</if>
@@ -58,6 +60,7 @@
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
         <include refid="whereCon"/>
+        ${sqlMap.dsf}
     </select>
 
     <select id="needFirstExaList" resultType="GoodsApp">
@@ -65,7 +68,8 @@
         <include refid="goodsAppCols"/>
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
-        where a.first_exa_status is null and a.del_flag='0'
+        <include refid="whereCon"/> AND a.first_exa_status is null
+        ${sqlMap.dsf}
     </select>
 
     <select id="needSecExaList" resultType="GoodsApp">
@@ -73,7 +77,8 @@
         <include refid="goodsAppCols"/>
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
-        where a.first_exa_status = '1' and a.sec_exa_status is null and a.del_flag='0'
+        <include refid="whereCon"/> AND a.first_exa_status = '1' and a.sec_exa_status is null
+        ${sqlMap.dsf}
     </select>
 
     <select id="needShipList" resultType="GoodsApp">
@@ -81,7 +86,8 @@
         <include refid="goodsAppCols"/>
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
-        where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is null and a.del_flag='0'
+        <include refid="whereCon"/> AND a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is null
+        ${sqlMap.dsf}
     </select>
 
     <select id="needConsigneeList" resultType="GoodsApp">
@@ -89,7 +95,8 @@
         <include refid="goodsAppCols"/>
         from purifier_goods_app a
         <include refid="goodsAppJoin"/>
-        where a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is not null and a.consignee_status is null and a.del_flag='0'
+        <include refid="whereCon"/> AND a.first_exa_status = '1' and a.sec_exa_status ='1' and a.ship_address is not null and a.consignee_status is null
+        ${sqlMap.dsf}
     </select>
 
 

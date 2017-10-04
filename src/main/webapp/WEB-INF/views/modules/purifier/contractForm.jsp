@@ -77,7 +77,12 @@
 		<div class="control-group">
 			<label class="control-label">合同编号:</label>
 			<div class="controls">
-				<form:input path="contractNo" htmlEscape="false" maxlength="64" class="required" disabled="${contract.id != null || not empty contract.id?true:false}"/>
+				<%--<c:if test="${not empty contract.id}">--%>
+					<%--<form:input path="contractNo" htmlEscape="false" maxlength="64" class="required"/>--%>
+				<%--</c:if>--%>
+				<%--<c:if test="${empty contract.id}">--%>
+					<form:input path="contractNo" htmlEscape="false" maxlength="64" class="required"/>
+				<%--</c:if>--%>
 			</div>
 		</div>
 		<div class="control-group">
