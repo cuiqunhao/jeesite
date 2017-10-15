@@ -6,8 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;  
 import java.util.Calendar;  
 import java.util.Date;  
-import java.util.List;  
-import org.apache.log4j.FileAppender;  
+import java.util.List;
+
+import org.apache.log4j.DailyRollingFileAppender;
+import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;  
 import org.apache.log4j.helpers.LogLog;  
 import org.apache.log4j.spi.LoggingEvent;  
@@ -18,10 +20,10 @@ import org.apache.log4j.spi.LoggingEvent;
  * @author addison
  *  
  */  
-public class CustomLogAppender extends FileAppender {  
+public class CustomLogAppender extends FileAppender {
   
     /** 不允许改写的datepattern */  
-    private static final String datePattern = "'.'yyyy-MM-dd";  
+    private static final String datePattern = "'.'yyyy-MM-dd";
     /** 最多文件增长个数 */  
     private int maxBackupIndex = 7;
     /** 文件名+上次最后更新时间 */  
@@ -35,11 +37,13 @@ public class CustomLogAppender extends FileAppender {
     private Date now = new Date();
     private SimpleDateFormat sdf;
 
-    /**  
+    public CustomLogAppender(){
+    }
+    /**
      * 改造过的构造器  
      */  
     public CustomLogAppender(Layout layout, String filename, int maxBackupIndex) throws IOException {  
-        super(layout, filename, true);  
+        super(layout, filename,true);
         this.maxBackupIndex = maxBackupIndex;  
         activateOptions();  
     }  

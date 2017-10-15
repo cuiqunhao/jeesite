@@ -2,11 +2,9 @@ package com.thinkgem.jeesite.modules.purifier.service;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.service.ServiceException;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.purifier.dao.GoodsAppDao;
-import com.thinkgem.jeesite.modules.purifier.dao.GoodsAppRelDao;
-import com.thinkgem.jeesite.modules.purifier.dao.WareDao;
-import com.thinkgem.jeesite.modules.purifier.dao.WareGoodsRelDao;
+import com.thinkgem.jeesite.modules.purifier.dao.*;
 import com.thinkgem.jeesite.modules.purifier.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +23,10 @@ public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
     private GoodsAppRelDao goodsAppRelDao;
     @Autowired
     private WareGoodsRelDao wareGoodsRelDao;
+    @Autowired
+    private WareDao wareDao;
+    @Autowired
+    private GoodsDao goodsDao;
 
     /**
      * 根据申请单ID获取申请单详情
@@ -69,13 +71,14 @@ public class GoodsAppService extends CrudService<GoodsAppDao,GoodsApp> {
             if("1".equals(goodsApp.getConsigneeStatus())){
                 for(GoodsAppRel goodsAppRel1:goodsApp.getGoodList()){
                     WareGoodsRel wareGoodsRel = new WareGoodsRel();
-                    Ware ware = new Ware();
-                    ware.setId(goodsApp.getWare().getId());
+                    Ware ware = wareDao.get(goodsApp.getWare().getId());
                     wareGoodsRel.setWare(ware);
-                    Goods goods = new Goods();
-                    goods.setId(goodsAppRel1.getGood().getId());
+                    Goods goods = goodsDao.get(goodsAppRel1.getGood().getId());
                     wareGoodsRel.setGood(goods);
                     wareGoodsRel = wareGoodsRelDao.get(wareGoodsRel);
+                    if(wareGoodsRel==null){
+                        throw new ServiceException("请维护商品：("+goods.getGoodName()+")与仓库:("+ware.getWareName()+")的库存");
+                    }
                     wareGoodsRel.setNum(wareGoodsRel.getNum()-goodsAppRel1.getAppNum());
                     wareGoodsRelDao.delete(wareGoodsRel);
                     wareGoodsRelDao.insert(wareGoodsRel);
